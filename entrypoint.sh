@@ -42,7 +42,7 @@ echo "Push to git"
 git push
 exit_status=$?
 if [ $exit_status -eq 1 ]; then
-  echo "Try to push again
+  echo "Try to push again"
   echo "Git pull"
   git pull
   echo "Push to git"
