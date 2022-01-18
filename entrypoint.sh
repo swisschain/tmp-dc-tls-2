@@ -50,18 +50,19 @@ clone_commit_push() {
   sleep 60
   echo "Push to git"
   git push
-  exit_status=$?
+  echo $? > /tmp/exit_status
   echo "Changes log"
   git log -2
   ) > /tmp/clone_commit_push.log
-  echo $exit_status
 }
-exit_code=$(clone_commit_push)
+clone_commit_push
+exit_code=$(cat /tmp/exit_status)
 if [ "$exit_code" -eq 1 ]; then
   echo "Print Log F1"
   cat /tmp/clone_commit_push.log
   echo "Push-Not-Success try again"
-  exit_code_2=$(clone_commit_push)
+  clone_commit_push
+  exit_code_2=$(cat /tmp/exit_status)
   if [ "$exit_code_2" -eq 1 ]; then
     echo "Print Log F2"
     cat /tmp/clone_commit_push.log
