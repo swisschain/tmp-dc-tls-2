@@ -7,6 +7,15 @@ echo "Set git globals"
 git config --global user.name "${GIT_USER_NAME}"
 git config --global user.email "${GIT_USER_EMAIL}"
 clone_commit_push() {
+  if [ -d /tmp/git ]; then 
+    echo Temp Directory exist - remove
+    rm -r /tmp/git;
+    echo Create Temp Directory
+    mkdir /tmp/git; 
+  else
+    echo Create Temp Directory
+    mkdir /tmp/git; 
+  fi
   echo "Cloning git repository"
   git clone --single-branch --branch "$GIT_INFRASTRUCTURE_REPOSITORY_BRANCH" "https://x-access-token:$GIT_USER_API_TOKEN@github.com/$GIT_INFRASTRUCTURE_REPOSITORY_OWNER/$GIT_INFRASTRUCTURE_REPOSITORY_NAME.git" /tmp/git
   echo "Go to git repository dir"
@@ -45,10 +54,9 @@ clone_commit_push() {
   git log -2
   echo $exit_status
 }
-mkdir /tmp/git
 exit_code=$(clone_commit_push)
 if [ "$exit_code" -eq 1 ]; then
-  echo "Not Success"
+  echo "Push-Not-Success"
 else
-  echo "Success"
+  echo "Push-Success"
 fi
