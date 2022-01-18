@@ -53,7 +53,7 @@ clone_commit_push() {
   echo $? > /tmp/exit_status
   echo "Changes log"
   git log -2
-  ) > /tmp/clone_commit_push.log
+  ) > /tmp/clone_commit_push.log 2>&1
 }
 clone_commit_push
 exit_code=$(cat /tmp/exit_status)
@@ -67,11 +67,11 @@ if [ "$exit_code" -eq 1 ]; then
     echo "Print Log F2"
     cat /tmp/clone_commit_push.log
     echo "Push-Not-Success"
-    echo 1
+    exit 1
   fi
 else
   echo "Print Log S1"
   cat /tmp/clone_commit_push.log
   echo "Push-Success"
-  echo 0
+  exit 0
 fi
