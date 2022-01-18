@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-set -e  # stops execution
+#set -e  # stops execution
 set -u  # undefined variable
 
 echo "Set git globals"
@@ -10,7 +10,7 @@ clone_commit_push() {
   if [ -d /tmp/git ]; then 
     echo Temp Directory exist - remove
     rm -r /tmp/git
-    echo Create Temp Directory
+    echo Create New Temp Directory
     mkdir /tmp/git
   else
     echo Create Temp Directory
@@ -57,7 +57,12 @@ clone_commit_push() {
 exit_code=$(clone_commit_push)
 if [ "$exit_code" -eq 1 ]; then
   echo "Push-Not-Success try again"
-  exit_code=$(clone_commit_push)
+  exit_code_2=$(clone_commit_push)
+  if [ "$exit_code_2" -eq 1 ]; then
+    echo "Push-Not-Success"
+    echo 1
+  fi
 else
   echo "Push-Success"
+  echo 0
 fi
