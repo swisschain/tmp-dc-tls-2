@@ -46,7 +46,7 @@ clone_commit_push() {
   exit $exit_status
 }
 mkdir /tmp/git
-clone_commit_push
+#clone_commit_push
 if [ clone_commit_push -eq 1 ]; then
   echo "Not Success"
 else
