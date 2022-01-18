@@ -43,7 +43,7 @@ clone_commit_push() {
   exit_status=$?
   echo "Changes log"
   git log -2
-  exit $exit_status
+  echo $exit_status
 }
 mkdir /tmp/git
 #clone_commit_push
