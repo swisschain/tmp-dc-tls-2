@@ -46,7 +46,7 @@ clone_commit_push() {
   echo "Commit to git"
   git commit -m "$GIT_REPOSITORY_NAME ${TAG}"
   echo Sleep 30
-  sleep 30
+  sleep 60
   echo "Push to git"
   git push
   exit_status=$?
@@ -56,7 +56,8 @@ clone_commit_push() {
 }
 exit_code=$(clone_commit_push)
 if [ "$exit_code" -eq 1 ]; then
-  echo "Push-Not-Success"
+  echo "Push-Not-Success try again"
+  exit_code=$(clone_commit_push)
 else
   echo "Push-Success"
 fi
