@@ -10,10 +10,10 @@ clone_commit_push() {
   if [ -d /tmp/git ]; then 
     echo Temp Directory exist - remove
     rm -r /tmp/git;
-    echo Create Temp Directory
+    echo Create Temp Directory;
     mkdir /tmp/git; 
   else
-    echo Create Temp Directory
+    echo Create Temp Directory;
     mkdir /tmp/git; 
   fi
   echo "Cloning git repository"
