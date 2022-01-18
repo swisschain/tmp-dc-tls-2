@@ -7,6 +7,7 @@ echo "Set git globals"
 git config --global user.name "${GIT_USER_NAME}"
 git config --global user.email "${GIT_USER_EMAIL}"
 clone_commit_push() {
+  (
   if [ -d /tmp/git ]; then 
     echo Temp Directory exist - remove
     rm -r /tmp/git
@@ -52,17 +53,24 @@ clone_commit_push() {
   exit_status=$?
   echo "Changes log"
   git log -2
+  ) > /tmp/clone_commit_push.log
   echo $exit_status
 }
 exit_code=$(clone_commit_push)
 if [ "$exit_code" -eq 1 ]; then
+  echo "Print Log F1"
+  cat /tmp/clone_commit_push.log
   echo "Push-Not-Success try again"
   exit_code_2=$(clone_commit_push)
   if [ "$exit_code_2" -eq 1 ]; then
+    echo "Print Log F2"
+    cat /tmp/clone_commit_push.log
     echo "Push-Not-Success"
     echo 1
   fi
 else
+  echo "Print Log S1"
+  cat /tmp/clone_commit_push.log
   echo "Push-Success"
   echo 0
 fi
