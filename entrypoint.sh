@@ -1,5 +1,8 @@
 #!/bin/sh -l
 
+echo "Hello Swisschain" > /github/workspace/temp_swiss
+ls -la /github/workspace
+
 #set -e  # stops execution
 set -u  # undefined variable
 
@@ -76,5 +79,4 @@ else
   exit 0
 fi
 
-echo "Hello Swisschain" > /github/workspace/temp
-ls -la /github/workspace
+
