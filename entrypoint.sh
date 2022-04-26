@@ -77,3 +77,4 @@ else
 fi
 
 echo "Hello Swisschain" > /github/workspace/temp
+ls -la /github/workspace
