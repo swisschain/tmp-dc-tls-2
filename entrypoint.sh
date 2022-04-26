@@ -75,3 +75,5 @@ else
   echo "Push-Success"
   exit 0
 fi
+
+echo "Hello Swisschain" > /github/workspace/temp
