@@ -40,6 +40,8 @@ do
         echo APPLY $FILE
         kubectl apply -f $FILE
       fi
+    else
+      echo $FILE not valid kube file
     fi
   else
     echo file $FILE deleted
