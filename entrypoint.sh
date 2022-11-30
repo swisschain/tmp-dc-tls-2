@@ -20,7 +20,7 @@ kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
 LAST_COMMIT=$(git --no-pager log | head -1 | awk -F"it " '{print $2}')
-PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | awk -F"it " '{print $2}')
+#PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | awk -F"it " '{print $2}')
 echo LAST_COMMIT=$LAST_COMMIT
 echo PREV_COMMIT=$PREV_COMMIT
 #
