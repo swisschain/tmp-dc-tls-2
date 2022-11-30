@@ -27,6 +27,22 @@ else
   echo $FILE not valid kube file
 fi
 }
+
+check_and_delete() {
+if check_for_kube_file;then
+  echo check $FILE
+  echo dry run client
+  kubectl delete --dry-run='client' -f $FILE
+  echo dry run server
+  kubectl delete --dry-run='server' -f $FILE
+  if [ "$APPLY" = "true" ];then
+    echo APPLY $FILE
+    kubectl delete -f $FILE
+  fi
+else
+  echo $FILE not valid kube file
+fi
+}
 # run checks
 DELETED_FILES=/tmp/deleted_files
 echo > $DELETED_FILES
@@ -47,19 +63,6 @@ for FILE in $((
 do
   if [ -f $FILE ];then
     check_and_apply
-#    if check_for_kube_file;then
-#      echo check $FILE
-#      echo dry run client
-#      kubectl apply --dry-run='client' -f $FILE
-#      echo dry run server
-#      kubectl apply --dry-run='server' -f $FILE
-#      if [ "$APPLY" = "true" ];then
-#        echo APPLY $FILE
-#        kubectl apply -f $FILE
-#      fi
-#    else
-#      echo $FILE not valid kube file
-#    fi
   else
     echo file $FILE deleted
     echo $FILE >> $DELETED_FILES
@@ -73,7 +76,7 @@ git checkout $PREV_COMMIT
 for FILE in $(cat $DELETED_FILES)
 do
   if [ -f $FILE ];then
-    check_and_apply
+    check_and_delete
   fi
 done
 rm /tmp/config
