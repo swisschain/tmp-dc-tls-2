@@ -14,7 +14,7 @@ check_for_kube_file() {
 
 check_and_apply() {
 if check_for_kube_file;then
-  echo check $FILE
+  echo -=[ check $FILE ]=-
   echo dry run client
   kubectl apply --dry-run='client' -f $FILE
   echo dry run server
@@ -30,7 +30,7 @@ fi
 
 check_and_delete() {
 if check_for_kube_file;then
-  echo check $FILE
+  echo -=[ check $FILE ]=-
   echo dry run client
   kubectl delete --dry-run='client' -f $FILE
   echo dry run server
