@@ -14,7 +14,6 @@ check_for_kube_file() {
 
 check_and_apply() {
 if check_for_kube_file;then
-  echo -=[ check $FILE ]=-
   echo dry run client
   kubectl apply --dry-run='client' -f $FILE
   echo dry run server
@@ -30,7 +29,6 @@ fi
 
 check_and_delete() {
 if check_for_kube_file;then
-  echo -=[ check $FILE ]=-
   echo dry run client
   kubectl delete --dry-run='client' -f $FILE
   echo dry run server
@@ -61,6 +59,7 @@ for FILE in $((
            for GIA in $(git --no-pager show $LAST_COMMIT | grep ^+++ | grep -v /dev/null | awk -F"b/" '{print $2}');do echo $GIA; done
            ) | sort | uniq )
 do
+  echo -=[ processing $FILE ]=-
   if [ -f $FILE ];then
     check_and_apply
   else
@@ -75,8 +74,11 @@ echo PREV_COMMIT=$PREV_COMMIT
 git checkout $PREV_COMMIT
 for FILE in $(cat $DELETED_FILES)
 do
+  echo -=[ processing $FILE ]=-
   if [ -f $FILE ];then
     check_and_delete
+  else
+    echo can not find $FILE
   fi
 done
 rm /tmp/config
