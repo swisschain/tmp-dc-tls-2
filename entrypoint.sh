@@ -63,7 +63,7 @@ do
   if [ -f $FILE ];then
     check_and_apply
   else
-    echo file $FILE deleted
+    echo file $FILE looks like deleted - will check
     echo $FILE >> $DELETED_FILES
   fi
 done
