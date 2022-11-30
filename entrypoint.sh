@@ -3,6 +3,14 @@
 # exit when any command fails
 set -e
 
+# functions
+check_for_kube_file() {
+  if grep "kind: Deployment\|kind: ConfigMap\|kind: Service\|kind: Secret" $FILE > /dev/null 2>&1;then
+    return 0
+  else
+    return 1
+  fi
+}
 # run checks
 echo get kube config
 echo "$KUBE_CONFIG_DATA" | base64 -d > /tmp/config
@@ -12,7 +20,9 @@ kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
 LAST_COMMIT=$(git --no-pager log | head -1 | awk -F"it " '{print $2}')
+PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | awk -F"it " '{print $2}')
 echo LAST_COMMIT=$LAST_COMMIT
+echo PREV_COMMIT=$PREV_COMMIT
 #
 for FILE in $((
            for GID in $(git --no-pager show $LAST_COMMIT | grep ^--- | grep -v /dev/null | awk -F"a/" '{print $2}');do echo $GID; done
@@ -20,7 +30,7 @@ for FILE in $((
            ) | sort | uniq )
 do
   if [ -f $FILE ];then
-    if grep "kind: Deployment\|kind: ConfigMap\|kind: Service\|kind: Secret" $FILE > /dev/null 2>&1;then
+    if check_for_kube_file;then
       echo check $FILE
       echo dry run client
       kubectl apply --dry-run='client' -f $FILE
@@ -31,6 +41,8 @@ do
         kubectl apply -f $FILE
       fi
     fi
+  else
+    echo file $FILE deleted
   fi
 done
 rm /tmp/config
