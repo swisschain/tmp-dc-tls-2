@@ -83,4 +83,5 @@ do
     echo can not find $FILE
   fi
 done
+rm /tmp/deleted_files
 rm /tmp/config
