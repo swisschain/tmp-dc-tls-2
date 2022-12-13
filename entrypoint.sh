@@ -55,8 +55,8 @@ LAST_COMMIT=$(git --no-pager log | head -1 | awk -F"it " '{print $2}')
 echo LAST_COMMIT=$LAST_COMMIT
 #
 for FILE in $((
-           for GID in $(git --no-pager show $LAST_COMMIT | grep ^--- | grep -v /dev/null | awk -F"--- a/" '{print $2}');do echo $GID; done
-           for GIA in $(git --no-pager show $LAST_COMMIT | grep ^+++ | grep -v /dev/null | awk -F"+++ b/" '{print $2}');do echo $GIA; done
+           for GID in $(git --no-pager show $LAST_COMMIT | grep ^--- | grep -v /dev/null | sed 's#--- a/##g');do echo $GID; done
+           for GIA in $(git --no-pager show $LAST_COMMIT | grep ^+++ | grep -v /dev/null | sed 's#+++ b/##g');do echo $GIA; done
            ) | sort | uniq )
 do
   echo -=[ processing $FILE ]=-
