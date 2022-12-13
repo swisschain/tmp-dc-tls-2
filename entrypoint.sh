@@ -34,7 +34,7 @@ if check_for_kube_file;then
   echo dry run server
   kubectl delete --dry-run='server' -f $FILE
   if [ "$APPLY" = "true" ];then
-    echo APPLY $FILE
+    echo DELETE $FILE
     kubectl delete -f $FILE
   fi
 else
@@ -51,7 +51,6 @@ echo get kube nodes
 kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
-#LAST_COMMIT=$(git --no-pager log | head -1 | awk -F"it " '{print $2}')
 LAST_COMMIT=$(git --no-pager log | head -1 | sed 's#commit ##g')
 echo LAST_COMMIT=$LAST_COMMIT
 #
@@ -70,10 +69,9 @@ do
 done
 # 
 echo check for deleted files
-#PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | awk -F"it " '{print $2}')
 PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | sed 's#commit ##g')
 echo PREV_COMMIT=$PREV_COMMIT
-git checkout $PREV_COMMIT
+git checkout $PREV_COMMIT > /dev/null 2>&1
 for FILE in $(cat $DELETED_FILES)
 do
   echo -=[ processing $FILE ]=-
