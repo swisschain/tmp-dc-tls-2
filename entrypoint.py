@@ -23,6 +23,7 @@ cmd_pipe = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE, stderr=sub
 for gh_response_line in cmd_pipe.stdout.readlines():
     gh_response_line_json = json.loads(gh_response_line)
     #print(gh_response_line_json["body"]) 
-    xxx=gh_response_line_json["body"].split("\n")
+    gh_response_comments=gh_response_line_json["body"].split("\n")
 
-print(xxx)
+for pr_comment_line in gh_response_comments:
+    print(pr_comment_line)
