@@ -22,8 +22,7 @@ cmd2 = "/usr/local/bin/gh api -H \"Accept: application/vnd.github+json\" /repos/
 cmd_pipe = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
     gh_response_line_json = json.loads(gh_response_line)
-    #print(line_json["body"]) 
-    for pr_comment_line in gh_response_line_json["body"].readlines():
-        print(pr_comment_line) 
-    #print("Line: {}".format(line.strip()))
-#retval = p.wait()
+    #print(gh_response_line_json["body"]) 
+    xxx=gh_response_line_json["body"].split("\n")
+
+print(xxx)
