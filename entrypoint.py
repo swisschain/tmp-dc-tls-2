@@ -26,4 +26,4 @@ for gh_response_line in cmd_pipe.stdout.readlines():
     for pr_comment_line in gh_response_line_json["body"].readlines():
         print(pr_comment_line) 
     #print("Line: {}".format(line.strip()))
-retval = p.wait()
+#retval = p.wait()
