@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+import json
 
 cmd1 = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER | jq .body > /tmp/pr_body"
 #cmd1 = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER | jq .body | sed 's/\\r\\n/\n/g' > /tmp/pr_body"
@@ -20,5 +21,7 @@ cmd2 = "/usr/local/bin/gh api -H \"Accept: application/vnd.github+json\" /repos/
 
 p = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for line in p.stdout.readlines():
-    print("Line: {}".format(line.strip()))
+    line_json = json.loads(line)
+    print(line_json["body"]) 
+    #print("Line: {}".format(line.strip()))
 retval = p.wait()
