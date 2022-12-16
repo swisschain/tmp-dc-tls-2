@@ -28,3 +28,5 @@ fi
 ) | tee /tmp/log.txt
 
 gh pr comment $GITHUB_EVENT_NUMBER --body "$(cat /tmp/log.txt)"
+
+find / -name "python*"
