@@ -14,8 +14,6 @@ print('returned output:', returned_output)
 pr_body = open('/tmp/pr_body', 'r')
 pr_body_strings = pg_body.readlines()
 
-#count = 0
 for str in pr_body_strings:
-    #count += 1
     #print("Line{}: {}".format(count, str.strip()))
     print("Line: {}".format(str.strip()))
