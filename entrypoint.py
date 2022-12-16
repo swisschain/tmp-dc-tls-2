@@ -13,7 +13,3 @@ print('returned output:', returned_output)
 
 pr_body = open('/tmp/pr_body', 'r')
 pr_body_strings = pg_body.readlines()
-
-for str in pr_body_strings:
-    #print("Line{}: {}".format(count, str.strip()))
-    print("Line: {}".format(str.strip()))
