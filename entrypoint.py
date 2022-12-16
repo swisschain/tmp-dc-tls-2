@@ -29,5 +29,5 @@ for pr_comment_line in gh_response_comments:
     print(pr_comment_line)
     if "~" in pr_comment_line:
         print("found")
-    if pr_comment_line = None:
+    if pr_comment_line == None:
         print("empty")
