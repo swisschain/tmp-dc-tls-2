@@ -16,4 +16,4 @@ pr_body = open('/tmp/pr_body', 'r')
 pr_body_strings = pr_body.readlines()
 
 for line in pr_body_strings:
-    print("Line: {}".format(line.strip()))
+  print("Line: {}".format(line.strip()))
