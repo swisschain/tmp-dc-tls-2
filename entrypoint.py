@@ -20,5 +20,5 @@ cmd2 = "/usr/local/bin/gh api -H \"Accept: application/vnd.github+json\" /repos/
 
 p = subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for line in p.stdout.readlines():
-    print line,
+    print("Line: {}".format(line.strip()))
 retval = p.wait()
