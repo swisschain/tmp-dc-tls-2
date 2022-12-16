@@ -3,7 +3,7 @@
 # exit when any command fails
 set -e
 
-(
+#(
 git config --global --add safe.directory /github/workspace
 echo GITHUB_EVENT_NUMBER=$GITHUB_EVENT_NUMBER
 echo GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER
@@ -25,6 +25,6 @@ if echo ${PR_BODY} | grep ~deployment-order > /dev/null 2>&1;then
 else
   echo ND
 fi
-) | tee /tmp/log.txt
+#) | tee /tmp/log.txt
 
-gh pr comment $GITHUB_EVENT_NUMBER --body "$(cat /tmp/log.txt)"
+#gh pr comment $GITHUB_EVENT_NUMBER --body "$(cat /tmp/log.txt)"
