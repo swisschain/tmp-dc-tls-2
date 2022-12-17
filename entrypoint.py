@@ -22,7 +22,7 @@ for line in deployment_order_strings:
   deployment_order_list["line"]=count
   print(count)
   print(line.strip())
-  print(deployment_order_list{"line"})
+  print(deployment_order_list["line"])
 
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
