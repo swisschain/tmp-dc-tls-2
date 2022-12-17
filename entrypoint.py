@@ -19,7 +19,7 @@ deployment_order = open('deployment-order-group-priorities', 'r')
 deployment_order_strings = deployment_order.readlines()
 for line in deployment_order_strings:
   count+=1
-  deployment_order_list{"line"}=count
+  deployment_order_list["line"]=count
   print("Line{}: {} {}".format(count, line.strip(), deployment_order_list{"line"}))
 
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
