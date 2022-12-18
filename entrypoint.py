@@ -36,7 +36,7 @@ for gh_response_line in cmd_pipe.stdout.readlines():
     print(gh_response_line_json)
     print('gh_response_line_json["body"]')
     print(gh_response_line_json["body"])
-    if gh_response_line_json["body"] != None
+    if gh_response_line_json["body"] != None:
         found_pr_body=1
         gh_response_comments=gh_response_line_json["body"].split("\r\n")
     print('found_pr_body')
