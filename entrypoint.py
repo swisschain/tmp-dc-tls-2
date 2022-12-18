@@ -28,9 +28,13 @@ for line in deployment_order_strings:
 print("get github pr comment...")
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
+    print('gh_response_line')
     print(gh_response_line)
     gh_response_line_json = json.loads(gh_response_line)
-    print(gh_response_line_json["body"]) 
+    print('gh_response_line_json')
+    print(gh_response_line_json)
+    print('gh_response_line_json["body"]')
+    print(gh_response_line_json["body"])
     gh_response_comments=gh_response_line_json["body"].split("\r\n")
 
 print("parse comment...")
