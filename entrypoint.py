@@ -13,6 +13,7 @@ cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITO
 #print('returned value:', returned_value)
 #print('returned output:', returned_output)
 
+print("read group file...")
 count=0
 deployment_order_list = {}
 deployment_order = open('deployment-order-group-priorities', 'r')
@@ -24,12 +25,15 @@ for line in deployment_order_strings:
   print(line.strip())
   print(deployment_order_list["line"])
 
+print("get github pr comment...")
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
+    print(gh_response_line)
     gh_response_line_json = json.loads(gh_response_line)
     print(gh_response_line_json["body"]) 
     gh_response_comments=gh_response_line_json["body"].split("\r\n")
 
+print("parse comment...")
 found_deployment_order=0
 for pr_comment_line in gh_response_comments:
     print(pr_comment_line)
