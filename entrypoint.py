@@ -26,6 +26,7 @@ for line in deployment_order_strings:
   print(deployment_order_list["line"])
 
 print("get github pr comment...")
+found_pr_body=0
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
     print('gh_response_line')
@@ -35,7 +36,11 @@ for gh_response_line in cmd_pipe.stdout.readlines():
     print(gh_response_line_json)
     print('gh_response_line_json["body"]')
     print(gh_response_line_json["body"])
-    gh_response_comments=gh_response_line_json["body"].split("\r\n")
+    if gh_response_line_json["body"] != None
+        found_pr_body=1
+        gh_response_comments=gh_response_line_json["body"].split("\r\n")
+    print('found_pr_body')
+    print(found_pr_body)
 
 print("parse comment...")
 found_deployment_order=0
