@@ -27,7 +27,7 @@ for line in deployment_order_strings:
 cmd_pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for gh_response_line in cmd_pipe.stdout.readlines():
     gh_response_line_json = json.loads(gh_response_line)
-    #print(gh_response_line_json["body"]) 
+    print(gh_response_line_json["body"]) 
     gh_response_comments=gh_response_line_json["body"].split("\r\n")
 
 found_deployment_order=0
