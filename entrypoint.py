@@ -11,7 +11,8 @@ gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOS
 #kube_cmd_info = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config"
 kube_cmd1 = "mkdir ~/.kube"
 kube_cmd2 = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
-kube_cmd3 = "cat ~/.kube/config"
+#kube_cmd3 = "cat ~/.kube/config"
+kube_cmd3 = "kubectl get nodes"
 
 print("get github pr comment...")
 found_pr_body=0
