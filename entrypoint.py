@@ -39,11 +39,11 @@ if found_pr_body:
     print('pr_comment_line:', pr_comment_line)
     if found_deployment_order == 1:
       count+=1
-      print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
+      #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
       deployment_order_names["line"]=count
-      #print('count:', count)
-      #print('line:', line.strip())
-      #print('deployment_order_names["line"]:', deployment_order_names["line"])
+      print('count:', count)
+      print('line:', line.strip())
+      print('deployment_order_names["line"]:', deployment_order_names["line"])
     if "~deployment-order" in pr_comment_line:
         print("deployment-order detected...")
         found_deployment_order=1
@@ -58,11 +58,11 @@ else:
   deployment_order_strings = deployment_order.readlines()
   for line in deployment_order_strings:
     count+=1
-    print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
+    #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
     deployment_order_names["line"]=count
-    #print('count:', count)
-    #print('line:', line.strip())
-    #print('deployment_order_names["line"]:', deployment_order_names["line"])
+    print('count:', count)
+    print('line:', line.strip())
+    print('deployment_order_names["line"]:', deployment_order_names["line"])
 
 print("get git commits...")
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
