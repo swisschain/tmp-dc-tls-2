@@ -7,9 +7,9 @@ import json
 #LOG = "DEBUG"
 LOG = "INFO"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
-kube_cmd1 = "mkdir ~/.kube"
-kube_cmd2 = "echo \"$KUBE_CONFIG_DATA\" | base64 -d > ~/.kube/config"
-kube_cmd3 = "kubectl get nodes"
+kube_cmd3 = "mkdir ~/.kube && echo \"$KUBE_CONFIG_DATA\" | base64 -d > ~/.kube/config && kubectl get nodes"
+#kube_cmd2 = "echo \"$KUBE_CONFIG_DATA\" | base64 -d > ~/.kube/config"
+#kube_cmd3 = "kubectl get nodes"
 
 print("get github pr comment...")
 found_pr_body=0
@@ -52,10 +52,10 @@ else:
     print('deployment_order_list["line"]:', deployment_order_list["line"])
 
 print("get kube config...")
-kube_cmd1_returned_value = os.system(kube_cmd1)
-print('kube_cmd1_returned_value:', kube_cmd1_returned_value)
-kube_cmd2_returned_value = os.system(kube_cmd2)
-print('kube_cmd2_returned_value:', kube_cmd2_returned_value)
+#kube_cmd1_returned_value = os.system(kube_cmd1)
+#print('kube_cmd1_returned_value:', kube_cmd1_returned_value)
+#kube_cmd2_returned_value = os.system(kube_cmd2)
+#print('kube_cmd2_returned_value:', kube_cmd2_returned_value)
 cmd_pipe = subprocess.Popen(kube_cmd3, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for kubectl_response_line in cmd_pipe.stdout.readlines():
   print('kubectl_response_line:', kubectl_response_line)
