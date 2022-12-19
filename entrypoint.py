@@ -5,6 +5,7 @@ import subprocess
 import json
 
 #LOG = "DEBUG"
+LOG = "INFO"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
 kube_cmd1 = "echo \"$KUBE_CONFIG_DATA\" | base64 -d > /tmp/config"
 kube_cmd2 = "export KUBECONFIG=/tmp/config"
