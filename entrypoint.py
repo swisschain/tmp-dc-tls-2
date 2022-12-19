@@ -72,7 +72,8 @@ cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE,
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   if "commit" in str(git_response_line):
-    print('commit:', git_response_line)
+    commit_id=split(" ", git_response_line)
+    print('commit:', commit_id)
 
 print("get kube config...")
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
