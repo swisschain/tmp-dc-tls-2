@@ -7,7 +7,7 @@ import json
 #LOG = "DEBUG"
 LOG = "INFO"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
-kube_cmd3 = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && export KUBECONFIG=/tmp/config && kubectl get nodes"
+kube_cmd3 = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && cat /tmp/config && export KUBECONFIG=/tmp/config && set | grep KUBECONFIG  && kubectl get nodes"
 #kube_cmd2 = "echo \"$KUBE_CONFIG_DATA\" | base64 -d > ~/.kube/config"
 #kube_cmd3 = "kubectl get nodes"
 
