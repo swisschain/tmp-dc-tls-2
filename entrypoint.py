@@ -39,7 +39,7 @@ if found_pr_body:
     if pr_comment_line == '' and found_deployment_order == 1:
         print("empty2")
         break
-else
+else:
   print("comment not found...")
   print("read group file...")
   count=0
