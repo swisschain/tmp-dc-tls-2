@@ -73,7 +73,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   if "commit" in str(git_response_line):
     commit_id=str(git_response_line).split(" ")
-    print('commit:', commit_id)
+    print('commit:', commit_id[1])
 
 print("get kube config...")
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
