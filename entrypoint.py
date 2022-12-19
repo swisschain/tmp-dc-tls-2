@@ -7,6 +7,7 @@ import json
 #LOG = "DEBUG"
 LOG = "INFO"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
+git_cmd_commits = "git --no-pager log -2"
 #kube_cmd_debug = "echo KUBE_CONFIG_DATA=$KUBE_CONFIG_DATA && echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && cat /tmp/config && export KUBECONFIG=/tmp/config && set | grep KUBECONFIG  && kubectl get nodes"
 #kube_cmd_info = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config"
 kube_cmd_dir = "mkdir ~/.kube"
@@ -57,10 +58,16 @@ else:
   deployment_order_strings = deployment_order.readlines()
   for line in deployment_order_strings:
     count+=1
+    print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
     deployment_order_names["line"]=count
-    print('count:', count)
-    print('line:', line.strip())
-    print('deployment_order_names["line"]:', deployment_order_names["line"])
+    #print('count:', count)
+    #print('line:', line.strip())
+    #print('deployment_order_names["line"]:', deployment_order_names["line"])
+
+print("get git commits...")
+cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+for git_response_line in cmd_pipe.stdout.readlines():
+  print('git_response_line:', git_response_line)
 
 print("get kube config...")
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
