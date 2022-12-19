@@ -71,7 +71,7 @@ print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
-  if "commit " in git_response_line:
+  if "commit" in git_response_line:
     print('commit:', git_response_line)
 
 print("get kube config...")
