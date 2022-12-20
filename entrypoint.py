@@ -71,7 +71,7 @@ git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
 print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 count=0
-#commits=[]
+commits=[]
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   if "commit" in str(git_response_line):
