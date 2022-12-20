@@ -43,7 +43,7 @@ if found_pr_body:
     if found_deployment_order == 1:
       count+=1
       #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
-      deployment_order_names["line"]=count
+      deployment_order_names["pr_comment_line"]=count
       print('count:', count)
       print('pr_comment_line:', pr_comment_line)
       print('deployment_order_names["pr_comment_line"]:', deployment_order_names["pr_comment_line"])
@@ -59,13 +59,13 @@ else:
   count=0
   deployment_order = open('deployment-order-group-priorities', 'r')
   deployment_order_strings = deployment_order.readlines()
-  for line in deployment_order_strings:
+  for group_file_line in deployment_order_strings:
     count+=1
     #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
-    deployment_order_names["line"]=count
+    deployment_order_names["group_file_line"]=count
     print('count:', count)
-    print('line:', line.strip())
-    print('deployment_order_names["line"]:', deployment_order_names["line"])
+    print('group_file_line:', group_file_line)
+    print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
 print("get git current and previous commits...")
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
