@@ -45,8 +45,8 @@ if found_pr_body:
       #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
       deployment_order_names["line"]=count
       print('count:', count)
-      print('line:', line.strip())
-      print('deployment_order_names["line"]:', deployment_order_names["line"])
+      print('pr_comment_line:', pr_comment_line)
+      print('deployment_order_names["pr_comment_line"]:', deployment_order_names["pr_comment_line"])
     if "~deployment-order" in str(pr_comment_line):
         print("deployment-order detected...")
         found_deployment_order=1
