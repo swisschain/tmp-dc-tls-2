@@ -10,6 +10,7 @@ gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOS
 git_cmd_commits = "git --no-pager log -2"
 git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
 git_cmd_show = "git --no-pager show "
+git_cmd_branch = "git branch -a"
 #kube_cmd_debug = "echo KUBE_CONFIG_DATA=$KUBE_CONFIG_DATA && echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && cat /tmp/config && export KUBECONFIG=/tmp/config && set | grep KUBECONFIG  && kubectl get nodes"
 #kube_cmd_info = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config"
 kube_cmd_dir = "mkdir ~/.kube"
@@ -84,6 +85,11 @@ for git_response_line in cmd_pipe.stdout.readlines():
     commits[count]=str(git_response_line)[9:-3] # convert to sring and get subsring form 9 to -3 character
     print('commits[count]:', commits[count])
     count+=1
+
+print("get git current branch...")
+cmd_pipe = subprocess.Popen(git_cmd_branch, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+for git_response_line in cmd_pipe.stdout.readlines():
+  print('git_response_line:', git_response_line)
 
 print("get git current commits changes...")
 git_cmd_show=git_cmd_show + commits[0]
