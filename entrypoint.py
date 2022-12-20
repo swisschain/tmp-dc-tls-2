@@ -69,11 +69,15 @@ print("get git commits...")
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
 print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+count=0
+commits=[]
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   if "commit" in str(git_response_line):
     commit_id=str(git_response_line).split(" ")
+    commits[count]=commit_id[1]
     print('commit:', commit_id[1])
+    count+=1
 
 print("get kube config...")
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
