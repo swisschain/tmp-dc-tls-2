@@ -9,6 +9,7 @@ LOG = "INFO"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
 git_cmd_commits = "git --no-pager log -2"
 git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
+git_cmd_show = "git --no-pager show "
 #kube_cmd_debug = "echo KUBE_CONFIG_DATA=$KUBE_CONFIG_DATA && echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && cat /tmp/config && export KUBECONFIG=/tmp/config && set | grep KUBECONFIG  && kubectl get nodes"
 #kube_cmd_info = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config"
 kube_cmd_dir = "mkdir ~/.kube"
@@ -45,7 +46,7 @@ if found_pr_body:
       print('count:', count)
       print('line:', line.strip())
       print('deployment_order_names["line"]:', deployment_order_names["line"])
-    if "~deployment-order" in pr_comment_line:
+    if "~deployment-order" in str(pr_comment_line):
         print("deployment-order detected...")
         found_deployment_order=1
     if pr_comment_line == '' and found_deployment_order == 1:
@@ -78,6 +79,13 @@ for git_response_line in cmd_pipe.stdout.readlines():
     commits[count]=commit_id[1]
     print('commit:', commit_id[1])
     count+=1
+
+print("get git current commits changes...")
+git_cmd_show=git_cmd_show + commits[0]
+print("git command:", git_cmd_show)
+cmd_pipe = subprocess.Popen(git_cmd_show, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+for git_response_line in cmd_pipe.stdout.readlines():
+  print('git_response_line:', git_response_line)
 
 print("get kube config...")
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
