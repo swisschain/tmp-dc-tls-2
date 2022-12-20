@@ -78,7 +78,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
   if "commit" in str(git_response_line):
     commit_id_array=str(git_response_line).split(" ")
     print('commit_id_array:', commit_id_array)
-    print('commit_id:', commit_id_array[1][-2])
+    print('commit_id:', commit_id_array[1][1:-2])
     commits[count]=commit_id_array[1]
     #commits.append(commit_id_array[1])
     #commits[0]='67e3338f94f890f2bcaef190e662db71a92252f5'
