@@ -65,7 +65,7 @@ else:
     print('line:', line.strip())
     print('deployment_order_names["line"]:', deployment_order_names["line"])
 
-print("get git commits...")
+print("get git current and previous commits...")
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
 print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
