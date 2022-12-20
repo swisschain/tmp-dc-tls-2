@@ -75,10 +75,10 @@ count=0
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   if "commit" in str(git_response_line):
-    commit_id_array=str(git_response_line).split(" ").strip()
+    commit_id_array=str(git_response_line).split(" ")
     print('commit_id_array:', commit_id_array)
-    print('commit_id:', commit_id_array[1])
-    commits[count]=commit_id_array[1]
+    print('commit_id:', commit_id_array[1].strip())
+    #commits[count]=commit_id_array[1]
     count+=1
 
 print("get git current commits changes...")
