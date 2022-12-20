@@ -81,7 +81,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
     #print('commit_id:', commit_id_array[1][1:-2])
     #commits[count]=commit_id_array[1]
     #commits.append(commit_id_array[1])
-    commits[count]=str(git_response_line)[7:-3]
+    commits[count]=str(git_response_line)[9:-3] # convert to sring and get subsring form 9 to -3 character
     print('commits[count]:', commits[count])
     count+=1
 
