@@ -18,54 +18,54 @@ kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
 kube_cmd_config_debug = "cat ~/.kube/config"
 kube_cmd_nodes = "kubectl get nodes"
 
-print("get github pr comment...")
-found_pr_body=0
-cmd_pipe = subprocess.Popen(gh_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-for gh_response_line in cmd_pipe.stdout.readlines():
-    if LOG == 'DEBUG':
-      print('gh_response_line:', gh_response_line)
-    gh_response_line_json = json.loads(gh_response_line)
-    if LOG == 'DEBUG':
-      print('gh_response_line_json:', gh_response_line_json)
-    print('gh_response_line_json["body"]:', gh_response_line_json["body"])
-    if gh_response_line_json["body"] != None:
-        found_pr_body=1
-        gh_response_comments=gh_response_line_json["body"].split("\r\n")
-    print('found_pr_body:', found_pr_body)
-
-deployment_order_names = {}
-if found_pr_body:
-  print("parse comment...")
-  found_deployment_order=0
-  count=0
-  for pr_comment_line in gh_response_comments:
-    print('pr_comment_line:', pr_comment_line)
-    if found_deployment_order == 1:
-      count+=1
-      #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
-      deployment_order_names["line"]=count
-      print('count:', count)
-      print('line:', line.strip())
-      print('deployment_order_names["line"]:', deployment_order_names["line"])
-    if "~deployment-order" in str(pr_comment_line):
-        print("deployment-order detected...")
-        found_deployment_order=1
-    if pr_comment_line == '' and found_deployment_order == 1:
-        print("enpty string found...")
-        break
-else:
-  print("comment not found...")
-  print("read group file...")
-  count=0
-  deployment_order = open('deployment-order-group-priorities', 'r')
-  deployment_order_strings = deployment_order.readlines()
-  for line in deployment_order_strings:
-    count+=1
-    #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
-    deployment_order_names["line"]=count
-    print('count:', count)
-    print('line:', line.strip())
-    print('deployment_order_names["line"]:', deployment_order_names["line"])
+#print("get github pr comment...")
+#found_pr_body=0
+#cmd_pipe = subprocess.Popen(gh_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#for gh_response_line in cmd_pipe.stdout.readlines():
+#    if LOG == 'DEBUG':
+#      print('gh_response_line:', gh_response_line)
+#    gh_response_line_json = json.loads(gh_response_line)
+#    if LOG == 'DEBUG':
+#      print('gh_response_line_json:', gh_response_line_json)
+#    print('gh_response_line_json["body"]:', gh_response_line_json["body"])
+#    if gh_response_line_json["body"] != None:
+#        found_pr_body=1
+#        gh_response_comments=gh_response_line_json["body"].split("\r\n")
+#    print('found_pr_body:', found_pr_body)
+#
+#deployment_order_names = {}
+#if found_pr_body:
+#  print("parse comment...")
+#  found_deployment_order=0
+#  count=0
+#  for pr_comment_line in gh_response_comments:
+#    print('pr_comment_line:', pr_comment_line)
+#    if found_deployment_order == 1:
+#      count+=1
+#      #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
+#      deployment_order_names["line"]=count
+#      print('count:', count)
+#      print('line:', line.strip())
+#      print('deployment_order_names["line"]:', deployment_order_names["line"])
+#    if "~deployment-order" in str(pr_comment_line):
+#        print("deployment-order detected...")
+#        found_deployment_order=1
+#    if pr_comment_line == '' and found_deployment_order == 1:
+#        print("enpty string found...")
+#        break
+#else:
+#  print("comment not found...")
+#  print("read group file...")
+#  count=0
+#  deployment_order = open('deployment-order-group-priorities', 'r')
+#  deployment_order_strings = deployment_order.readlines()
+#  for line in deployment_order_strings:
+#    count+=1
+#    #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
+#    deployment_order_names["line"]=count
+#    print('count:', count)
+#    print('line:', line.strip())
+#    print('deployment_order_names["line"]:', deployment_order_names["line"])
 
 print("get git current and previous commits...")
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
