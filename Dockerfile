@@ -1,6 +1,6 @@
 FROM swisschains/kubectl-docker:1.0.3
 
-COPY entrypoint.py /entrypoint.py
-RUN chmod +x /entrypoint.py
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.py"]
+ENTRYPOINT ["/entrypoint.sh"]
