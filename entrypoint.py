@@ -79,7 +79,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
     print('commit_id_array:', commit_id_array)
     print('commit_id:', commit_id_array[1].strip())
     #commits[count]=commit_id_array[1]
-    commits[count]='67e3338f94f890f2bcaef190e662db71a92252f5'
+    commits[0]='67e3338f94f890f2bcaef190e662db71a92252f5'
     count+=1
 
 print("get git current commits changes...")
