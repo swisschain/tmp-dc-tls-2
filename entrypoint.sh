@@ -54,9 +54,9 @@ echo get git changes
 git config --global --add safe.directory /github/workspace
 GITHUB_EVENT=$(gh api -H "Accept: application/vnd.github+json" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/events | jq .[0])
 echo GITHUB_EVENT=$GITHUB_EVENT
-LAST_COMMIT=$(echo $GITHUB_EVENT | jq .payload.head)
+LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.head)
 echo LAST_COMMIT=$LAST_COMMIT
-PREV_COMMIT=$(echo $GITHUB_EVENT | jq .payload.before)
+PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.before)
 echo PREV_COMMIT=$PREV_COMMIT
 #
 echo found commits...
