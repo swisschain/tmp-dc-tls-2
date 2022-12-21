@@ -52,13 +52,18 @@ echo get kube nodes
 kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
-LAST_COMMIT=$(git --no-pager log | head -1 | sed 's#commit ##g')
+GITHUB_EVENT=$(gh api -H "Accept: application/vnd.github+json" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/events | jq .[0])
+LAST_COMMIT=$(echo $GITHUB_EVENT | jq .[0].payload.head)
 echo LAST_COMMIT=$LAST_COMMIT
+PREV_COMMIT=$(echo $GITHUB_EVENT | jq .[0].payload.before)
+echo PREV_COMMIT=$PREV_COMMIT
 #
+echo found commits...
+echo $GITHUB_EVENT | jq -r '.[0].payload.commits[] | "\(.message) \(.sha)"'
+echo get changed files...
 for FILE in $((
-           for GID in $(git --no-pager show $LAST_COMMIT | grep ^--- | grep -v /dev/null | sed 's#--- a/##g');do echo $GID; done
-           for GIA in $(git --no-pager show $LAST_COMMIT | grep ^+++ | grep -v /dev/null | sed 's#+++ b/##g');do echo $GIA; done
-           ) | sort | uniq )
+                git diff --name-only $PREV_COMMIT $LAST_COMMIT
+              ) | sort )
 do
   echo -=[ processing $FILE ]=-
   if [ -f $FILE ];then
@@ -71,8 +76,6 @@ done
 # 
 if [ -f "$DELETED_FILES" ];then
   echo check for deleted files
-  PREV_COMMIT=$(git --no-pager log | grep ^commit | head -2 | tail -1 | sed 's#commit ##g')
-  echo PREV_COMMIT=$PREV_COMMIT
   git checkout $PREV_COMMIT > /dev/null 2>&1
   for FILE in $(cat $DELETED_FILES)
   do
