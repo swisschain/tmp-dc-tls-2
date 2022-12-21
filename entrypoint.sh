@@ -60,7 +60,7 @@ PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.before)
 echo PREV_COMMIT=$PREV_COMMIT
 #
 echo found commits...
-echo $GITHUB_EVENT | jq -r '.payload.commits[] | "\(.message) \(.sha)"'
+echo $GITHUB_EVENT | jq -r '.payload.commits[] | "\"\(.message)\" (\(.sha))"'
 echo get changed files...
 for FILE in $((
                 git diff --name-only $PREV_COMMIT $LAST_COMMIT
