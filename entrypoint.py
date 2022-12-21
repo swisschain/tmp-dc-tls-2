@@ -4,8 +4,8 @@ import os
 import subprocess
 import json
 
-#LOG = "DEBUG"
 LOG = "INFO"
+LOG = "DEBUG"
 gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
 git_cmd_commits = "git --no-pager log -2"
 git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
