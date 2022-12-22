@@ -58,6 +58,8 @@ LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.head)
 echo LAST_COMMIT=$LAST_COMMIT
 PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.before)
 echo PREV_COMMIT=$PREV_COMMIT
+CURRENT_COMMIT=$(git rev-parse HEAD)
+echo CURRENT_COMMIT=$CURRENT_COMMIT
 #
 echo found commits...
 echo $GITHUB_EVENT | jq -r '.payload.commits[] | "\"\(.message)\" (\(.sha))"'
