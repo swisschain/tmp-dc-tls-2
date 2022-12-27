@@ -84,8 +84,6 @@ if [ -f "$DELETED_FILES" ];then
     echo cat DELETED_FILES=$DELETED_FILES
     cat $DELETED_FILES
   fi
-  echo GITHUB_EVENT=$GITHUB_EVENT
-fi
   for FILE in $(cat $DELETED_FILES)
   do
     echo -=[ processing $FILE ]=-
