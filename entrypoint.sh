@@ -84,7 +84,7 @@ git config --global --add safe.directory /github/workspace
 #echo GIT_HEAD=$GIT_HEAD
 #GITHUB_EVENT=$(gh api -H "Accept: application/vnd.github+json" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/events | jq .[0])
 #GITHUB_EVENT=$(get_github_event $GIT_HEAD 3)
-#echo GITHUB_EVENT=$GITHUB_EVENT
+echo GITHUB_EVENT=$GITHUB_EVENT
 #echo GITHUB_CONTEXT=$GITHUB_CONTEXT
 LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .after)
 echo LAST_COMMIT=$LAST_COMMIT
