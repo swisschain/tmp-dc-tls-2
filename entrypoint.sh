@@ -1,5 +1,8 @@
 #!/bin/bash
 
+LOG = "INFO"
+LOG = "DEBUG"
+
 # exit when any command fails
 set -e
 
@@ -53,7 +56,9 @@ echo get kube nodes
 kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
-echo GITHUB_EVENT=$GITHUB_EVENT
+if [ "$LOG" = "DEBUG" ];then
+  echo GITHUB_EVENT=$GITHUB_EVENT
+fi
 LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .after)
 echo LAST_COMMIT=$LAST_COMMIT
 PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .before)
