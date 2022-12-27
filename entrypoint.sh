@@ -1,8 +1,5 @@
 #!/bin/bash
 
-LOG = "INFO"
-LOG = "DEBUG"
-
 # exit when any command fails
 set -e
 
