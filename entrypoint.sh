@@ -80,21 +80,21 @@ echo get kube nodes
 kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
-GIT_HEAD=$(git rev-parse HEAD)
-echo GIT_HEAD=$GIT_HEAD
+#GIT_HEAD=$(git rev-parse HEAD)
+#echo GIT_HEAD=$GIT_HEAD
 #GITHUB_EVENT=$(gh api -H "Accept: application/vnd.github+json" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/events | jq .[0])
 #GITHUB_EVENT=$(get_github_event $GIT_HEAD 3)
 #echo GITHUB_EVENT=$GITHUB_EVENT
-echo GITHUB_CONTEXT=$GITHUB_CONTEXT
-LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.head)
+#echo GITHUB_CONTEXT=$GITHUB_CONTEXT
+LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .after)
 echo LAST_COMMIT=$LAST_COMMIT
-PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .payload.before)
+PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .before)
 echo PREV_COMMIT=$PREV_COMMIT
-CURRENT_COMMIT=$(git rev-parse HEAD)
-echo CURRENT_COMMIT=$CURRENT_COMMIT
+#CURRENT_COMMIT=$(git rev-parse HEAD)
+#echo CURRENT_COMMIT=$CURRENT_COMMIT
 #
 echo found commits...
-echo $GITHUB_EVENT | jq -r '.payload.commits[] | "\"\(.message)\" (\(.sha))"'
+echo $GITHUB_EVENT | jq -r '.commits[] | "\"\(.message)\" (\(.sha))"'
 echo get changed files...
 for FILE in $((
                 git diff --name-only $PREV_COMMIT $LAST_COMMIT
