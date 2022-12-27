@@ -94,7 +94,7 @@ echo PREV_COMMIT=$PREV_COMMIT
 #echo CURRENT_COMMIT=$CURRENT_COMMIT
 #
 echo found commits...
-echo $GITHUB_EVENT | jq -r '.commits[] | "\"\(.message)\" (\(.sha))"'
+echo $GITHUB_EVENT | jq -r '.commits[] | "\"\(.message)\" (\(.id))"'
 echo get changed files...
 for FILE in $((
                 git diff --name-only $PREV_COMMIT $LAST_COMMIT
