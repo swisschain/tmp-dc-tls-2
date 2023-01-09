@@ -54,7 +54,8 @@ kubectl get nodes
 echo get git changes
 git config --global --add safe.directory /github/workspace
 if [ "$LOG" = "DEBUG" ];then
-  echo GITHUB_EVENT=$GITHUB_EVENT
+  echo GITHUB_FULL_JSON=$GITHUB_FULL_JSON
+  #echo GITHUB_EVENT=$GITHUB_EVENT
 fi
 LAST_COMMIT=$(echo $GITHUB_EVENT | jq -r .after)
 echo LAST_COMMIT=$LAST_COMMIT
