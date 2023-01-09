@@ -6,17 +6,9 @@ import json
 
 LOG = "INFO"
 LOG = "DEBUG"
-gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
-git_cmd_commits = "git --no-pager log -2"
-git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
-git_cmd_show = "git --no-pager show "
-git_cmd_branch = "git branch -a"
+#gh_cmd = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
 #kube_cmd_debug = "echo KUBE_CONFIG_DATA=$KUBE_CONFIG_DATA && echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config && cat /tmp/config && export KUBECONFIG=/tmp/config && set | grep KUBECONFIG  && kubectl get nodes"
 #kube_cmd_info = "echo $KUBE_CONFIG_DATA | base64 -d > /tmp/config"
-kube_cmd_dir = "mkdir ~/.kube"
-kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
-kube_cmd_config_debug = "cat ~/.kube/config"
-kube_cmd_nodes = "kubectl get nodes"
 
 print("get github pr comment...")
 found_pr_body=0
@@ -69,8 +61,10 @@ else:
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
 print("get git current and previous commits...")
+git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
 print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
+git_cmd_commits = "git --no-pager log -2"
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 count=0
 #commits=[None] * len(2)
@@ -88,11 +82,13 @@ for git_response_line in cmd_pipe.stdout.readlines():
     count+=1
 
 print("get git current branch...")
+git_cmd_branch = "git branch -a"
 cmd_pipe = subprocess.Popen(git_cmd_branch, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
 
 print("get git current commits changes...")
+git_cmd_show = "git --no-pager show "
 git_cmd_show=git_cmd_show + commits[0]
 print("git command:", git_cmd_show)
 cmd_pipe = subprocess.Popen(git_cmd_show, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -100,14 +96,18 @@ for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
 
 print("get kube config...")
+kube_cmd_dir = "mkdir ~/.kube"
 kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
 print('kube_cmd_dir_returned_value:', kube_cmd_dir_returned_value)
+kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
 kube_cmd_config_returned_value = os.system(kube_cmd_config)
 print('kube_cmd_config_returned_value:', kube_cmd_config_returned_value)
 if LOG == 'DEBUG':
+  kube_cmd_config_debug = "cat ~/.kube/config"
   cmd_pipe = subprocess.Popen(kube_cmd_config_debug, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   for kubectl_response_line in cmd_pipe.stdout.readlines():
     print('kubectl_response_line:', kubectl_response_line)
+kube_cmd_nodes = "kubectl get nodes"
 cmd_pipe = subprocess.Popen(kube_cmd_nodes, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for kubectl_response_line in cmd_pipe.stdout.readlines():
   print('kubectl_response_line:', kubectl_response_line)
