@@ -24,15 +24,15 @@ found_pr_body=0
 #for gh_response_line in cmd_pipe.stdout.readlines():
 #    if LOG == 'DEBUG':
 #      print('gh_response_line:', gh_response_line)
-    gh_response_line = os.getenv('GITHUB_FULL_JSON')
-    gh_response_line_json = json.loads(gh_response_line)
-    if LOG == 'DEBUG':
-      print('gh_response_line_json:', gh_response_line_json)
-    print('gh_response_line_json["event.pull_request.body"]:', gh_response_line_json["event.pull_request.body"])
-    if gh_response_line_json["event.pull_request.body"] != None:
-        found_pr_body=1
-        gh_response_comments=gh_response_line_json["event.pull_request.body"].split("\r\n")
-    print('found_pr_body:', found_pr_body)
+gh_response_line = os.getenv('GITHUB_FULL_JSON')
+gh_response_line_json = json.loads(gh_response_line)
+if LOG == 'DEBUG':
+  print('gh_response_line_json:', gh_response_line_json)
+print('gh_response_line_json["event.pull_request.body"]:', gh_response_line_json["event.pull_request.body"])
+if gh_response_line_json["event.pull_request.body"] != None:
+  found_pr_body=1
+  gh_response_comments=gh_response_line_json["event.pull_request.body"].split("\r\n")
+print('found_pr_body:', found_pr_body)
 
 deployment_order_names = {}
 if found_pr_body:
