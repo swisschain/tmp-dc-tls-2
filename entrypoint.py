@@ -85,6 +85,10 @@ cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE,
 #commits=[None] * 2
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
+  gh_commits_json = json.loads(git_response_line)
+  for commit in gh_commits_json:
+    print('commit:', commit)
+
 #  if "commit" in str(git_response_line):
 #    #commit_id_array=str(git_response_line).split(" ")
 #    #print('commit_id_array:', commit_id_array)
