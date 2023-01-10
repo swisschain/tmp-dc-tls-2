@@ -89,7 +89,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
   gh_commits_json_len=len(gh_commits_json)
   print('gh_commits_json_len:', gh_commits_json_len)
   print('gh_commits_json[0]["sha"]:', gh_commits_json[0]["sha"])
-  print('gh_commits_json[gh_commits_json_len]["sha"]:', gh_commits_json[gh_commits_json_len]["sha"])
+  print('gh_commits_json[gh_commits_json_len - 1]["sha"]:', gh_commits_json[gh_commits_json_len - 1]["sha"])
   #for commit in gh_commits_json:
   #  print('commit:', commit)
 
