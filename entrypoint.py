@@ -61,18 +61,30 @@ else:
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
 print("get git current and previous commits...")
+event_name=gh_full_json["event_name"]
+print('event_name:', event_name)
+event_number=gh_full_json["event"]["number"]
+print('event_number:', event_number)
+event_action=gh_full_json["event"]["action"]
+print('event_action:', event_action)
 last_commit=gh_full_json["event"]["after"]
-#print('last_commit:', last_commit)
+print('last_commit:', last_commit)
 prev_commit=gh_full_json["event"]["before"]
-#print('prev_commit:', prev_commit)
+print('prev_commit:', prev_commit)
+commits=gh_full_json["event"]["pull_request"]["commits"]
+print('commits:', commits)
+commits_url=gh_full_json["event"]["pull_request"]["commits_url"]
+print('commits_url:', commits_url)
 #print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
-#git_cmd_commits = "git --no-pager log -2"
-#cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
+git_cmd_commits = ""gh api -H \"Accept: application/vnd.github+json\" " + commits_url 
+print('git_cmd_commits:', git_cmd_commits)
+cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 #count=0
 ##commits=[None] * len(2)
 #commits=[None] * 2
-#for git_response_line in cmd_pipe.stdout.readlines():
-#  print('git_response_line:', git_response_line)
+for git_response_line in cmd_pipe.stdout.readlines():
+  print('git_response_line:', git_response_line)
 #  if "commit" in str(git_response_line):
 #    #commit_id_array=str(git_response_line).split(" ")
 #    #print('commit_id_array:', commit_id_array)
