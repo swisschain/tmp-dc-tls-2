@@ -16,14 +16,14 @@ found_pr_body=0
 #for gh_response_line in cmd_pipe.stdout.readlines():
 #    if LOG == 'DEBUG':
 #      print('gh_response_line:', gh_response_line)
-gh_response_line = os.getenv('GITHUB_FULL_JSON')
-gh_response_line_json = json.loads(gh_response_line)
+gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
+gh_full_json = json.loads(gh_full_json_env)
 if LOG == 'DEBUG':
-  print('gh_response_line_json:', gh_response_line_json)
-print('gh_response_line_json["event"]["pull_request"]["body"]:', gh_response_line_json["event"]["pull_request"]["body"])
-if gh_response_line_json["event"]["pull_request"]["body"] != None:
+  print('gh_full_json:', gh_full_json)
+print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+if gh_full_json["event"]["pull_request"]["body"] != None:
   found_pr_body=1
-  gh_response_comments=gh_response_line_json["event"]["pull_request"]["body"].split("\r\n")
+  gh_pr_comment=gh_full_json["event"]["pull_request"]["body"].split("\r\n")
 print('found_pr_body:', found_pr_body)
 
 deployment_order_names = {}
@@ -31,7 +31,7 @@ if found_pr_body:
   print("parse comment...")
   found_deployment_order=0
   count=0
-  for pr_comment_line in gh_response_comments:
+  for pr_comment_line in gh_pr_comment:
     print('pr_comment_line:', pr_comment_line)
     if found_deployment_order == 1:
       count+=1
@@ -60,38 +60,49 @@ else:
     print('group_file_line:', group_file_line)
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
-print("get git current and previous commits...")
-git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
-git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
-print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
-git_cmd_commits = "git --no-pager log -2"
-cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-count=0
-#commits=[None] * len(2)
-commits=[None] * 2
-for git_response_line in cmd_pipe.stdout.readlines():
-  print('git_response_line:', git_response_line)
-  if "commit" in str(git_response_line):
-    #commit_id_array=str(git_response_line).split(" ")
-    #print('commit_id_array:', commit_id_array)
-    #print('commit_id:', commit_id_array[1][1:-2])
-    #commits[count]=commit_id_array[1]
-    #commits.append(commit_id_array[1])
-    commits[count]=str(git_response_line)[9:-3] # convert to sring and get subsring form 9 to -3 character
-    print('commits[count]:', commits[count])
-    count+=1
 
-print("get git current branch...")
-git_cmd_branch = "git branch -a"
-cmd_pipe = subprocess.Popen(git_cmd_branch, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-for git_response_line in cmd_pipe.stdout.readlines():
-  print('git_response_line:', git_response_line)
+LAST_COMMIT=$(echo $GITHUB_FULL_JSON | jq -r .event.after)
+echo LAST_COMMIT=$LAST_COMMIT
+#PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .before)
+PREV_COMMIT=$(echo $GITHUB_FULL_JSON | jq -r .event.before)
+
+print("get git current and previous commits...")
+last_commit=gh_full_json["event"]["after"]
+#print('last_commit:', last_commit)
+prev_commit=gh_full_json["event"]["before"]
+#print('prev_commit:', prev_commit)
+#print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
+#git_cmd_commits = "git --no-pager log -2"
+#cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#count=0
+##commits=[None] * len(2)
+#commits=[None] * 2
+#for git_response_line in cmd_pipe.stdout.readlines():
+#  print('git_response_line:', git_response_line)
+#  if "commit" in str(git_response_line):
+#    #commit_id_array=str(git_response_line).split(" ")
+#    #print('commit_id_array:', commit_id_array)
+#    #print('commit_id:', commit_id_array[1][1:-2])
+#    #commits[count]=commit_id_array[1]
+#    #commits.append(commit_id_array[1])
+#    commits[count]=str(git_response_line)[9:-3] # convert to sring and get subsring form 9 to -3 character
+#    print('commits[count]:', commits[count])
+#    count+=1
+
+#print("get git current branch...")
+#git_cmd_branch = "git branch -a"
+#cmd_pipe = subprocess.Popen(git_cmd_branch, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#for git_response_line in cmd_pipe.stdout.readlines():
+#  print('git_response_line:', git_response_line)
 
 print("get git current commits changes...")
-git_cmd_show = "git --no-pager show "
-git_cmd_show=git_cmd_show + commits[0]
-print("git command:", git_cmd_show)
-cmd_pipe = subprocess.Popen(git_cmd_show, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
+git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
+#                git diff --name-only $PREV_COMMIT $LAST_COMMIT
+git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
+#git_cmd_show=git_cmd_show + prev_commit
+print("git_cmd_diff:", git_cmd_diff)
+cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
 
