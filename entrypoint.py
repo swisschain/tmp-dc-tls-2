@@ -60,12 +60,6 @@ else:
     print('group_file_line:', group_file_line)
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
-
-LAST_COMMIT=$(echo $GITHUB_FULL_JSON | jq -r .event.after)
-echo LAST_COMMIT=$LAST_COMMIT
-#PREV_COMMIT=$(echo $GITHUB_EVENT | jq -r .before)
-PREV_COMMIT=$(echo $GITHUB_FULL_JSON | jq -r .event.before)
-
 print("get git current and previous commits...")
 last_commit=gh_full_json["event"]["after"]
 #print('last_commit:', last_commit)
