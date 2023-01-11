@@ -108,11 +108,13 @@ for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   print('git_response_line[0:-1]:', git_response_line[0:-1])
   with open(git_response_line[0:-1], 'r') as changed_file:
-    changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
-  #changed_file = open(git_response_line[0:-1], 'r')
-  #changed_file_yaml = yaml.load(changed_file, Loader=SafeLoader)
-  print('changed_file_yaml:', changed_file_yaml)
-  print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
+    try:
+      changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
+      #print(yaml.safe_load(stream))
+      print('changed_file_yaml:', changed_file_yaml)
+      print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
+    except yaml.YAMLError as exc:
+      print(exc)
 
 print("get kube config...")
 kube_cmd_dir = "mkdir ~/.kube"
