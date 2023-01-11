@@ -3,6 +3,7 @@
 import os
 import subprocess
 import json
+import yaml
 
 #LOG = "INFO"
 #LOG = "DEBUG"
@@ -97,32 +98,18 @@ print('last_commit:', last_commit)
 prev_commit=gh_commits_json[gh_commits_json_len - 1]["sha"]
 print('prev_commit:', prev_commit)
 
-#  if "commit" in str(git_response_line):
-#    #commit_id_array=str(git_response_line).split(" ")
-#    #print('commit_id_array:', commit_id_array)
-#    #print('commit_id:', commit_id_array[1][1:-2])
-#    #commits[count]=commit_id_array[1]
-#    #commits.append(commit_id_array[1])
-#    commits[count]=str(git_response_line)[9:-3] # convert to sring and get subsring form 9 to -3 character
-#    print('commits[count]:', commits[count])
-#    count+=1
-
-#print("get git current branch...")
-#git_cmd_branch = "git branch -a"
-#cmd_pipe = subprocess.Popen(git_cmd_branch, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-#for git_response_line in cmd_pipe.stdout.readlines():
-#  print('git_response_line:', git_response_line)
-
 print("get git current commits changes...")
 git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
 git_cmd_safe_directory_returned_value = os.system(git_cmd_safe_directory)
-#                git diff --name-only $PREV_COMMIT $LAST_COMMIT
 git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
-#git_cmd_show=git_cmd_show + prev_commit
 print("git_cmd_diff:", git_cmd_diff)
 cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
+  changed_file = open(git_response_line, 'r')
+  changed_file_yaml = yaml.load(changed_file, Loader=SafeLoader)
+  print('changed_file_yaml:', changed_file_yaml)
+  print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
 
 print("get kube config...")
 kube_cmd_dir = "mkdir ~/.kube"
