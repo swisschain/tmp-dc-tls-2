@@ -107,8 +107,10 @@ cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, st
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   print('git_response_line[0:-1]:', git_response_line[0:-1])
-  changed_file = open(git_response_line[0:-1], 'r')
-  changed_file_yaml = yaml.load(changed_file, Loader=SafeLoader)
+  with open(git_response_line[0:-1], 'r') as changed_file:
+    changed_file_yaml = yaml.load(changed_file)
+  #changed_file = open(git_response_line[0:-1], 'r')
+  #changed_file_yaml = yaml.load(changed_file, Loader=SafeLoader)
   print('changed_file_yaml:', changed_file_yaml)
   print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
 
