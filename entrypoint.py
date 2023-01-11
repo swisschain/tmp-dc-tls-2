@@ -109,21 +109,20 @@ for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line[0:-1]:', git_response_line[0:-1])
   if os.path.exists(git_response_line[0:-1]):
     with open(git_response_line[0:-1], 'r') as changed_file:
-      #try:
-      changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
-        #print(yaml.safe_load(stream))
-      print('changed_file_yaml:', changed_file_yaml)
-      yaml_kind_key = changed_file_yaml.get("Kind")
-      if yaml_kind_key:
-        print("Kind exist")
-      else:
-        print("Kind NOT exist")
+      try:
+        changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
+        print('changed_file_yaml:', changed_file_yaml)
+        yaml_kind_key = changed_file_yaml.get("Kind")
+        if yaml_kind_key:
+          print("Kind exist")
+        else:
+          print("Kind NOT exist")
 
         #for key, value in changed_file_yaml.items():
         #  print('key:', key)
         #print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
-      #except yaml.YAMLError as exc:
-      #  print(exc)
+      except yaml.YAMLError as exc:
+        print('yaml file parse exception:', exc)
   else:
     print("no such file exists at this time")
 
