@@ -113,13 +113,11 @@ for git_response_line in cmd_pipe.stdout.readlines():
       changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
         #print(yaml.safe_load(stream))
       print('changed_file_yaml:', changed_file_yaml)
-      if changed_file_yaml["Kind"]:
-      #if 'Kind' in changed_file_yaml.key():
+      yaml_kind_key = changed_file_yaml.get("Kind")
+      if yaml_kind_key:
         print("Kind exist")
-        # the title is present
       else:
         print("Kind NOT exist")
-        # it's not.
 
         #for key, value in changed_file_yaml.items():
         #  print('key:', key)
