@@ -113,8 +113,8 @@ for git_response_line in cmd_pipe.stdout.readlines():
         changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
         #print(yaml.safe_load(stream))
         print('changed_file_yaml:', changed_file_yaml)
-        for key, value in changed_file_yaml.items():
-          print('key:', key)
+        #for key, value in changed_file_yaml.items():
+        #  print('key:', key)
         #print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
       except yaml.YAMLError as exc:
         print(exc)
