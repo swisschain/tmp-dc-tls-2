@@ -35,6 +35,12 @@ if found_pr_body:
   count=0
   for pr_comment_line in gh_pr_comment:
     print('pr_comment_line:', pr_comment_line)
+    if pr_comment_line == '' and found_deployment_order == 1:
+        print("enpty string found...")
+        break
+    if "```" in str(pr_comment_line) and found_deployment_order == 1:
+        print("end of comment string found...")
+        break
     if found_deployment_order == 1:
       count+=1
       #print('add to deployment_order_names count={}, line={}, check_count={}'.format(count, line.strip(), deployment_order_names["line"]))
@@ -45,12 +51,6 @@ if found_pr_body:
     if "~deployment-order" in str(pr_comment_line):
         print("deployment-order detected...")
         found_deployment_order=1
-    if pr_comment_line == '' and found_deployment_order == 1:
-        print("enpty string found...")
-        break
-    if "```" in str(pr_comment_line) and found_deployment_order == 1:
-        print("end of comment string found...")
-        break
 else:
   print("comment not found...")
   print("read group file...")
