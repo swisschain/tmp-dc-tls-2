@@ -48,6 +48,9 @@ if found_pr_body:
     if pr_comment_line == '' and found_deployment_order == 1:
         print("enpty string found...")
         break
+    if "```" in str(pr_comment_line) and found_deployment_order == 1:
+        print("end of comment string found...")
+        break
 else:
   print("comment not found...")
   print("read group file...")
