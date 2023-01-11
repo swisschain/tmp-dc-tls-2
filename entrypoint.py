@@ -110,7 +110,8 @@ for git_response_line in cmd_pipe.stdout.readlines():
   if os.path.exists(git_response_line[0:-1]):
     with open(git_response_line[0:-1], 'r') as changed_file:
       try:
-        changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
+        changed_file_yaml = yaml.load(changed_file, Loader=yaml.FullLoader)
+        #changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
         print('changed_file_yaml:', changed_file_yaml)
         yaml_kind_key = changed_file_yaml.get("Kind")
         if yaml_kind_key:
