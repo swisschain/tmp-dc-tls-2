@@ -4,8 +4,10 @@ import os
 import subprocess
 import json
 import yaml
+import my_kubernetes
 
 LOG = os.getenv('LOG')
+kubernetes_valid_object_types = ['Deployment', 'ConfigMap', 'Service', 'Secret']
 
 print("get github pr comment...")
 found_pr_body = 0
@@ -103,6 +105,10 @@ for git_response_line in cmd_pipe.stdout.readlines():
         print('yaml file parse exception:', exc)
     print('changed_file_yaml:', changed_file_yaml)
     if isinstance(changed_file_yaml, dict):
+      if is_kube_yaml_valid(changed_file_yaml, kubernetes_valid_object_types):
+        print("valid YAML file")
+      else:
+        print("NOT valid YAML file")
       changed_file_yaml_len = len(changed_file_yaml)
       print('changed_file_yaml_len:', changed_file_yaml_len)
       print(type(changed_file_yaml))
@@ -111,17 +117,17 @@ for git_response_line in cmd_pipe.stdout.readlines():
         #for key, value in changed_file_yaml[i].items():
         #  print(key, ":", value)
         #print('')
-      for key, value in changed_file_yaml.items():
-        if "kind" in key.lower():
-        print('Kind key:', value)
+      #for key, value in changed_file_yaml.items():
+      #  if "kind" in key.lower():
+      #  print('Kind key:', value)
       #yaml_kind_key = changed_file_yaml.get("Kind")
       #yaml_kind_key = changed_file_yaml["Kind"]
       #if yaml_kind_key:
       #  print("Kind exist")
       #else:
       #  print("Kind NOT exist")
-    else:
-      print("NOT valid YAML file")
+    #else:
+    #  print("NOT valid YAML file")
     #for key, value in changed_file_yaml.items():
     #  print('key:', key)
     #print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
