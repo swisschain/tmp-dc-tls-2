@@ -113,12 +113,12 @@ for git_response_line in cmd_pipe.stdout.readlines():
         #print('')
       #for key, value in changed_file_yaml.items():
       #  print('key:', key)
-      #yaml_kind_key = changed_file_yaml.get("kind")
+      yaml_kind_key = changed_file_yaml.get("kind")
       #yaml_kind_key = changed_file_yaml["Kind"]
-      #if yaml_kind_key:
-      #  print("Kind exist")
-      #else:
-      #  print("Kind NOT exist")
+      if yaml_kind_key:
+        print("Kind exist")
+      else:
+        print("Kind NOT exist")
     #for key, value in changed_file_yaml.items():
     #  print('key:', key)
     #print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
