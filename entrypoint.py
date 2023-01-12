@@ -112,7 +112,8 @@ for git_response_line in cmd_pipe.stdout.readlines():
         #  print(key, ":", value)
         #print('')
       for key, value in changed_file_yaml.items():
-        print('key:', key)
+        if "kind" in key.lower():
+        print('Kind key:', value)
       #yaml_kind_key = changed_file_yaml.get("Kind")
       #yaml_kind_key = changed_file_yaml["Kind"]
       #if yaml_kind_key:
