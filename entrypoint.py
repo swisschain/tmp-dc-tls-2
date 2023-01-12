@@ -102,10 +102,10 @@ for git_response_line in cmd_pipe.stdout.readlines():
       except yaml.YAMLError as exc:
         print('yaml file parse exception:', exc)
     print('changed_file_yaml:', changed_file_yaml)
-    if type(changed_file_yaml) == "<class 'dict'>":
+    if isinstance(changed_file_yaml, dict):
       changed_file_yaml_len = len(changed_file_yaml)
       print('changed_file_yaml_len:', changed_file_yaml_len)
-      #print(type(changed_file_yaml))
+      print(type(changed_file_yaml))
       #for i in range(0, len(changed_file_yaml)):
       #  print('i:', i)
         #for key, value in changed_file_yaml[i].items():
