@@ -105,9 +105,10 @@ for git_response_line in cmd_pipe.stdout.readlines():
     if type(changed_file_yaml) == "<class 'dict'>":
       #print(type(changed_file_yaml))
       for i in range(0, len(changed_file_yaml)):
-        for key, value in changed_file_yaml[i].items():
-          print(key, ":", value)
-        print('')
+        print('i:', i)
+        #for key, value in changed_file_yaml[i].items():
+        #  print(key, ":", value)
+        #print('')
       #for key, value in changed_file_yaml.items():
       #  print('key:', key)
       #yaml_kind_key = changed_file_yaml.get("kind")
