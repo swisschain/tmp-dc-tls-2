@@ -4,7 +4,7 @@ import os
 import subprocess
 import json
 import yaml
-import my_kubernetes
+from my_kubernetes import is_kube_yaml_valid
 
 LOG = os.getenv('LOG')
 kubernetes_valid_object_types = ['Deployment', 'ConfigMap', 'Service', 'Secret']
