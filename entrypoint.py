@@ -102,14 +102,14 @@ for git_response_line in cmd_pipe.stdout.readlines():
       except yaml.YAMLError as exc:
         print('yaml file parse exception:', exc)
     print('changed_file_yaml:', changed_file_yaml)
-    print(type(changed_file_yaml))
-    yaml_kind_key = changed_file_yaml.get("Kind")
-    #yaml_kind_key = changed_file_yaml["Kind"]
-    if yaml_kind_key:
-      print("Kind exist")
-    else:
-      print("Kind NOT exist")
-
+    if type(changed_file_yaml)) == <class 'dict'>:
+      print(type(changed_file_yaml))
+      yaml_kind_key = changed_file_yaml.get("Kind")
+      #yaml_kind_key = changed_file_yaml["Kind"]
+      if yaml_kind_key:
+        print("Kind exist")
+      else:
+        print("Kind NOT exist")
     #for key, value in changed_file_yaml.items():
     #  print('key:', key)
     #print('changed_file_yaml["Kind"]:', changed_file_yaml["Kind"])
