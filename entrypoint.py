@@ -5,9 +5,9 @@ import subprocess
 import json
 import yaml
 from my_kubernetes import is_kube_yaml_valid
+from my_kubernetes import get_kube_nodes
 
 LOG = os.getenv('LOG')
-kubernetes_valid_object_types = ['Deployment', 'ConfigMap', 'Service', 'Secret']
 
 print("get github pr comment...")
 found_pr_body = 0
@@ -97,6 +97,7 @@ cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, st
 for git_response_line in cmd_pipe.stdout.readlines():
   print('git_response_line:', git_response_line)
   print('git_response_line[0:-1]:', git_response_line[0:-1])
+  print('git_response_line.strip():', git_response_line.strip())
   if os.path.exists(git_response_line[0:-1]):
     with open(git_response_line[0:-1], 'r') as changed_file:
       try:
@@ -105,7 +106,7 @@ for git_response_line in cmd_pipe.stdout.readlines():
         print('yaml file parse exception:', exc)
     print('changed_file_yaml:', changed_file_yaml)
     if isinstance(changed_file_yaml, dict):
-      if is_kube_yaml_valid(changed_file_yaml, kubernetes_valid_object_types):
+      if is_kube_yaml_valid(changed_file_yaml):
         print("valid YAML file")
       else:
         print("NOT valid YAML file")
@@ -134,19 +135,4 @@ for git_response_line in cmd_pipe.stdout.readlines():
   else:
     print("no such file exists at this time")
 
-print("get kube config...")
-kube_cmd_dir = "mkdir ~/.kube"
-kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
-print('kube_cmd_dir_returned_value:', kube_cmd_dir_returned_value)
-kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
-kube_cmd_config_returned_value = os.system(kube_cmd_config)
-print('kube_cmd_config_returned_value:', kube_cmd_config_returned_value)
-if LOG == 'DEBUG':
-  kube_cmd_config_debug = "cat ~/.kube/config"
-  cmd_pipe = subprocess.Popen(kube_cmd_config_debug, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-  for kubectl_response_line in cmd_pipe.stdout.readlines():
-    print('kubectl_response_line:', kubectl_response_line)
-kube_cmd_nodes = "kubectl get nodes"
-cmd_pipe = subprocess.Popen(kube_cmd_nodes, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-for kubectl_response_line in cmd_pipe.stdout.readlines():
-  print('kubectl_response_line:', kubectl_response_line)
+get_kube_nodes
