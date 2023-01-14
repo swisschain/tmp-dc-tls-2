@@ -4,7 +4,8 @@ import subprocess
 # Set right git directory permissions
 def git_safe_directory():
     git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
-    return os.system(git_cmd_safe_directory)
+    responce_code = os.system(git_cmd_safe_directory)
+    return responce_code
 
 # Get changed files list
 def git_diff_files_list(prev_commit, last_commit):
