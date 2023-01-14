@@ -12,6 +12,8 @@ from my_yaml import yaml_load
 
 LOG = os.getenv('LOG')
 
+print("prepare git repository...")
+git_safe_directory()
 print("get github pr comment...")
 found_pr_body = 0
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
@@ -92,19 +94,18 @@ prev_commit = gh_commits_json[gh_commits_json_len - 1]["sha"]
 print('prev_commit:', prev_commit)
 
 print("get git current commits changes...")
-git_safe_directory
 changed_files_list = git_diff_files_list(prev_commit, last_commit)
 for changed_file_name in changed_files_list:
   if os.path.exists(changed_file_name):
     changed_file_yaml = yaml_load(changed_file_name)
     if is_kube_yaml_valid(changed_file_yaml):
-      print("valid YAML file")
+      print('changed_file_name valid kube file:', changed_file_name)
     else:
-      print("NOT valid YAML file")
+      print('changed_file_name not valid kube file:', changed_file_name)
   else:
-    print("no such file exists at this time")
+    print('changed_file_name not exist:', changed_file_name)
 
 print("get kube config...")
-set_up_kube_config
+set_up_kube_config()
 print("get kube nodes...")
-get_kube_nodes
+get_kube_nodes()

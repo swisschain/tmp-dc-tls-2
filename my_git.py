@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 # Set right git directory permissions
@@ -8,8 +7,7 @@ def git_safe_directory():
 
 # Get changed files list
 def git_diff_files_list(prev_commit, last_commit):
-    #git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
-    git_cmd_diff = "git log -3"
+    git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
     print("git_cmd_diff:", git_cmd_diff)
     cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     files_list = []
