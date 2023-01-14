@@ -1,5 +1,7 @@
 import yaml
 
+global LOG
+
 # Get yaml objects from file
 def yaml_load(changed_file_name):
     with open(changed_file_name, 'r') as changed_file:
