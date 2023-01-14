@@ -1,3 +1,5 @@
+import subprocess
+
 # Set right git directory permissions
 def git_safe_directory():
     git_cmd_safe_directory = "git config --global --add safe.directory /github/workspace"
