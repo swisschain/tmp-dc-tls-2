@@ -3,8 +3,9 @@
 import os
 import subprocess
 import json
-from my_kubernetes import is_kube_yaml_valid
+from my_kubernetes import set_up_kube_config
 from my_kubernetes import get_kube_nodes
+from my_kubernetes import is_kube_yaml_valid
 from my_git import git_safe_directory
 from my_git import git_diff_files_list
 from my_yaml import yaml_load
