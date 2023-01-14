@@ -4,6 +4,7 @@ global LOG
 
 # Get yaml objects from file
 def yaml_load(changed_file_name):
+    global LOG
     with open(changed_file_name, 'r') as changed_file:
       try:
         changed_file_yaml = yaml.load(changed_file, Loader=yaml.SafeLoader)
