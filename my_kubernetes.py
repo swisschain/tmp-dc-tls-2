@@ -1,3 +1,5 @@
+import os
+
 # Create kubernetes config
 def set_up_kube_config():
     kube_cmd_dir = "mkdir ~/.kube"
