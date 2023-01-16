@@ -36,3 +36,11 @@ def is_kube_yaml_valid(file_yaml):
     #    print('kind_type:', kind_type)
 
     return False
+
+
+# Check kubernetes Kind type function
+def get_kube_yaml_key(file_yaml):
+    for yaml_key, yaml_value in file_yaml.items():
+        print('yaml_key:', yaml_key)
+        if "metadata" in str(yaml_key).lower():
+            print('Found metadata Key with yaml_value:', yaml_value)

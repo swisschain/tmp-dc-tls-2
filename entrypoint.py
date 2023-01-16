@@ -6,6 +6,7 @@ import json
 from my_kubernetes import set_up_kube_config
 from my_kubernetes import get_kube_nodes
 from my_kubernetes import is_kube_yaml_valid
+from my_kubernetes import get_kube_yaml_key
 from my_git import git_safe_directory
 from my_git import git_diff_files_list
 from my_yaml import yaml_load
@@ -94,16 +95,20 @@ prev_commit = gh_commits_json[gh_commits_json_len - 1]["sha"]
 print('prev_commit:', prev_commit)
 
 print("get git current commits changes...")
+deleted_files_list = []
 changed_files_list = git_diff_files_list(prev_commit, last_commit)
+print("parse changed files...")
 for changed_file_name in changed_files_list:
   if os.path.exists(changed_file_name):
     changed_file_yaml = yaml_load(changed_file_name)
     if is_kube_yaml_valid(changed_file_yaml):
       print('changed_file_name valid kube file:', changed_file_name)
+      get_kube_yaml_key()
     else:
-      print('changed_file_name not valid kube file:', changed_file_name)
+      print('changed_file_name not valid kube file - skip:', changed_file_name)
   else:
-    print('changed_file_name not exist:', changed_file_name)
+    print('changed_file_name not exist - will check in previous commit:', changed_file_name)
+    deleted_files_list.append(git_response_line.strip())
 
 print("get kube config...")
 set_up_kube_config()
