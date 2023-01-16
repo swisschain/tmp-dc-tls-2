@@ -99,6 +99,7 @@ deleted_files_list = []
 changed_files_list = git_diff_files_list(prev_commit, last_commit)
 print("parse changed files...")
 for changed_file_name in changed_files_list:
+  print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
     changed_file_yaml = yaml_load(changed_file_name)
     if is_kube_yaml_valid(changed_file_yaml):
