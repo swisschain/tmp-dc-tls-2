@@ -108,7 +108,7 @@ for changed_file_name in changed_files_list:
       print('changed_file_name not valid kube file - skip:', changed_file_name)
   else:
     print('changed_file_name not exist - will check in previous commit:', changed_file_name)
-    deleted_files_list.append(git_response_line.strip())
+    deleted_files_list.append(changed_file_name)
 
 print("get kube config...")
 set_up_kube_config()
