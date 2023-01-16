@@ -11,15 +11,13 @@ from my_git import git_safe_directory
 from my_git import git_diff_files_list
 from my_yaml import yaml_load
 
-LOG = os.getenv('LOG')
-
 print("prepare git repository...")
 git_safe_directory()
 print("get github pr comment...")
 found_pr_body = 0
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
 gh_full_json = json.loads(gh_full_json_env)
-if LOG == 'DEBUG':
+if os.getenv('LOG') == 'DEBUG':
   print('gh_full_json:', gh_full_json)
 print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
 if gh_full_json["event"]["pull_request"]["body"] != None:
@@ -84,7 +82,7 @@ cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE,
 for changed_file_name in cmd_pipe.stdout.readlines():
   gh_commits_json = json.loads(changed_file_name)
   gh_commits_json_len = len(gh_commits_json)
-  if LOG == 'DEBUG':
+  if os.getenv('LOG') == 'DEBUG':
     print('git_response_line:', changed_file_name)
     print('gh_commits_json_len:', gh_commits_json_len)
     print('gh_commits_json[0]["sha"]:', gh_commits_json[0]["sha"])
