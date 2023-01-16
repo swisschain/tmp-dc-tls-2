@@ -105,7 +105,7 @@ for changed_file_name in changed_files_list:
     if isinstance(changed_file_yaml, dict):
       if is_kube_yaml_valid(changed_file_yaml):
         print('changed_file_name valid kube file:', changed_file_name)
-        get_kube_yaml_key()
+        get_kube_yaml_key(changed_file_yaml)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
