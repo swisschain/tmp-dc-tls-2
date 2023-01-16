@@ -102,11 +102,14 @@ for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
     changed_file_yaml = yaml_load(changed_file_name)
-    if is_kube_yaml_valid(changed_file_yaml):
-      print('changed_file_name valid kube file:', changed_file_name)
-      get_kube_yaml_key()
+    if isinstance(changed_file_yaml, dict):
+      if is_kube_yaml_valid(changed_file_yaml):
+        print('changed_file_name valid kube file:', changed_file_name)
+        get_kube_yaml_key()
+      else:
+        print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
-      print('changed_file_name not valid kube file - skip:', changed_file_name)
+      print('changed_file_name not valid yaml file - skip:', changed_file_name)
   else:
     print('changed_file_name not exist - will check in previous commit:', changed_file_name)
     deleted_files_list.append(changed_file_name)

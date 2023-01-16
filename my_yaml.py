@@ -13,5 +13,5 @@ def yaml_load(changed_file_name):
     if LOG == 'DEBUG':
         print('type(changed_file_yaml):', type(changed_file_yaml))
         print('changed_file_yaml:', changed_file_yaml)
-    if isinstance(changed_file_yaml, dict):
-        return changed_file_yaml
+    #if isinstance(changed_file_yaml, dict):
+    return changed_file_yaml
