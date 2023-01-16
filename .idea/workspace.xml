@@ -7,9 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f6f5c99-4abd-4c58-922f-86a650088c4c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/entrypoint.py" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.py" afterDir="false" />
-    </list>
+    <list default="true" id="8f6f5c99-4abd-4c58-922f-86a650088c4c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -50,7 +48,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/my_kubernetes.py</url>
-          <line>24</line>
+          <line>28</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
