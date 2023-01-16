@@ -11,7 +11,7 @@ def set_up_kube_config():
     kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
     kube_cmd_config_returned_value = os.system(kube_cmd_config)
     print('kube_cmd_config_returned_value:', kube_cmd_config_returned_value)
-    if LOG == 'DEBUG':
+    if os.getenv('LOG') == 'DEBUG':
         kube_cmd_config_debug = "cat ~/.kube/config"
         cmd_pipe = subprocess.Popen(kube_cmd_config_debug, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for kubectl_response_line in cmd_pipe.stdout.readlines():
@@ -49,3 +49,4 @@ def get_kube_yaml_key(file_yaml):
         print('yaml_key:', yaml_key)
         if "metadata" in str(yaml_key).lower():
             print('Found metadata Key with yaml_value:', yaml_value)
+            print('yaml path:', file_yaml["metadata"]["labels"]["deployment-order-group"])
