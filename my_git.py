@@ -55,7 +55,7 @@ def git_first_last_commit():
     commits_url_last_page = commits_url + "?per_page=1&page=" + str(commits_count)
     #commits_url_last_page = commits_url + "?page=2&per_page=60"
     #git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url_last_page
-    git_cmd_commits = "curl -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" -H \"Authorization: Bearer " + gh_token + "\" " + commits_url_last_page
+    git_cmd_commits = "curl -s -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" -H \"Authorization: Bearer " + gh_token + "\" " + commits_url_last_page
     print('git_cmd_commits:', git_cmd_commits)
     cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for changed_file_name in cmd_pipe.stdout.readlines():
