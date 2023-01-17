@@ -51,7 +51,7 @@ def git_first_last_commit():
     commits.append(gh_commits_json[0]["sha"])
     print('firts_commit:', commits[0])
     print('get last commit')
-    commits_url = commits_url + "?per_page=1&page=" + commits
+    commits_url = commits_url + "?per_page=1&page=" + commits_count
     git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url
     print('git_cmd_commits:', git_cmd_commits)
     cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
