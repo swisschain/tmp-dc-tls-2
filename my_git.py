@@ -67,6 +67,8 @@ def git_first_last_commit():
             }
     response = requests.get(commits_url_last_page, headers=headers)
     print('response:', response)
+    response_json = response.json()
+    print('response_json:', response_json)
     #cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     #for changed_file_name in cmd_pipe.stdout.readlines():
     #    gh_commits_json = json.loads(changed_file_name)
