@@ -73,7 +73,7 @@ commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
 print('commits_url:', commits_url)
 #print('git_cmd_safe_directory_returned_value:', git_cmd_safe_directory_returned_value)
 #git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" /repos/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY_NAME/pulls/$GITHUB_EVENT_NUMBER"
-git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url 
+git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" -H \"per_page: 100\" " + commits_url
 print('git_cmd_commits:', git_cmd_commits)
 cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 #count=0
