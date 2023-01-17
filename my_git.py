@@ -1,4 +1,5 @@
 import os
+import json
 import subprocess
 
 # Set right git directory permissions
