@@ -62,8 +62,8 @@ def git_first_last_commit():
     #headers = {"Authorization": "Bearer MYREALLYLONGTOKENIGOT"}
     headers = {
         'Authorization': 'Bearer ' + str(gh_token),
-        'Accept: application / vnd.github + json'
-        'X-GitHub-Api-Version: 2022-11-28'
+        'Accept': 'application / vnd.github + json',
+        'X-GitHub-Api-Version': '2022-11-28'
             }
     response = requests.get(commits_url_last_page, headers=headers)
     print('response:', response)

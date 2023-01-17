@@ -1,4 +1,4 @@
-FROM swisschains/kubectl-docker:1.0.4
+FROM swisschains/kubectl-docker:1.0.5
 
 COPY my_git.py /my_git.py
 COPY my_yaml.py /my_yaml.py
