@@ -30,7 +30,7 @@ def git_first_last_commit():
     print('gh_commits_json:', gh_commits)
     gh_commits_json = gh_commits.json()
     print('gh_commits_json:', gh_commits_json)
-    commits[1] = gh_commits_json[0]["sha"]
+    commits[0] = gh_commits_json[0]["sha"]
     print('first_commit:', commits[0])
     print('get last commit')
     commits_url_last_page = commits_url + "?per_page=1&page=" + str(commits_count)
