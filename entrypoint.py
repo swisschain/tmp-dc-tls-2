@@ -62,7 +62,7 @@ else:
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 
 print("get git current and previous commits...")
-commits=git_first_last_commit()
+commits = git_first_last_commit()
 #event_name = gh_full_json["event_name"]
 #print('event_name:', event_name)
 #event_number = gh_full_json["event"]["number"]

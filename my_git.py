@@ -21,7 +21,7 @@ def git_diff_files_list(prev_commit, last_commit):
 
 # Get first and last commits of pool request
 def git_first_last_commit():
-    commits = [None] * 2
+    commits = []
     gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
     gh_full_json = json.loads(gh_full_json_env)
     event_name = gh_full_json["event_name"]
@@ -30,8 +30,8 @@ def git_first_last_commit():
     print('event_number:', event_number)
     event_action = gh_full_json["event"]["action"]
     print('event_action:', event_action)
-    commits = gh_full_json["event"]["pull_request"]["commits"]
-    print('commits:', commits)
+    commits_count = gh_full_json["event"]["pull_request"]["commits"]
+    print('commits_count:', commits_count)
     commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
     print('commits_url:', commits_url)
     print('get first commit')
@@ -47,7 +47,8 @@ def git_first_last_commit():
         print('gh_commits_json_len:', gh_commits_json_len)
         print('gh_commits_json[0]["sha"]:', gh_commits_json[0]["sha"])
         #print('gh_commits_json[gh_commits_json_len - 1]["sha"]:', gh_commits_json[gh_commits_json_len - 1]["sha"])
-    commits[0] = gh_commits_json[0]["sha"]
+    #commits[0] = gh_commits_json[0]["sha"]
+    commits.append(gh_commits_json[0]["sha"])
     print('firts_commit:', commits[0])
     print('get last commit')
     commits_url = commits_url + "?per_page=1&page=" + commits
@@ -62,7 +63,8 @@ def git_first_last_commit():
         print('gh_commits_json_len:', gh_commits_json_len)
         print('gh_commits_json[0]["sha"]:', gh_commits_json[0]["sha"])
         #print('gh_commits_json[gh_commits_json_len - 1]["sha"]:', gh_commits_json[gh_commits_json_len - 1]["sha"])
-    commits[0] = gh_commits_json[0]["sha"]
+    #commits[1] = gh_commits_json[0]["sha"]
+    commits.append(gh_commits_json[0]["sha"])
     print('last_commit:', commits[1])
 
     return commits
