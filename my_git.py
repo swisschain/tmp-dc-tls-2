@@ -21,6 +21,8 @@ def git_diff_files_list(prev_commit, last_commit):
 # Get first and last commits of pool request
 def git_first_last_commit():
     commits = []
+    gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
+    gh_full_json = json.loads(gh_full_json_env)
     event_name = gh_full_json["event_name"]
     print('event_name:', event_name)
     event_number = gh_full_json["event"]["number"]
