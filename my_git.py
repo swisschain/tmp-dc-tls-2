@@ -49,7 +49,7 @@ def git_first_last_commit():
         #print('gh_commits_json[gh_commits_json_len - 1]["sha"]:', gh_commits_json[gh_commits_json_len - 1]["sha"])
     #commits[0] = gh_commits_json[0]["sha"]
     commits.append(gh_commits_json[0]["sha"])
-    print('firts_commit:', commits[0])
+    print('first_commit:', commits[0])
     print('get last commit')
     commits_url = commits_url + "?per_page=1&page=" + commits_count
     git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url
