@@ -35,8 +35,8 @@ def git_first_last_commit():
     commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
     print('commits_url:', commits_url)
     print('get first commit')
-    commits_url = commits_url + "?per_page=1&page=1"
-    git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url
+    commits_url_first_page = commits_url + "?per_page=1&page=1"
+    git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url_first_page
     print('git_cmd_commits:', git_cmd_commits)
     cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for changed_file_name in cmd_pipe.stdout.readlines():
@@ -51,8 +51,8 @@ def git_first_last_commit():
     commits.append(gh_commits_json[0]["sha"])
     print('first_commit:', commits[0])
     print('get last commit')
-    commits_url = commits_url + "?per_page=1&page=" + str(commits_count)
-    git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url
+    commits_url_last_page = commits_url + "?per_page=1&page=" + str(commits_count)
+    git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url_last_page
     print('git_cmd_commits:', git_cmd_commits)
     cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for changed_file_name in cmd_pipe.stdout.readlines():
