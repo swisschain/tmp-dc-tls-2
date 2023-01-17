@@ -22,6 +22,7 @@ def git_diff_files_list(prev_commit, last_commit):
 # Get first and last commits of pool request
 def git_first_last_commit():
     commits = []
+    gh_token = os.getenv('GITHUB_TOKEN')
     gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
     gh_full_json = json.loads(gh_full_json_env)
     event_name = gh_full_json["event_name"]
@@ -51,9 +52,10 @@ def git_first_last_commit():
     commits.append(gh_commits_json[0]["sha"])
     print('first_commit:', commits[0])
     print('get last commit')
-    #commits_url_last_page = commits_url + "?per_page=1&page=" + str(commits_count - 1)
-    commits_url_last_page = commits_url + "?per_page=60&page=2"
-    git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url_last_page
+    commits_url_last_page = commits_url + "?per_page=1&page=" + str(commits_count)
+    #commits_url_last_page = commits_url + "?page=2&per_page=60"
+    #git_cmd_commits = "gh api -H \"Accept: application/vnd.github+json\" " + commits_url_last_page
+    git_cmd_commits = "curl -H \"Accept: application/vnd.github+json\" -H \"X-GitHub-Api-Version: 2022-11-28\" -H \"Authorization: Bearer " + gh_token + "\" " + commits_url_last_page
     print('git_cmd_commits:', git_cmd_commits)
     cmd_pipe = subprocess.Popen(git_cmd_commits, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for changed_file_name in cmd_pipe.stdout.readlines():
