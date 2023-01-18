@@ -73,7 +73,8 @@ print("get git current commits changes...")
 deleted_files_list = []
 changed_files_list = git_diff_files_list(commits[0], commits[1])
 print("parse changed files...")
-# Initialize array to append to end of array files without 'deployment-order-group' label
+# Initialize 2d array to append to end of array files without 'deployment-order-group' label
+# First index number of deployment-order-group sequence
 #deployment_order = [None] * len(deployment_order_names)
 deployment_order = [[]] * (deployment_order_names_len + 1)
 #deployment_order = [None] * deployment_order_names_len
@@ -93,7 +94,8 @@ for changed_file_name in changed_files_list:
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
         else:
           print('deployment-order-group not found - append to end of array')
-          deployment_order[deployment_order_names_len + 1].append(changed_file_name)
+          #deployment_order[deployment_order_names_len + 1].append(changed_file_name)
+          deployment_order[deployment_order_names_len].append(changed_file_name)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
