@@ -42,6 +42,7 @@ def get_yaml_path_key(yaml_file, yaml_path):
                     current_yaml_file_value = yaml_file_value
                     print('current_yaml_file_value:', current_yaml_file_value)
                     count += 1
+                    break
     if yaml_path_array_len == count:
         #print('final count:', count)
         #print('current_yaml_file_value:', current_yaml_file_value)
