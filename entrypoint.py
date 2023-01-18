@@ -103,6 +103,12 @@ for changed_file_name in changed_files_list:
   else:
     print('changed_file_name not exist - will check in previous commit:', changed_file_name)
     deleted_files_list.append(changed_file_name)
+print('Check deployment_order array...')
+for deployment_order_number in deployment_order:
+    for deployment_file_number in deployment_order_number:
+        print('deployment_order_number:', deployment_order_number)
+        print('deployment_file_number:', deployment_file_number)
+        print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
 
 print("get kube config...")
 set_up_kube_config()
