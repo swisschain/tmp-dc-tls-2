@@ -61,7 +61,8 @@ else:
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 deployment_order_names_len = len(deployment_order_names)
 print('deployment_order_names_len:', deployment_order_names_len)
-for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
+#for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
+for deployment_order_name_key, deployment_order_name_value in deployment_order_names.items():
     print('deployment_order_name_key:', deployment_order_name_key)
     print('deployment_order_name_value:', deployment_order_name_value)
 
