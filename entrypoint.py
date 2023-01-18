@@ -59,6 +59,8 @@ else:
     print('count:', count)
     print('group_file_line:', group_file_line)
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
+deployment_order_names_len = len(deployment_order_names)
+print('deployment_order_names_len:', deployment_order_names_len)
 
 print("get git current and previous commits...")
 commits = git_first_last_commit()
@@ -67,6 +69,9 @@ print("get git current commits changes...")
 deleted_files_list = []
 changed_files_list = git_diff_files_list(commits[0], commits[1])
 print("parse changed files...")
+# Initialize array to append to end of array files without 'deployment-order-group' label
+#deployment_order = [None] * len(deployment_order_names)
+deployment_order = [None] * deployment_order_names_len
 for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
@@ -77,8 +82,11 @@ for changed_file_name in changed_files_list:
         deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
         if deployment_order_group:
           print('fount deployment_order_group:', deployment_order_group)
+          print('index number deployment_order_names[deployment_order_group]:', deployment_order_names[deployment_order_group])
+          deployment_order[deployment_order_names[deployment_order_group]].append(changed_file_name)
         else:
-          print('deployment-order-group not found')
+          print('deployment-order-group not found - append to end of array')
+          deployment_order[deployment_order_names_len + 1].append(changed_file_name)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
