@@ -40,10 +40,10 @@ if found_pr_body:
         break
     if found_deployment_order == 1:
       count += 1
-      deployment_order_names["pr_comment_line"] = count
+      deployment_order_names[pr_comment_line] = count
       print('count:', count)
       print('pr_comment_line:', pr_comment_line)
-      print('deployment_order_names["pr_comment_line"]:', deployment_order_names["pr_comment_line"])
+      print('deployment_order_names[pr_comment_line]:', deployment_order_names[pr_comment_line])
     if "~deployment-order" in str(pr_comment_line):
         print("deployment-order detected...")
         found_deployment_order = 1
@@ -55,10 +55,10 @@ else:
   deployment_order_strings = deployment_order.readlines()
   for group_file_line in deployment_order_strings:
     count += 1
-    deployment_order_names["group_file_line"] = count
+    deployment_order_names[group_file_line] = count
     print('count:', count)
     print('group_file_line:', group_file_line)
-    print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
+    print('deployment_order_names[group_file_line]:', deployment_order_names[group_file_line])
 deployment_order_names_len = len(deployment_order_names)
 print('deployment_order_names_len:', deployment_order_names_len)
 #for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
