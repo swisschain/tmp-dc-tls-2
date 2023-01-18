@@ -61,6 +61,9 @@ else:
     print('deployment_order_names["group_file_line"]:', deployment_order_names["group_file_line"])
 deployment_order_names_len = len(deployment_order_names)
 print('deployment_order_names_len:', deployment_order_names_len)
+for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
+    print('deployment_order_name_key:', deployment_order_name_key)
+    print('deployment_order_name_value:', deployment_order_name_value)
 
 print("get git current and previous commits...")
 commits = git_first_last_commit()
@@ -83,7 +86,7 @@ for changed_file_name in changed_files_list:
         if deployment_order_group:
           print('fount deployment_order_group:', deployment_order_group)
           deployment_order_group_index_key = 'group:' + deployment_order_group
-          print('fount deployment_order_group_index_key:', deployment_order_group_index_key)
+          print('deployment_order_group_index_key:', deployment_order_group_index_key)
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
         else:
