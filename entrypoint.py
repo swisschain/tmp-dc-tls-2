@@ -75,7 +75,7 @@ changed_files_list = git_diff_files_list(commits[0], commits[1])
 print("parse changed files...")
 # Initialize array to append to end of array files without 'deployment-order-group' label
 #deployment_order = [None] * len(deployment_order_names)
-deployment_order = [[]] * deployment_order_names_len
+deployment_order = [[]] * (deployment_order_names_len + 1)
 #deployment_order = [None] * deployment_order_names_len
 for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
