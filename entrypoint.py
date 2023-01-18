@@ -82,8 +82,9 @@ for changed_file_name in changed_files_list:
         deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
         if deployment_order_group:
           print('fount deployment_order_group:', deployment_order_group)
-          print('index number deployment_order_names[deployment_order_group]:', deployment_order_names[deployment_order_group])
-          deployment_order[deployment_order_names[deployment_order_group]].append(changed_file_name)
+          deployment_order_group_index_key = 'group:' + deployment_order_group
+          print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
+          deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
         else:
           print('deployment-order-group not found - append to end of array')
           deployment_order[deployment_order_names_len + 1].append(changed_file_name)
