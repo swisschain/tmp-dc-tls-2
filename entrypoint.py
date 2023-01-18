@@ -76,7 +76,7 @@ for changed_file_name in changed_files_list:
         print('changed_file_name valid kube file:', changed_file_name)
         deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
         if deployment_order_group:
-          print('fount deployment-order-group:', deployment-order-group)
+          print('fount deployment_order_group:', deployment_order_group)
         else:
           print('deployment-order-group not found')
       else:

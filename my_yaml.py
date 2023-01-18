@@ -33,6 +33,7 @@ def get_yaml_path_key(yaml_file, yaml_path):
                     current_yaml_file_value = yaml_file_value
                     print('current_yaml_file_value:', current_yaml_file_value)
                     count += 1
+                    break
         else:
             for yaml_file_key, yaml_file_value in yaml_file.items():
                 print('yaml_file_key:', yaml_file_key)
