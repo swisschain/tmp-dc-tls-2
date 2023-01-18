@@ -83,6 +83,7 @@ for changed_file_name in changed_files_list:
         if deployment_order_group:
           print('fount deployment_order_group:', deployment_order_group)
           deployment_order_group_index_key = 'group:' + deployment_order_group
+          print('fount deployment_order_group_index_key:', deployment_order_group_index_key)
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
         else:
