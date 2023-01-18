@@ -1,6 +1,6 @@
 import os
 import json
-import requests
+#import requests
 
 # Get first and last commits of pool request
 def git_first_last_commit():

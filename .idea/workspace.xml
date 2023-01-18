@@ -8,7 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f6f5c99-4abd-4c58-922f-86a650088c4c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/entrypoint-check-yaml.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f1.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f2.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_kubernetes.py-230118" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/entrypoint.py" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_github.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_github.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my_kubernetes.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_kubernetes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my_yaml.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_yaml.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

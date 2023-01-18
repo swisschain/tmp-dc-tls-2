@@ -5,11 +5,11 @@ import json
 from my_kubernetes import set_up_kube_config
 from my_kubernetes import get_kube_nodes
 from my_kubernetes import is_kube_yaml_valid
-from my_kubernetes import get_kube_yaml_key
 from my_git import git_safe_directory
 from my_git import git_diff_files_list
 from my_github import git_first_last_commit
 from my_yaml import yaml_load
+from my_yaml import get_yaml_path_key
 
 print("prepare git repository...")
 git_safe_directory()
@@ -74,7 +74,11 @@ for changed_file_name in changed_files_list:
     if isinstance(changed_file_yaml, dict):
       if is_kube_yaml_valid(changed_file_yaml):
         print('changed_file_name valid kube file:', changed_file_name)
-        get_kube_yaml_key(changed_file_yaml)
+        deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
+        if deployment_order_group:
+          print('fount deployment-order-group:', deployment-order-group)
+        else:
+          print('deployment-order-group not found')
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
