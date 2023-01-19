@@ -26,11 +26,14 @@ def get_kube_nodes():
 def is_kube_yaml_valid(file_yaml):
     kind_types = ['Deployment', 'ConfigMap', 'Service', 'Secret']
     for yaml_key, yaml_value in file_yaml.items():
-        print('yaml_key:', yaml_key)
+        if os.getenv('LOG') == 'DEBUG':
+            print('yaml_key:', yaml_key)
         if "kind" in str(yaml_key).lower():
-            print('Found Kind Key with yaml_value:', yaml_value)
+            if os.getenv('LOG') == 'DEBUG':
+                print('Found Kind Key with yaml_value:', yaml_value)
             for kind_type in kind_types:
-                print('kind_type:', kind_type)
+                if os.getenv('LOG') == 'DEBUG':
+                    print('kind_type:', kind_type)
                 if kind_type.lower() == yaml_value.lower():
                     return True
 

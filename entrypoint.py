@@ -114,5 +114,6 @@ for i in range(len(deployment_order)):
 
 print("get kube config...")
 set_up_kube_config()
-print("get kube nodes...")
-get_kube_nodes()
+if os.getenv('LOG') == 'DEBUG':
+    print("get kube nodes...")
+    get_kube_nodes()
