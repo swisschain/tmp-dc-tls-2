@@ -6,8 +6,8 @@ from my_kubernetes import set_up_kube_config
 from my_kubernetes import get_kube_nodes
 from my_kubernetes import is_kube_yaml_valid
 from my_git import git_safe_directory
-from my_git import git_diff_files_list
-from my_github import git_first_last_commit
+from my_git import get_git_diff_files_list
+from my_github import get_commit_hash_by_number
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
 
@@ -67,11 +67,21 @@ for deployment_order_name_key, deployment_order_name_value in deployment_order_n
     print('deployment_order_name_value:', deployment_order_name_value)
 
 print("get git current and previous commits...")
-commits = git_first_last_commit()
+gh_token = os.getenv('GITHUB_TOKEN')
+commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
+commits_count = gh_full_json["event"]["pull_request"]["commits"]
+#commits = git_first_last_commit()
+first_commit = get_commit_hash_by_number(gh_token, commits_url, 1)
+last_commit = get_commit_hash_by_number(gh_token, commits_url, commits_count)
+if os.getenv('LOG') == 'DEBUG':
+    print('commits_url:', commits_url)
+    print('commits_count:', commits_count)
+    print('first_commit:', first_commit)
+    print('last_commit:', last_commit)
 
 print("get git current commits changes...")
 deleted_files_list = []
-changed_files_list = git_diff_files_list(commits[0], commits[1])
+changed_files_list = get_git_diff_files_list(first_commit, last_commit)
 print("parse changed files...")
 # Initialize 2d array to append to end of array files without 'deployment-order-group' label
 # First index number of deployment-order-group sequence
