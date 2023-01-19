@@ -31,10 +31,13 @@ gh_pr_comment = get_gh_pr_comment(gh_full_json)
 deployment_order_names = {}
 if gh_pr_comment:
   print("parse comment...")
-  deployment_order_names = get_order_list_from_comment(gh_pr_comment):
-#else:
-#  print("deployment order in comment not found...")
-print("read group file...")
+  deployment_order_names = get_order_list_from_comment(gh_pr_comment)
+else:
+  print("deployment order in comment not found...")
+  print("read group file...")
+  deployment_order_names = get_order_list_from_file('deployment-order-group-priorities')
+
+print("TEST read group file...")
 deployment_order_names_tmp = get_order_list_from_file('deployment-order-group-priorities')
 for deployment_order_name_key, deployment_order_name_value in deployment_order_names_tmp.items():
     print('deployment_order_name_key:', deployment_order_name_key)
