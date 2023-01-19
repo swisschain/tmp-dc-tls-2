@@ -21,7 +21,6 @@ def get_yaml_path_key(yaml_file, yaml_path):
     print('yaml_path_array_len:', yaml_path_array_len)
     current_yaml_file_value = []
     count = 0
-    #for yaml_path_key in yaml_path.split("."):
     for yaml_path_key in yaml_path_array:
         print('count:', count)
         print('yaml_path_key:', yaml_path_key)
@@ -44,6 +43,7 @@ def get_yaml_path_key(yaml_file, yaml_path):
                     count += 1
                     break
     if yaml_path_array_len == count:
-        #print('final count:', count)
-        #print('current_yaml_file_value:', current_yaml_file_value)
+        if os.getenv('LOG') == 'DEBUG':
+            print('final count:', count)
+            print('current_yaml_file_value:', current_yaml_file_value)
         return current_yaml_file_value

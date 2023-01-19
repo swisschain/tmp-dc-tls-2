@@ -24,6 +24,7 @@ if gh_full_json["event"]["pull_request"]["body"] != None:
   found_pr_body = 1
   gh_pr_comment = gh_full_json["event"]["pull_request"]["body"].split("\r\n")
 print('found_pr_body:', found_pr_body)
+#gh_pr_comment = get_gh_pr_comment(gh_full_json)
 
 deployment_order_names = {}
 if found_pr_body:
@@ -70,7 +71,6 @@ print("get git current and previous commits...")
 gh_token = os.getenv('GITHUB_TOKEN')
 commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
 commits_count = gh_full_json["event"]["pull_request"]["commits"]
-#commits = git_first_last_commit()
 first_commit = get_commit_hash_by_number(gh_token, commits_url, 1)
 last_commit = get_commit_hash_by_number(gh_token, commits_url, commits_count)
 if os.getenv('LOG') == 'DEBUG':
@@ -85,9 +85,8 @@ changed_files_list = get_git_diff_files_list(first_commit, last_commit)
 print("parse changed files...")
 # Initialize 2d array to append to end of array files without 'deployment-order-group' label
 # First index number of deployment-order-group sequence
-#deployment_order = [None] * len(deployment_order_names)
-deployment_order = [[]] * (deployment_order_names_len + 1)
-#deployment_order = [None] * deployment_order_names_len
+#deployment_order = [[]] * (deployment_order_names_len + 1)
+deployment_order = [[]] * (len(deployment_order_names) + 1)
 for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
@@ -101,10 +100,12 @@ for changed_file_name in changed_files_list:
           deployment_order_group_index_key = 'group:' + deployment_order_group
           print('deployment_order_group_index_key:', deployment_order_group_index_key)
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
+          print('add to array:', deployment_order_names[deployment_order_group_index_key])
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
         else:
           print('deployment-order-group not found - append to end of array')
           #deployment_order[deployment_order_names_len + 1].append(changed_file_name)
+          print('add to array:', deployment_order_names_len)
           deployment_order[deployment_order_names_len].append(changed_file_name)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)

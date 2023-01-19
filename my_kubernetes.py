@@ -33,9 +33,5 @@ def is_kube_yaml_valid(file_yaml):
                 print('kind_type:', kind_type)
                 if kind_type.lower() == yaml_value.lower():
                     return True
-      #if "kind" in key.lower():
-      #  print('Kind key:', value)
-    #for kind_type in kind_types:
-    #    print('kind_type:', kind_type)
 
     return False
