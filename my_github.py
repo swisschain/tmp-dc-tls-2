@@ -55,15 +55,17 @@ def get_order_list_from_comment(gh_pr_comment):
         return order_list
 
 def get_order_list_from_file(deployment_order_file):
-  count = 0
-  deployment_order = open(deployment_order_file, 'r')
-  deployment_order_strings = deployment_order.readlines()
-  for group_file_line in deployment_order_strings:
-    order_list[group_file_line] = count
-    if os.getenv('LOG') == 'DEBUG':
-        print('count:', count)
-        print('group_file_line:', group_file_line)
-        print('order_list[group_file_line]:', order_list[group_file_line])
-    count += 1
-  return order_list
+    order_list = {}
+    count = 0
+    deployment_order = open(deployment_order_file, 'r')
+    deployment_order_strings = deployment_order.readlines()
+    for group_file_line in deployment_order_strings:
+        order_list[group_file_line] = count
+        if os.getenv('LOG') == 'DEBUG':
+            print('count:', count)
+            print('group_file_line:', group_file_line)
+            print('order_list[group_file_line]:', order_list[group_file_line])
+        count += 1
+    return order_list
+
 
