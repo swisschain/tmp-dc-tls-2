@@ -7,6 +7,7 @@ from my_kubernetes import get_kube_nodes
 from my_kubernetes import is_kube_yaml_valid
 from my_git import git_safe_directory
 from my_git import get_git_diff_files_list
+from my_github import get_gh_pr_comment
 from my_github import get_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
