@@ -60,10 +60,10 @@ def get_order_list_from_file(deployment_order_file):
     deployment_order = open(deployment_order_file, 'r')
     deployment_order_strings = deployment_order.readlines()
     for group_file_line in deployment_order_strings:
-        order_list[group_file_line] = count
+        order_list[group_file_line.strip()] = count
         if os.getenv('LOG') == 'DEBUG':
             print('count:', count)
-            print('group_file_line:', group_file_line)
+            print('group_file_line.strip():', group_file_line.strip())
             print('order_list[group_file_line]:', order_list[group_file_line])
         count += 1
     return order_list
