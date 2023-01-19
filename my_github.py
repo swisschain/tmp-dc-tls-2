@@ -26,3 +26,44 @@ def get_gh_pr_comment(gh_full_json):
          if os.getenv('LOG') == 'DEBUG':
              print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
          return gh_pr_comment
+
+def get_order_list_from_comment(gh_pr_comment):
+    order_list = {}
+    found_order_list = 0
+    count = 0
+    for pr_comment_line in gh_pr_comment:
+        print('pr_comment_line:', pr_comment_line)
+        if pr_comment_line == '' and found_order_list == 1:
+            if os.getenv('LOG') == 'DEBUG':
+                print("empty string found...")
+            break
+        if "```" in str(pr_comment_line) and found_order_list == 1:
+            if os.getenv('LOG') == 'DEBUG':
+                print("end of comment string found...")
+            break
+        if found_order_list == 1:
+            order_list[pr_comment_line] = count
+            if os.getenv('LOG') == 'DEBUG':
+                print('count:', count)
+                print('pr_comment_line:', pr_comment_line)
+                print('order_list[pr_comment_line]:', order_list[pr_comment_line])
+            count += 1
+        if "~deployment-order" in str(pr_comment_line):
+            print("deployment-order detected...")
+            found_order_list = 1
+    if found_order_list:
+        return order_list
+
+def get_order_list_from_file(deployment_order_file):
+  count = 0
+  deployment_order = open(deployment_order_file, 'r')
+  deployment_order_strings = deployment_order.readlines()
+  for group_file_line in deployment_order_strings:
+    order_list[group_file_line] = count
+    if os.getenv('LOG') == 'DEBUG':
+        print('count:', count)
+        print('group_file_line:', group_file_line)
+        print('order_list[group_file_line]:', order_list[group_file_line])
+    count += 1
+  return order_list
+

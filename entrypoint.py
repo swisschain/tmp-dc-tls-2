@@ -8,6 +8,8 @@ from my_kubernetes import is_kube_yaml_valid
 from my_git import git_safe_directory
 from my_git import get_git_diff_files_list
 from my_github import get_commit_hash_by_number
+from my_github import get_order_list_from_comment
+from my_github import get_order_list_from_file
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
 
@@ -17,51 +19,30 @@ print("get github pr comment...")
 found_pr_body = 0
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
 gh_full_json = json.loads(gh_full_json_env)
-if os.getenv('LOG') == 'DEBUG':
-  print('gh_full_json:', gh_full_json)
-print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
-if gh_full_json["event"]["pull_request"]["body"] != None:
-  found_pr_body = 1
-  gh_pr_comment = gh_full_json["event"]["pull_request"]["body"].split("\r\n")
-print('found_pr_body:', found_pr_body)
-#gh_pr_comment = get_gh_pr_comment(gh_full_json)
+#if os.getenv('LOG') == 'DEBUG':
+#  print('gh_full_json:', gh_full_json)
+#print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+#if gh_full_json["event"]["pull_request"]["body"] != None:
+#  found_pr_body = 1
+#  gh_pr_comment = gh_full_json["event"]["pull_request"]["body"].split("\r\n")
+#print('found_pr_body:', found_pr_body)
+gh_pr_comment = get_gh_pr_comment(gh_full_json)
 
 deployment_order_names = {}
-if found_pr_body:
+if gh_pr_comment:
   print("parse comment...")
-  found_deployment_order = 0
-  count = 0
-  for pr_comment_line in gh_pr_comment:
-    print('pr_comment_line:', pr_comment_line)
-    if pr_comment_line == '' and found_deployment_order == 1:
-        print("empty string found...")
-        break
-    if "```" in str(pr_comment_line) and found_deployment_order == 1:
-        print("end of comment string found...")
-        break
-    if found_deployment_order == 1:
-      count += 1
-      deployment_order_names[pr_comment_line] = count
-      print('count:', count)
-      print('pr_comment_line:', pr_comment_line)
-      print('deployment_order_names[pr_comment_line]:', deployment_order_names[pr_comment_line])
-    if "~deployment-order" in str(pr_comment_line):
-        print("deployment-order detected...")
-        found_deployment_order = 1
-else:
-  print("comment not found...")
-  print("read group file...")
-  count = 0
-  deployment_order = open('deployment-order-group-priorities', 'r')
-  deployment_order_strings = deployment_order.readlines()
-  for group_file_line in deployment_order_strings:
-    count += 1
-    deployment_order_names[group_file_line] = count
-    print('count:', count)
-    print('group_file_line:', group_file_line)
-    print('deployment_order_names[group_file_line]:', deployment_order_names[group_file_line])
+  deployment_order_names = get_order_list_from_comment(gh_pr_comment):
+#else:
+#  print("deployment order in comment not found...")
+print("read group file...")
+deployment_order_names_tmp = get_order_list_from_file('deployment-order-group-priorities')
+for deployment_order_name_key, deployment_order_name_value in deployment_order_names_tmp.items():
+    print('deployment_order_name_key:', deployment_order_name_key)
+    print('deployment_order_name_value:', deployment_order_name_value)
+
 deployment_order_names_len = len(deployment_order_names)
-print('deployment_order_names_len:', deployment_order_names_len)
+if os.getenv('LOG') == 'DEBUG':
+    print('deployment_order_names_len:', deployment_order_names_len)
 #for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
 for deployment_order_name_key, deployment_order_name_value in deployment_order_names.items():
     print('deployment_order_name_key:', deployment_order_name_key)
