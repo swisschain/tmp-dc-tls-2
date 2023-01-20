@@ -11,6 +11,7 @@ from my_github import get_gh_pr_comment
 from my_github import get_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
+from my_github import check_2d_array
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
 
@@ -88,11 +89,13 @@ for changed_file_name in changed_files_list:
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
           print('add to array:', deployment_order_names[deployment_order_group_index_key])
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
+          check_2d_array(deployment_order)
         else:
           print('deployment-order-group not found - append to end of array')
           #deployment_order[deployment_order_names_len + 1].append(changed_file_name)
           print('add to array:', deployment_order_names_len)
           deployment_order[deployment_order_names_len].append(changed_file_name)
+          check_2d_array(deployment_order)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
@@ -101,31 +104,33 @@ for changed_file_name in changed_files_list:
     print('changed_file_name not exist - will check in previous commit:', changed_file_name)
     deleted_files_list.append(changed_file_name)
 print('Check deployment_order array...')
-for deployment_order_number in deployment_order:
-    for deployment_file_number in deployment_order_number:
-        #print('deployment_order_number:', deployment_order_number)
-        print('deployment_file_number:', deployment_file_number)
-        #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
-for i in range(len(deployment_order)):
-    for j in range(len(deployment_order[i])):
-        print('i:', i)
-        print('j:', j)
-        print('deployment_order[i][j]:', deployment_order[i][j])
+check_2d_array(deployment_order)
+#for deployment_order_number in deployment_order:
+#    for deployment_file_number in deployment_order_number:
+#        #print('deployment_order_number:', deployment_order_number)
+#        print('deployment_file_number:', deployment_file_number)
+#        #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
+#for i in range(len(deployment_order)):
+#    for j in range(len(deployment_order[i])):
+#        print('i:', i)
+#        print('j:', j)
+#        print('deployment_order[i][j]:', deployment_order[i][j])
 
 deployment_order = [['00', '01', '02'], ['10', '11', '12'], ['20', '21', '22']]
 deployment_order[0].append('03')
 deployment_order[2].append('23')
 print('Check TEST deployment_order array...')
-for deployment_order_number in deployment_order:
-    for deployment_file_number in deployment_order_number:
-        #print('deployment_order_number:', deployment_order_number)
-        print('deployment_file_number:', deployment_file_number)
-        #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
-for i in range(len(deployment_order)):
-    for j in range(len(deployment_order[i])):
-        print('i:', i)
-        print('j:', j)
-        print('deployment_order[i][j]:', deployment_order[i][j])
+check_2d_array(deployment_order)
+#for deployment_order_number in deployment_order:
+#    for deployment_file_number in deployment_order_number:
+#        #print('deployment_order_number:', deployment_order_number)
+#        print('deployment_file_number:', deployment_file_number)
+#        #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
+#for i in range(len(deployment_order)):
+#    for j in range(len(deployment_order[i])):
+#        print('i:', i)
+#        print('j:', j)
+#        print('deployment_order[i][j]:', deployment_order[i][j])
 
 print("get kube config...")
 set_up_kube_config()

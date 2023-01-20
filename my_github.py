@@ -68,4 +68,17 @@ def get_order_list_from_file(deployment_order_file):
         count += 1
     return order_list
 
+def check_2d_array(array):
+    print('CHECK_ARRAY')
+    for array_1d in array:
+        for array_2d in array_1d:
+            # print('array_1d:', array_1d)
+            print('array_2d:', array_2d)
+            # print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            print('i:', i)
+            print('j:', j)
+            print('array[i][j]:', array[i][j])
+
 
