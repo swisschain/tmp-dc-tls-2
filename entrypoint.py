@@ -112,6 +112,19 @@ for i in range(len(deployment_order)):
         print('j:', j)
         print('deployment_order[i][j]:', deployment_order[i][j])
 
+deployment_order = [['00', '01', '02'], ['10', '11', '12'], ['20', '21', '22']]
+print('Check TEST deployment_order array...')
+for deployment_order_number in deployment_order:
+    for deployment_file_number in deployment_order_number:
+        print('deployment_order_number:', deployment_order_number)
+        print('deployment_file_number:', deployment_file_number)
+        #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
+for i in range(len(deployment_order)):
+    for j in range(len(deployment_order[i])):
+        print('i:', i)
+        print('j:', j)
+        print('deployment_order[i][j]:', deployment_order[i][j])
+
 print("get kube config...")
 set_up_kube_config()
 if os.getenv('LOG') == 'DEBUG':
