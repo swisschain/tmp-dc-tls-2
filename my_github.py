@@ -64,7 +64,7 @@ def get_order_list_from_file(deployment_order_file):
         if os.getenv('LOG') == 'DEBUG':
             print('count:', count)
             print('group_file_line.strip():', group_file_line.strip())
-            print('order_list[group_file_line]:', order_list[group_file_line])
+            print('order_list[group_file_line.strip()]:', order_list[group_file_line.strip()])
         count += 1
     return order_list
 
