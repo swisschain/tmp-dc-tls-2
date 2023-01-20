@@ -88,7 +88,10 @@ for changed_file_name in changed_files_list:
           print('deployment_order_group_index_key:', deployment_order_group_index_key)
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
           print('add to array:', deployment_order_names[deployment_order_group_index_key])
-          deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
+          c = deployment_order_names[deployment_order_group_index_key])
+          print('c:', c)
+          #deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
+          deployment_order[c].append(changed_file_name)
           check_2d_array(deployment_order)
         else:
           print('deployment-order-group not found - append to end of array')
