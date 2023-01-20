@@ -20,6 +20,7 @@ git_safe_directory()
 print("get github pr comment...")
 found_pr_body = 0
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
+print('gh_full_json_env:', gh_full_json_env)
 gh_full_json = json.loads(gh_full_json_env)
 #if os.getenv('LOG') == 'DEBUG':
 #  print('gh_full_json:', gh_full_json)
