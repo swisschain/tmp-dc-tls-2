@@ -103,7 +103,7 @@ for changed_file_name in changed_files_list:
 print('Check deployment_order array...')
 for deployment_order_number in deployment_order:
     for deployment_file_number in deployment_order_number:
-        print('deployment_order_number:', deployment_order_number)
+        #print('deployment_order_number:', deployment_order_number)
         print('deployment_file_number:', deployment_file_number)
         #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
 for i in range(len(deployment_order)):
@@ -116,7 +116,7 @@ deployment_order = [['00', '01', '02'], ['10', '11', '12'], ['20', '21', '22']]
 print('Check TEST deployment_order array...')
 for deployment_order_number in deployment_order:
     for deployment_file_number in deployment_order_number:
-        print('deployment_order_number:', deployment_order_number)
+        #print('deployment_order_number:', deployment_order_number)
         print('deployment_file_number:', deployment_file_number)
         #print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
 for i in range(len(deployment_order)):
