@@ -113,6 +113,8 @@ for i in range(len(deployment_order)):
         print('deployment_order[i][j]:', deployment_order[i][j])
 
 deployment_order = [['00', '01', '02'], ['10', '11', '12'], ['20', '21', '22']]
+deployment_order[0].append('03')
+deployment_order[2].append('23')
 print('Check TEST deployment_order array...')
 for deployment_order_number in deployment_order:
     for deployment_file_number in deployment_order_number:
