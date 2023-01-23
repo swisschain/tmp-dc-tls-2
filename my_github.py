@@ -31,7 +31,8 @@ def get_order_list_from_comment(gh_pr_comment):
     found_order_list = 0
     count = 0
     for pr_comment_line in gh_pr_comment:
-        print('pr_comment_line:', pr_comment_line)
+        if os.getenv('LOG') == 'DEBUG':
+            print('pr_comment_line:', pr_comment_line)
         if pr_comment_line == '' and found_order_list == 1:
             if os.getenv('LOG') == 'DEBUG':
                 print("empty string found...")
@@ -41,12 +42,16 @@ def get_order_list_from_comment(gh_pr_comment):
                 print("end of comment string found...")
             break
         if found_order_list == 1:
-            order_list[pr_comment_line] = count
+            if "group:" in str(pr_comment_line):
+                order_list[pr_comment_line] = count
+                count += 1
+            else:
+                if os.getenv('LOG') == 'DEBUG':
+                    print('not valid pr_comment_line:', pr_comment_line)
             if os.getenv('LOG') == 'DEBUG':
                 print('count:', count)
                 print('pr_comment_line:', pr_comment_line)
                 print('order_list[pr_comment_line]:', order_list[pr_comment_line])
-            count += 1
         if "~deployment-order" in str(pr_comment_line):
             print("deployment-order detected...")
             found_order_list = 1
@@ -59,26 +64,30 @@ def get_order_list_from_file(deployment_order_file):
     deployment_order = open(deployment_order_file, 'r')
     deployment_order_strings = deployment_order.readlines()
     for group_file_line in deployment_order_strings:
-        order_list[group_file_line.strip()] = count
+        if "group:" in str(group_file_line.strip()):
+            order_list[group_file_line.strip()] = count
+            count += 1
+        else:
+            if os.getenv('LOG') == 'DEBUG':
+                print('not valit group_file_line.strip():', group_file_line.strip())
         if os.getenv('LOG') == 'DEBUG':
             print('count:', count)
             print('group_file_line.strip():', group_file_line.strip())
             print('order_list[group_file_line.strip()]:', order_list[group_file_line.strip()])
-        count += 1
     return order_list
 
 def check_2d_array(array):
-    print('CHECK_ARRAY')
+    #print('CHECK_ARRAY')
     for array_1d in array:
         for array_2d in array_1d:
             # print('array_1d:', array_1d)
-            print('array_2d:', array_2d)
+            print('file:', array_2d)
             # print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
-    for i in range(len(array)):
-        for j in range(len(array[i])):
-            print('i:', i)
-            print('j:', j)
-            print('array[i][j]:', array[i][j])
+    #for i in range(len(array)):
+    #    for j in range(len(array[i])):
+    #        print('i:', i)
+    #        print('j:', j)
+    #        print('array[i][j]:', array[i][j])
 
 def initialize_2d_array(elements_cont):
     new_2d_array = []
