@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="622c71ab-592d-4550-a40a-2a121167596d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/my_github.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_github.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entrypoint.py" beforeDir="false" afterPath="$PROJECT_DIR$/entrypoint.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

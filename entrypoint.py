@@ -97,13 +97,15 @@ for changed_file_name in changed_files_list:
           #print('c:', c)
           deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
           #deployment_order[c].append('changed_file_name')
-          check_2d_array(deployment_order)
+          if os.getenv('LOG') == 'DEBUG':
+              check_2d_array(deployment_order)
         else:
           print('deployment-order-group not found - append to end of array')
           #deployment_order[deployment_order_names_len + 1].append(changed_file_name)
           print('add to array:', deployment_order_names_len)
           deployment_order[deployment_order_names_len].append(changed_file_name)
-          check_2d_array(deployment_order)
+          if os.getenv('LOG') == 'DEBUG':
+              check_2d_array(deployment_order)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
