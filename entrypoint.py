@@ -11,6 +11,7 @@ from my_github import get_gh_pr_comment
 from my_github import get_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
+from my_github import initialize_2d_array
 from my_github import check_2d_array
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
