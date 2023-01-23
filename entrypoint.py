@@ -83,7 +83,8 @@ for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
     changed_file_yaml = yaml_load(changed_file_name)
-    if isinstance(changed_file_yaml, dict):
+    #if isinstance(changed_file_yaml, dict):
+    if changed_file_yaml:
       if is_kube_yaml_valid(changed_file_yaml):
         print('changed_file_name valid kube file:', changed_file_name)
         deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
