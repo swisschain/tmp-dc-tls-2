@@ -47,8 +47,8 @@ for deployment_order_name_key, deployment_order_name_value in deployment_order_n
     print('deployment_order_name_key:', deployment_order_name_key)
     print('deployment_order_name_value:', deployment_order_name_value)
 
-deployment_order_names_len = len(deployment_order_names)
 if os.getenv('LOG') == 'DEBUG':
+    deployment_order_names_len = len(deployment_order_names)
     print('deployment_order_names_len:', deployment_order_names_len)
 #for deployment_order_name_key, deployment_order_name_value in deployment_order_names:
 print("SHOW order array from comment...")
@@ -75,7 +75,8 @@ print("parse changed files...")
 # Initialize 2d array to append to end of array files without 'deployment-order-group' label
 # First index number of deployment-order-group sequence
 #deployment_order = [[]] * (deployment_order_names_len + 1)
-deployment_order = initialize_2d_array(len(deployment_order_names) + 1)
+deployment_order = initialize_2d_array(len(deployment_order_names))
+deployment_no_group = []
 #for i in range(len(deployment_order_names) + 1):
 #    deployment_order.append([])
 #deployment_order = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
@@ -103,10 +104,8 @@ for changed_file_name in changed_files_list:
         else:
           print('deployment-order-group not found - append to end of array')
           #deployment_order[deployment_order_names_len + 1].append(changed_file_name)
-          print('add to array:', deployment_order_names_len)
-          deployment_order[deployment_order_names_len].append(changed_file_name)
-          if os.getenv('LOG') == 'DEBUG':
-              check_2d_array(deployment_order)
+          print('add to no group array')
+          deployment_no_group.append(changed_file_name)
       else:
         print('changed_file_name not valid kube file - skip:', changed_file_name)
     else:
