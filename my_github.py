@@ -81,6 +81,7 @@ def check_2d_array(array):
             print('array[i][j]:', array[i][j])
 
 def initialize_2d_array(elements_cont):
-    2d_array = []
+    new_2d_array = []
     for element in range(elements_cont):
-        d_array.append([])
+        new_2d_array.append([])
+    return new_2d_array
