@@ -20,7 +20,7 @@ git_safe_directory()
 print("get github pr comment...")
 found_pr_body = 0
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
-print('gh_full_json_env:', gh_full_json_env)
+#print('gh_full_json_env:', gh_full_json_env)
 gh_full_json = json.loads(gh_full_json_env)
 #if os.getenv('LOG') == 'DEBUG':
 #  print('gh_full_json:', gh_full_json)
@@ -74,7 +74,10 @@ print("parse changed files...")
 # Initialize 2d array to append to end of array files without 'deployment-order-group' label
 # First index number of deployment-order-group sequence
 #deployment_order = [[]] * (deployment_order_names_len + 1)
-deployment_order = [[]] * (len(deployment_order_names) + 1)
+deployment_order = initialize_2d_array(len(deployment_order_names) + 1)
+#for i in range(len(deployment_order_names) + 1):
+#    deployment_order.append([])
+#deployment_order = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 for changed_file_name in changed_files_list:
   print('processing:', changed_file_name)
   if os.path.exists(changed_file_name):
@@ -89,10 +92,10 @@ for changed_file_name in changed_files_list:
           print('deployment_order_group_index_key:', deployment_order_group_index_key)
           print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
           print('add to array:', deployment_order_names[deployment_order_group_index_key])
-          c = deployment_order_names[deployment_order_group_index_key]
-          print('c:', c)
-          #deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
-          deployment_order[c].append(changed_file_name)
+          #c = deployment_order_names[deployment_order_group_index_key]
+          #print('c:', c)
+          deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
+          deployment_order[c].append('changed_file_name')
           check_2d_array(deployment_order)
         else:
           print('deployment-order-group not found - append to end of array')
@@ -136,8 +139,8 @@ check_2d_array(deployment_order)
 #        print('j:', j)
 #        print('deployment_order[i][j]:', deployment_order[i][j])
 
-print("get kube config...")
-set_up_kube_config()
-if os.getenv('LOG') == 'DEBUG':
-    print("get kube nodes...")
-    get_kube_nodes()
+#print("get kube config...")
+#set_up_kube_config()
+#if os.getenv('LOG') == 'DEBUG':
+#    print("get kube nodes...")
+#    get_kube_nodes()

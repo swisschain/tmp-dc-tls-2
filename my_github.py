@@ -1,5 +1,4 @@
 import os
-#import json
 import requests
 
 # Get commit hash id by number
@@ -81,4 +80,7 @@ def check_2d_array(array):
             print('j:', j)
             print('array[i][j]:', array[i][j])
 
-
+def initialize_2d_array(elements_cont):
+    2d_array = []
+    for element in range(elements_cont):
+        d_array.append([])
