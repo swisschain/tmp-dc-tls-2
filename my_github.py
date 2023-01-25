@@ -27,8 +27,8 @@ def add_gh_pr_comment(gh_token, gh_url, gh_comment_body):
     gh_comment = '{"body": "' + gh_comment_body + '"}'
     gh_response = requests.post(gh_url, data=gh_comment, headers=headers)
     gh_response_json = gh_response.json()
-    #if os.getenv('LOG') == 'DEBUG':
-    print('gh_response_json:', gh_response_json)
+    if os.getenv('LOG') == 'DEBUG':
+        print('gh_response_json:', gh_response_json)
 
 
 def get_gh_pr_comment(gh_full_json):
