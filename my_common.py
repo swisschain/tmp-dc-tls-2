@@ -39,3 +39,27 @@ def initialize_array(elements_cont):
 def add_string_to_gile(file, string):
     with open(file, "a") as myfile:
         myfile.write(string)
+
+# Check if file extension allowed
+def is_extension_allowed(file_name):
+    allowed_extensions = ['.yaml', '.yml']
+    for extension_item in allowed_extensions:
+        extension = extension_item.lower()
+        file_name_string = to_str(file_name).lower()
+        if file_name_string.endswith(extension):
+            if os.getenv('LOG') == 'DEBUG':
+                print('found extension:', extension)
+            return True
+    return False
+
+# Check if file path allowed
+def is_path_allowed(file_name):
+    allowed_path = ['kubernetes']
+    for path_item in allowed_path:
+        path = path_item.lower()
+        file_name_string = to_str(file_name).lower()
+        if file_name_string.startswith(path):
+            if os.getenv('LOG') == 'DEBUG':
+                print('found path:', path)
+                return True
+    return False

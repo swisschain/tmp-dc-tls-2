@@ -131,41 +131,49 @@ files_list_deleted = initialize_array(1)
 for changed_file_name in files_list_git_changed:
     print('processing:', to_str(changed_file_name))
     if os.path.exists(changed_file_name):
-        changed_file_yaml = yaml_load(changed_file_name)
-        if changed_file_yaml:
-            if is_kube_object_type_valid(changed_file_yaml, ['Deployment']):
-                if os.getenv('LOG') == 'DEBUG':
-                    print('changed_file_name valid kube file:', changed_file_name)
-                deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
-                if deployment_order_group:
-                    deployment_order_group_index_key = 'group:' + deployment_order_group
-                    if deployment_order_group_index_key in deployment_order_names:
+        if is_path_allowed(changed_file_name):
+            if is_extension_allowed(changed_file_name):
+                changed_file_yaml = yaml_load(changed_file_name)
+                if changed_file_yaml:
+                    if is_kube_object_type_valid(changed_file_yaml, ['Deployment']):
                         if os.getenv('LOG') == 'DEBUG':
-                            print('fount deployment_order_group:', deployment_order_group)
-                            print('deployment_order_group_index_key:', deployment_order_group_index_key)
-                            print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
-                            print('add to array:', deployment_order_names[deployment_order_group_index_key])
-                        files_list_deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
-                        if os.getenv('LOG') == 'DEBUG':
-                            check_2d_array(files_list_deployment_order)
+                            print('changed_file_name valid kube file:', changed_file_name)
+                        deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
+                        if deployment_order_group:
+                            deployment_order_group_index_key = 'group:' + deployment_order_group
+                            if deployment_order_group_index_key in deployment_order_names:
+                                if os.getenv('LOG') == 'DEBUG':
+                                    print('fount deployment_order_group:', deployment_order_group)
+                                    print('deployment_order_group_index_key:', deployment_order_group_index_key)
+                                    print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
+                                    print('add to array:', deployment_order_names[deployment_order_group_index_key])
+                                print('add to files_list_deployment_order[' + deployment_order_names[deployment_order_group_index_key] + ']')
+                                files_list_deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
+                                if os.getenv('LOG') == 'DEBUG':
+                                    check_2d_array(files_list_deployment_order)
+                            else:
+                                print('Warning: NOT fount deployment_order_group:', deployment_order_group)
+                        else:
+                            #if os.getenv('LOG') == 'DEBUG':
+                            print('deployment-order-group not found - add to no group array')
+                            files_list_deployment_no_group[0].append(changed_file_name)
+                    elif is_kube_object_type_valid(changed_file_yaml, ['ConfigMap', 'Service', 'Secret']):
+                        files_list_other_types[0].append(changed_file_name)
                     else:
-                        print('Warning: NOT fount deployment_order_group:', deployment_order_group)
+                        #if os.getenv('LOG') == 'DEBUG':
+                        print('not valid kube file - skip')
                 else:
-                    if os.getenv('LOG') == 'DEBUG':
-                        print('deployment-order-group not found - append to end of array')
-                        print('add to no group array')
-                    files_list_deployment_no_group[0].append(changed_file_name)
-            elif is_kube_object_type_valid(changed_file_yaml, ['ConfigMap', 'Service', 'Secret']):
-                files_list_other_types[0].append(changed_file_name)
+                    #if os.getenv('LOG') == 'DEBUG':
+                    print('yaml not valid - skip')
             else:
-                if os.getenv('LOG') == 'DEBUG':
-                    print('changed_file_name not valid kube file - skip:', changed_file_name)
+                #if os.getenv('LOG') == 'DEBUG':
+                print('extensions not allowed - skip')
         else:
-            if os.getenv('LOG') == 'DEBUG':
-                print('changed_file_name not valid yaml file - skip:', changed_file_name)
+            #if os.getenv('LOG') == 'DEBUG':
+            print('path file begins from not allowed path - skip')
     else:
-        if os.getenv('LOG') == 'DEBUG':
-            print('changed_file_name not exist - will check in previous commit:', changed_file_name)
+        #if os.getenv('LOG') == 'DEBUG':
+        print('not exist - will check in previous commits...')
         files_list_deleted[0].append(changed_file_name)
 print('Apply to kubernetes...')
 hosts_name = os.getenv('HOSTS_NAME')
