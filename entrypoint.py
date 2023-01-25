@@ -4,6 +4,8 @@ import os
 import json
 from my_common import to_str
 from my_common import run_shell_command
+from my_common import is_path_allowed
+from my_common import is_extension_allowed
 from my_common import initialize_array
 from my_common import check_2d_array
 from my_common import add_string_to_gile
