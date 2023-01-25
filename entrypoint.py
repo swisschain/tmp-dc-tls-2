@@ -3,6 +3,7 @@
 import os
 import json
 from my_common import to_str
+from my_common import run_shell_command
 from my_common import initialize_array
 from my_common import check_2d_array
 from my_kubernetes import set_up_kube_config
@@ -183,3 +184,5 @@ print('Combine comment for GitHub pool request...')
 gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
 #gh_comment_body = "<html><body>Previewing update:<br><br><pre><code>" + gh_comment_body_preview + "</code></pre><br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
 add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
+
+run_shell_command('cat /etc/hosts', 'Output=True')
