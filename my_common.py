@@ -57,7 +57,9 @@ def is_path_allowed(file_name):
     allowed_path = ['kubernetes']
     for path_item in allowed_path:
         path = path_item.lower()
+        print('path:', path)
         file_name_string = to_str(file_name).lower()
+        print('file_name_string:', file_name_string)
         if file_name_string.startswith(path):
             if os.getenv('LOG') == 'DEBUG':
                 print('found path:', path)
