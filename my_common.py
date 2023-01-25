@@ -34,3 +34,8 @@ def initialize_array(elements_cont):
     for element in range(elements_cont):
         new_array.append([])
     return new_array
+
+# Append string to file
+def add_string_to_gile(file, string):
+    with open(file, "a") as myfile:
+        myfile.write(string)

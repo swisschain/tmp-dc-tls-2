@@ -167,6 +167,10 @@ for changed_file_name in files_list_git_changed:
             print('changed_file_name not exist - will check in previous commit:', changed_file_name)
         files_list_deleted[0].append(changed_file_name)
 print('Apply to kubernetes...')
+hosts_name = os.getenv('HOSTS_NAME')
+hosts_ip = os.getenv('HOSTS_IP')
+add_string_to_gile('/etc/hosts', hosts_ip + ' ' + hosts_name)
+run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
 set_up_kube_config()
 get_kube_nodes()
 gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
@@ -185,9 +189,3 @@ gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_pre
 #gh_comment_body = "<html><body>Previewing update:<br><br><pre><code>" + gh_comment_body_preview + "</code></pre><br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
 add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 
-hosts_name = os.getenv('HOSTS_NAME')
-hosts_ip = os.getenv('HOSTS_IP')
-run_shell_command('cat /etc/hosts', 'Output=True')
-with open("/etc/hosts", "a") as myfile:
-    myfile.write(hosts_ip + " " + hosts_name)
-run_shell_command('cat /etc/hosts', 'Output=True')
