@@ -9,12 +9,7 @@ def yaml_load(changed_file_name):
           if isinstance(changed_file_yaml, dict):
               return changed_file_yaml
       except yaml.YAMLError as exc:
-          #print('yaml file parse exception:', exc)
-          print('yaml file parse exception:')
-      #finally:
-      #    if os.getenv('LOG') == 'DEBUG':
-      #        print('type(changed_file_yaml):', type(changed_file_yaml))
-      #       print('changed_file_yaml:', changed_file_yaml)
+          print('yaml file parse exception...')
 
 # Check if yaml path key exist
 def get_yaml_path_key(yaml_file, yaml_path):

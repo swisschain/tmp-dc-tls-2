@@ -2,7 +2,7 @@ import os
 import requests
 
 # Get commit hash id by number
-def get_commit_hash_by_number(gh_token, gh_url, gh_pr_commit_number):
+def get_git_commit_hash_by_number(gh_token, gh_url, gh_pr_commit_number):
     headers = {
         'Authorization': 'Bearer ' + str(gh_token),
         'Accept': 'application / vnd.github + json',
@@ -16,6 +16,20 @@ def get_commit_hash_by_number(gh_token, gh_url, gh_pr_commit_number):
         print('gh_response_json:', gh_response_json)
 
     return gh_response_json[0]["sha"]
+
+# Get commit hash id by number
+def add_gh_pr_comment(gh_token, gh_url, gh_comment_body):
+    headers = {
+        'Authorization': 'Bearer ' + str(gh_token),
+        'Accept': 'application / vnd.github + json',
+        'X-GitHub-Api-Version': '2022-11-28'
+            }
+    gh_comment = '{"body": "' + gh_comment_body + '"}'
+    gh_response = requests.post(gh_url, data=gh_comment, headers=headers)
+    gh_response_json = gh_response.json()
+    #if os.getenv('LOG') == 'DEBUG':
+    print('gh_response_json:', gh_response_json)
+
 
 def get_gh_pr_comment(gh_full_json):
     if os.getenv('LOG') == 'DEBUG':
@@ -76,21 +90,14 @@ def get_order_list_from_file(deployment_order_file):
             print('order_list[group_file_line.strip()]:', order_list[group_file_line.strip()])
     return order_list
 
-def check_2d_array(array):
-    #print('CHECK_ARRAY')
-    for array_1d in array:
-        for array_2d in array_1d:
-            # print('array_1d:', array_1d)
-            print('file:', array_2d)
-            # print('deployment_order[deployment_order_number][deployment_file_number]:', deployment_order[deployment_order_number][deployment_file_number])
-    #for i in range(len(array)):
-    #    for j in range(len(array[i])):
-    #        print('i:', i)
-    #        print('j:', j)
-    #        print('array[i][j]:', array[i][j])
+def convert_order_list(deployment_order_names):
+    if os.getenv('LOG') == 'DEBUG':
+        print('len(deployment_order_names):', len(deployment_order_names))
+    converted_array = [None] * len(deployment_order_names)
+    for deployment_order_name_key, deployment_order_name_value in deployment_order_names.items():
+        if os.getenv('LOG') == 'DEBUG':
+            print('deployment_order_name_key:', deployment_order_name_key)
+            print('deployment_order_name_value:', deployment_order_name_value)
+        converted_array[deployment_order_name_value] = deployment_order_name_key
+    return converted_array
 
-def initialize_2d_array(elements_cont):
-    new_2d_array = []
-    for element in range(elements_cont):
-        new_2d_array.append([])
-    return new_2d_array

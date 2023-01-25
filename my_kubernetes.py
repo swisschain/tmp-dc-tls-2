@@ -1,30 +1,21 @@
 import os
 import subprocess
+from my_common import to_str
+from my_common import run_shell_command
 
 # Create kubernetes config
 def set_up_kube_config():
-    kube_cmd_dir = "mkdir ~/.kube"
-    kube_cmd_dir_returned_value = os.system(kube_cmd_dir)
-    print('kube_cmd_dir_returned_value:', kube_cmd_dir_returned_value)
-    kube_cmd_config = "echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config"
-    kube_cmd_config_returned_value = os.system(kube_cmd_config)
-    print('kube_cmd_config_returned_value:', kube_cmd_config_returned_value)
+    run_shell_command('[ -d ~/.kube ] || mkdir ~/.kube', 'Output=False')
+    run_shell_command('echo $KUBE_CONFIG_DATA | base64 -d > ~/.kube/config', 'Output=False')
     if os.getenv('LOG') == 'DEBUG':
-        kube_cmd_config_debug = "cat ~/.kube/config"
-        cmd_pipe = subprocess.Popen(kube_cmd_config_debug, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for kubectl_response_line in cmd_pipe.stdout.readlines():
-            print('kubectl_response_line:', kubectl_response_line)
+        run_shell_command('cat ~/.kube/config', 'Output=True')
 
 # Print kubernetes nodes
 def get_kube_nodes():
-    kube_cmd_nodes = "kubectl get nodes"
-    cmd_pipe = subprocess.Popen(kube_cmd_nodes, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for kubectl_response_line in cmd_pipe.stdout.readlines():
-        print('kubectl_response_line:', kubectl_response_line)
+    run_shell_command('kubectl get nodes', 'Output=True')
 
 # Check kubernetes Kind type function
-def is_kube_yaml_valid(file_yaml):
-    kind_types = ['Deployment', 'ConfigMap', 'Service', 'Secret']
+def is_kube_object_type_valid(file_yaml, kind_types):
     for yaml_key, yaml_value in file_yaml.items():
         if os.getenv('LOG') == 'DEBUG':
             print('yaml_key:', yaml_key)
@@ -38,3 +29,16 @@ def is_kube_yaml_valid(file_yaml):
                     return True
 
     return False
+
+def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order):
+    gh_comment_body_part = ''
+    for order_number in range(len(deployment_order_numbers)):
+        print('APPLY:', str(deployment_order_numbers[order_number]))
+        for file_item in files_list_deployment_order[order_number]:
+            print('FILE:', to_str(file_item))
+            run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
+            run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
+            if os.getenv('DRY_RUN') == 'False':
+                run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
+            gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+    return gh_comment_body_part
