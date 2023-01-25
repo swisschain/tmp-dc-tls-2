@@ -45,5 +45,5 @@ def get_git_diff_files_list(prev_commit, last_commit, operations_type):
         if os.getenv('LOG') == 'DEBUG':
             if found_extension == 0:
                 print('skip file - not fount in allowed_extensions list:', git_response_line.strip())
-    print('files_list:', files_list)
+    print('files list ' + operations_type + ':', files_list)
     return files_list
