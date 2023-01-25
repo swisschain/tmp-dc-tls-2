@@ -79,7 +79,7 @@ print("get git current commits changes...")
 gh_comment_body_preview = ''
 gh_comment_body_details = ''
 # Get All
-files_list_git_changed = get_git_diff_files_list(first_commit + '^', last_commit, 'All')
+files_list_git_changed = get_git_diff_files_list(first_commit, last_commit, 'All')
 # Get Added
 files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added')
 if files_list_git_added:
