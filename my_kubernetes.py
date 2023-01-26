@@ -65,7 +65,6 @@ def get_valid_kube_files(deployment_order_names, files_list_git_changed, type):
                                         print('get_valid_kube_files fount deployment_order_group:', deployment_order_group)
                                         print('get_valid_kube_files deployment_order_group_index_key:', deployment_order_group_index_key)
                                         print('get_valid_kube_files index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
-                                        print('get_valid_kube_files :', deployment_order_names[deployment_order_group_index_key])
                                     if type == 'WITHGROUP':
                                         print('get_valid_kube_files deployment - WITHGROUP (array[' + str(deployment_order_names[deployment_order_group_index_key]) + '] = ' + to_str(changed_file_name) + ')')
                                         result_array[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)

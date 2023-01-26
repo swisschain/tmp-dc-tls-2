@@ -35,7 +35,7 @@ gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
 gh_full_json = json.loads(gh_full_json_env)
 if os.getenv('LOG') == 'DEBUG':
     print('main gh_full_json:', gh_full_json)
-    print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+    #print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
 gh_pr_comment = get_gh_pr_comment(gh_full_json)
 
 # Try to find deployment order in GitHub pool request comment else read it from file
