@@ -142,27 +142,27 @@ print('files_list_deployment_order:', files_list_deployment_order)
 print('files_list_deployment_no_group:', files_list_deployment_no_group)
 print('files_list_probably_deleted:', files_list_probably_deleted)
 print('Apply to kubernetes...')
-#hosts_name = os.getenv('HOSTS_NAME')
-#hosts_ip = os.getenv('HOSTS_IP')
-#add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
-#run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
-#set_up_kube_config()
-#get_kube_nodes()
-#gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
-#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-#gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
-#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-#gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
-#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+hosts_name = os.getenv('HOSTS_NAME')
+hosts_ip = os.getenv('HOSTS_IP')
+add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
+run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
+set_up_kube_config()
+get_kube_nodes()
+gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
+gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
+gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
+gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 print('Check files_list_deleted array...')
 get_git_switch_to_commit(last_commit)
 files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
 print('files_list_deleted:', files_list_deleted)
-#gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
-#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
+gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 
-#print('Combine comment for GitHub pool request...')
-#gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
+print('Combine comment for GitHub pool request...')
+gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
 #gh_comment_body = "<html><body>Previewing update:<br><br><pre><code>" + gh_comment_body_preview + "</code></pre><br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
-#add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
+add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 
