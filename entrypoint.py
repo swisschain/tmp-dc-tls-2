@@ -130,6 +130,10 @@ files_list_deployment_order = initialize_array(len(deployment_order_names))
 files_list_deployment_no_group = initialize_array(1)
 files_list_other_types = initialize_array(1)
 files_list_deleted = initialize_array(1)
+#files_list_other_types_tmp = get_valid_kube_files(['group:other'], files_list_git_changed)
+files_list_deployment_order_tmp = get_valid_kube_files(deployment_order_names, files_list_git_changed)
+#files_list_deployment_no_group_tmp = get_valid_kube_files(['group:no group'], files_list_git_changed)
+#files_list_deleted_tmp = get_valid_kube_files(['group:deleted'], files_list_git_changed)
 for changed_file_name in files_list_git_changed:
     print('processing:', to_str(changed_file_name))
     if os.path.exists(changed_file_name):

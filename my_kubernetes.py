@@ -30,6 +30,13 @@ def is_kube_object_type_valid(file_yaml, kind_types):
 
     return False
 
+# Sort kubernetes files
+def get_valid_kube_files(deployment_order_names, files_list_git_changed):
+    print('get_valid_kube_files')
+    print('deployment_order_names:', deployment_order_names)
+    print('files_list_git_changed:', files_list_git_changed)
+
+# Apply kubernetes files
 def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order):
     gh_comment_body_part = ''
     for order_number in range(len(deployment_order_numbers)):
