@@ -6,14 +6,14 @@ def run_shell_command(command, output_flag):
     if output_flag == "Output=False":
         command_returned_value = os.system(command)
         if os.getenv('LOG') == 'DEBUG':
-            print('command_returned_value:', command_returned_value)
+            print('run_shell_command command_returned_value:', command_returned_value)
         return command_returned_value
     else:
         cmd_pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if os.getenv('LOG') == 'DEBUG':
-            print('SHELL run command:', command)
+            print('run_shell_command SHELL run command:', command)
         for command_response_line in cmd_pipe.stdout.readlines():
-            print('SHELL:', to_str(command_response_line))
+            print('run_shell_command SHELL:', to_str(command_response_line))
 
 # Convert from byte string to character Unicode string
 def to_str(byte_string):
@@ -36,7 +36,7 @@ def initialize_array(elements_cont):
     return new_array
 
 # Append string to file
-def add_string_to_gile(file, string):
+def add_string_to_file(file, string):
     with open(file, "a") as myfile:
         myfile.write(string)
 
@@ -48,7 +48,7 @@ def is_extension_allowed(file_name):
         file_name_string = to_str(file_name).lower()
         if file_name_string.endswith(extension):
             if os.getenv('LOG') == 'DEBUG':
-                print('found extension:', extension)
+                print('is_extension_allowed found extension:', extension)
             return True
     return False
 

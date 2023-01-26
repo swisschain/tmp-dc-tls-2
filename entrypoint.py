@@ -8,10 +8,11 @@ from my_common import is_path_allowed
 from my_common import is_extension_allowed
 from my_common import initialize_array
 from my_common import check_2d_array
-from my_common import add_string_to_gile
+from my_common import add_string_to_file
 from my_kubernetes import set_up_kube_config
 from my_kubernetes import get_kube_nodes
 from my_kubernetes import is_kube_object_type_valid
+from my_kubernetes import get_valid_kube_files
 from my_kubernetes import kube_apply_files_list
 from my_git import git_safe_directory
 from my_git import get_git_switch_to_commit
@@ -22,7 +23,6 @@ from my_github import add_gh_pr_comment
 from my_github import get_git_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
-
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
 
@@ -34,8 +34,8 @@ print("get github pr comment...")
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
 gh_full_json = json.loads(gh_full_json_env)
 if os.getenv('LOG') == 'DEBUG':
-    print('gh_full_json:', gh_full_json)
-    print('gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+    print('main gh_full_json:', gh_full_json)
+    print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
 gh_pr_comment = get_gh_pr_comment(gh_full_json)
 
 # Try to find deployment order in GitHub pool request comment else read it from file
@@ -51,16 +51,16 @@ else:
 # Convert array with groups
 deployment_order_numbers = convert_order_list(deployment_order_names)
 if os.getenv('LOG') == 'DEBUG':
-    print('deployment_order_numbers:', deployment_order_numbers)
+    print('main deployment_order_numbers:', deployment_order_numbers)
 
 if os.getenv('LOG') == 'DEBUG':
-    print("TEST read group file...")
+    print("main TEST read group file...")
     deployment_order_names_tmp = get_order_list_from_file('deployment-order-group-priorities')
-    print('deployment_order_names_tmp:', deployment_order_names_tmp)
+    print('main deployment_order_names_tmp:', deployment_order_names_tmp)
 
 if os.getenv('LOG') == 'DEBUG':
     deployment_order_names_len = len(deployment_order_names)
-    print('deployment_order_names_len:', deployment_order_names_len)
+    print('main deployment_order_names_len:', deployment_order_names_len)
 print("SHOW order array from comment...")
 print('deployment_order_names:', deployment_order_names)
 
@@ -72,7 +72,7 @@ commits_count = gh_full_json["event"]["pull_request"]["commits"]
 first_commit = get_git_commit_hash_by_number(gh_token, commits_url, 1)
 last_commit = get_git_commit_hash_by_number(gh_token, commits_url, commits_count)
 if os.getenv('LOG') == 'DEBUG':
-    print('commits_url:', commits_url)
+    print('main commits_url:', commits_url)
 print('commits_count:', commits_count)
 print('first_commit:', first_commit)
 print('last_commit:', last_commit)
@@ -126,81 +126,37 @@ print("parse changed files...")
 # If kubernetes file type 'ConfigMap', 'Service' or 'Secret' add to 'files_list_other_types' array                     #
 # If file doesn't exist add to 'deleted_files_list' array                                                              #
 ########################################################################################################################
-files_list_deployment_order = initialize_array(len(deployment_order_names))
-files_list_deployment_no_group = initialize_array(1)
-files_list_other_types = initialize_array(1)
-files_list_deleted = initialize_array(1)
-#files_list_other_types_tmp = get_valid_kube_files(['group:other'], files_list_git_changed)
-files_list_deployment_order_tmp = get_valid_kube_files(deployment_order_names, files_list_git_changed)
-#files_list_deployment_no_group_tmp = get_valid_kube_files(['group:no group'], files_list_git_changed)
-#files_list_deleted_tmp = get_valid_kube_files(['group:deleted'], files_list_git_changed)
-for changed_file_name in files_list_git_changed:
-    print('processing:', to_str(changed_file_name))
-    if os.path.exists(changed_file_name):
-        if is_path_allowed(changed_file_name):
-            if is_extension_allowed(changed_file_name):
-                changed_file_yaml = yaml_load(changed_file_name)
-                if changed_file_yaml:
-                    if is_kube_object_type_valid(changed_file_yaml, ['Deployment']):
-                        if os.getenv('LOG') == 'DEBUG':
-                            print('changed_file_name valid kube file:', changed_file_name)
-                        deployment_order_group = get_yaml_path_key(changed_file_yaml, 'metadata.labels.deployment-order-group')
-                        if deployment_order_group:
-                            deployment_order_group_index_key = 'group:' + deployment_order_group
-                            if deployment_order_group_index_key in deployment_order_names:
-                                if os.getenv('LOG') == 'DEBUG':
-                                    print('fount deployment_order_group:', deployment_order_group)
-                                    print('deployment_order_group_index_key:', deployment_order_group_index_key)
-                                    print('index number deployment_order_names[deployment_order_group_index_key]:', deployment_order_names[deployment_order_group_index_key])
-                                    print('add to array:', deployment_order_names[deployment_order_group_index_key])
-                                print('add to files_list_deployment_order[' + deployment_order_names[deployment_order_group_index_key] + ']')
-                                files_list_deployment_order[deployment_order_names[deployment_order_group_index_key]].append(changed_file_name)
-                                if os.getenv('LOG') == 'DEBUG':
-                                    check_2d_array(files_list_deployment_order)
-                            else:
-                                print('Warning: NOT fount deployment_order_group:', deployment_order_group)
-                        else:
-                            #if os.getenv('LOG') == 'DEBUG':
-                            print('deployment-order-group not found - add to no group array')
-                            files_list_deployment_no_group[0].append(changed_file_name)
-                    elif is_kube_object_type_valid(changed_file_yaml, ['ConfigMap', 'Service', 'Secret']):
-                        files_list_other_types[0].append(changed_file_name)
-                    else:
-                        #if os.getenv('LOG') == 'DEBUG':
-                        print('not valid kube file - skip')
-                else:
-                    #if os.getenv('LOG') == 'DEBUG':
-                    print('yaml not valid - skip')
-            else:
-                #if os.getenv('LOG') == 'DEBUG':
-                print('extensions not allowed - skip')
-        else:
-            #if os.getenv('LOG') == 'DEBUG':
-            print('path file begins from not allowed path - skip')
-    else:
-        #if os.getenv('LOG') == 'DEBUG':
-        print('not exist - will check in previous commits...')
-        files_list_deleted[0].append(changed_file_name)
+files_list_other_types = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'OTHER')
+files_list_deployment_order = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHGROUP')
+files_list_deployment_no_group = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHOUTGROUP')
+# get only not founded files, after switch to previous commit will validate them
+files_list_probably_deleted = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'DELETED')
+print('files_list_other_types:', files_list_other_types)
+print('files_list_deployment_order:', files_list_deployment_order)
+print('files_list_deployment_no_group:', files_list_deployment_no_group)
+print('files_list_probably_deleted:', files_list_probably_deleted)
 print('Apply to kubernetes...')
-hosts_name = os.getenv('HOSTS_NAME')
-hosts_ip = os.getenv('HOSTS_IP')
-add_string_to_gile('/etc/hosts', hosts_ip + ' ' + hosts_name)
-run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
-set_up_kube_config()
-get_kube_nodes()
-gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+#hosts_name = os.getenv('HOSTS_NAME')
+#hosts_ip = os.getenv('HOSTS_IP')
+#add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
+#run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
+#set_up_kube_config()
+#get_kube_nodes()
+#gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
+#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+#gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
+#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+#gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
+#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 print('Check files_list_deleted array...')
 get_git_switch_to_commit(last_commit)
-gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
+print('files_list_deleted:', files_list_deleted)
+#gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
+#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 
-print('Combine comment for GitHub pool request...')
-gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
+#print('Combine comment for GitHub pool request...')
+#gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
 #gh_comment_body = "<html><body>Previewing update:<br><br><pre><code>" + gh_comment_body_preview + "</code></pre><br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
-add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
+#add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 
