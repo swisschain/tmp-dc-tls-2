@@ -66,14 +66,20 @@ print('deployment_order_names:', deployment_order_names)
 
 print("get git current and previous commits...")
 gh_token = os.getenv('GITHUB_TOKEN')
-commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
-comments_url = gh_full_json["event"]["pull_request"]["comments_url"]
-commits_count = gh_full_json["event"]["pull_request"]["commits"]
-first_commit = get_git_commit_hash_by_number(gh_token, commits_url, 1)
-last_commit = get_git_commit_hash_by_number(gh_token, commits_url, commits_count)
-if os.getenv('LOG') == 'DEBUG':
-    print('main commits_url:', commits_url)
-print('commits_count:', commits_count)
+event_name = gh_full_json["event_name"]
+print('event_name:', event_name)
+if event_name == "pull_request":
+    commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
+    comments_url = gh_full_json["event"]["pull_request"]["comments_url"]
+    commits_count = gh_full_json["event"]["pull_request"]["commits"]
+    print('commits_count:', commits_count)
+    first_commit = get_git_commit_hash_by_number(gh_token, commits_url, 1)
+    last_commit = get_git_commit_hash_by_number(gh_token, commits_url, commits_count)
+    if os.getenv('LOG') == 'DEBUG':
+        print('main commits_url:', commits_url)
+if event_name == "push":
+    first_commit = gh_full_json["event"]["before"]
+    last_commit = gh_full_json["event"]["after"]
 print('first_commit:', first_commit)
 print('last_commit:', last_commit)
 
