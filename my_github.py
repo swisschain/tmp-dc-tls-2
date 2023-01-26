@@ -32,8 +32,8 @@ def add_gh_pr_comment(gh_token, gh_url, gh_comment_body):
 
 
 def get_gh_pr_comment(gh_full_json):
-    if os.getenv('LOG') == 'DEBUG':
-        print('get_gh_pr_comment gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+    #if os.getenv('LOG') == 'DEBUG':
+    #    print('get_gh_pr_comment gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
     if gh_full_json["event"]["pull_request"]["body"] != None:
          gh_pr_comment = gh_full_json["event"]["pull_request"]["body"].split("\r\n")
          if os.getenv('LOG') == 'DEBUG':
