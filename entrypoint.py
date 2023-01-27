@@ -19,8 +19,7 @@ from my_git import get_git_switch_to_commit
 from my_git import get_git_diff_files_list
 from my_github import convert_order_list
 from my_github import get_gh_pr_comment
-from my_github import add_gh_pr_comment
-from my_github import get_git_commit_hash_by_number
+from my_github import get_gh_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
 from my_yaml import yaml_load
@@ -43,14 +42,11 @@ if os.getenv('LOG') == 'DEBUG':
 event_name = gh_full_json["event_name"]
 print('event_name:', event_name)
 
-# Try to find deployment order in GitHub pool request comment else read it from file
-gh_pr_comment = ''
-deployment_order_names = {}
-if event_name == "pull_request":
-    if os.getenv('LOG') == 'DEBUG':
-        print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
-    gh_pr_comment = get_gh_pr_comment(gh_full_json)
+# Get GitHub pool request comment
+gh_pr_comment = get_gh_pr_comment(gh_token, gh_full_json)
 
+# Try to find deployment order in GitHub pool request comment else read it from file
+deployment_order_names = {}
 if gh_pr_comment:
   print("parse comment...")
   deployment_order_names = get_order_list_from_comment(gh_pr_comment)
@@ -162,7 +158,7 @@ gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_lis
 gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
 gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-print('Check files_list_deleted array...')
+print('Check files_list_deleted array - skip...')
 #get_git_switch_to_commit(last_commit)
 #files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
 #print('files_list_deleted:', files_list_deleted)
