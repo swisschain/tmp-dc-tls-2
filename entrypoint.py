@@ -77,8 +77,8 @@ if event_name == "pull_request":
     comments_url = gh_full_json["event"]["pull_request"]["comments_url"]
     commits_count = gh_full_json["event"]["pull_request"]["commits"]
     print('commits_count:', commits_count)
-    first_commit = get_git_commit_hash_by_number(gh_token, commits_url, 1)
-    last_commit = get_git_commit_hash_by_number(gh_token, commits_url, commits_count)
+    first_commit = get_gh_commit_hash_by_number(gh_token, commits_url, 1)
+    last_commit = get_gh_commit_hash_by_number(gh_token, commits_url, commits_count)
     if os.getenv('LOG') == 'DEBUG':
         print('main commits_url:', commits_url)
 if event_name == "push":

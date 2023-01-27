@@ -13,8 +13,8 @@ def get_gh_commit_hash_by_number(gh_token, gh_url, gh_pr_commit_number):
     gh_response = requests.get(gh_url_with_page, headers=headers)
     gh_response_json = gh_response.json()
     if os.getenv('LOG') == 'DEBUG':
-        print('get_git_commit_hash_by_number gh_url_with_page:', gh_url_with_page)
-        print('get_git_commit_hash_by_number gh_response_json:', gh_response_json)
+        print('get_gh_commit_hash_by_number gh_url_with_page:', gh_url_with_page)
+        print('get_gh_commit_hash_by_number gh_response_json:', gh_response_json)
 
     return gh_response_json[0]["sha"]
 
