@@ -30,16 +30,27 @@ from my_yaml import get_yaml_path_key
 print("prepare git repository...")
 git_safe_directory()
 print("get github pr comment...")
-# Set pool request comment from GitHub environment variable
+# Get GitHub environment variables
 gh_full_json_env = os.getenv('GITHUB_FULL_JSON')
+if os.getenv('LOG') == 'DEBUG':
+    print('main gh_full_json_env:', gh_full_json_env)
+gh_token = os.getenv('GITHUB_TOKEN')
+# Load json from full GitHub environment variable
 gh_full_json = json.loads(gh_full_json_env)
 if os.getenv('LOG') == 'DEBUG':
     print('main gh_full_json:', gh_full_json)
-    #print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
-gh_pr_comment = get_gh_pr_comment(gh_full_json)
+# Get variables from json
+event_name = gh_full_json["event_name"]
+print('event_name:', event_name)
 
 # Try to find deployment order in GitHub pool request comment else read it from file
+gh_pr_comment = ''
 deployment_order_names = {}
+if event_name == "pull_request":
+    if os.getenv('LOG') == 'DEBUG':
+        print('main gh_full_json["event"]["pull_request"]["body"]:', gh_full_json["event"]["pull_request"]["body"])
+    gh_pr_comment = get_gh_pr_comment(gh_full_json)
+
 if gh_pr_comment:
   print("parse comment...")
   deployment_order_names = get_order_list_from_comment(gh_pr_comment)
@@ -65,9 +76,6 @@ print("SHOW order array from comment...")
 print('deployment_order_names:', deployment_order_names)
 
 print("get git current and previous commits...")
-gh_token = os.getenv('GITHUB_TOKEN')
-event_name = gh_full_json["event_name"]
-print('event_name:', event_name)
 if event_name == "pull_request":
     commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
     comments_url = gh_full_json["event"]["pull_request"]["comments_url"]
@@ -144,8 +152,8 @@ print('files_list_probably_deleted:', files_list_probably_deleted)
 print('Apply to kubernetes...')
 hosts_name = os.getenv('HOSTS_NAME')
 hosts_ip = os.getenv('HOSTS_IP')
-add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
-run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
+#add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
+#run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
 set_up_kube_config()
 get_kube_nodes()
 gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
@@ -155,11 +163,11 @@ gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
 gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 print('Check files_list_deleted array...')
-get_git_switch_to_commit(last_commit)
-files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
-print('files_list_deleted:', files_list_deleted)
-gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+#get_git_switch_to_commit(last_commit)
+#files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
+#print('files_list_deleted:', files_list_deleted)
+#gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
+#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
 
 print('Combine comment for GitHub pool request...')
 gh_comment_body = "<html><body>Previewing update:<br><br>" + gh_comment_body_preview + "<br><details><summary>Details</summary>Previewing update:<br><br>" + gh_comment_body_details + "</details></body></html>"
