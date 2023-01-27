@@ -18,6 +18,7 @@ from my_git import git_safe_directory
 from my_git import get_git_switch_to_commit
 from my_git import get_git_diff_files_list
 from my_github import convert_order_list
+from my_github import add_gh_pr_comment
 from my_github import get_gh_pr_comment
 from my_github import get_gh_commit_hash_by_number
 from my_github import get_order_list_from_comment
