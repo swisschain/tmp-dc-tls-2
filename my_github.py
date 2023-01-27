@@ -43,10 +43,10 @@ def get_gh_pr_comment_by_pr_id(gh_token, gh_url, gh_pr_number):
     gh_url_server = gh_url_array[2]
     gh_url_owner = gh_url_array[4]
     gh_url_repo = gh_url_array[5]
-    gh_comments_url = gh_url_protocol + "//" + gh_url_server + '/repos/' + gh_url_owner + '/' + gh_url_repo \
-                      + '/issues/' + str(gh_pr_number) + '/comments'
     #gh_comments_url = gh_url_protocol + "//" + gh_url_server + '/repos/' + gh_url_owner + '/' + gh_url_repo \
-    #                  + '/pulls/' + str(gh_pr_number) + '/comments'
+    #                  + '/issues/' + str(gh_pr_number) + '/comments'
+    gh_comments_url = gh_url_protocol + "//" + gh_url_server + '/repos/' + gh_url_owner + '/' + gh_url_repo \
+                      + '/pulls/' + str(gh_pr_number)
     gh_response = requests.get(gh_comments_url, headers=headers)
     gh_response_json = gh_response.json()
     if os.getenv('LOG') == 'DEBUG':
@@ -64,6 +64,7 @@ def get_gh_pr_comment_by_pr_id(gh_token, gh_url, gh_pr_number):
 
 #
 def get_gh_pr_comment(gh_token, gh_full_json):
+    gh_pr_comment = ''
     event_name = gh_full_json["event_name"]
     if event_name == "pull_request":
         if os.getenv('LOG') == 'DEBUG':
