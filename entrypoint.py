@@ -19,7 +19,9 @@ from my_git import get_git_switch_to_commit
 from my_git import get_git_diff_files_list
 from my_github import convert_order_list
 from my_github import add_gh_pr_comment
-from my_github import get_gh_pr_comment
+from my_github import get_gh_pr_number_from_env
+from my_github import get_gh_pr_comment_from_env
+from my_github import get_gh_pr_comment_by_pr_id
 from my_github import get_gh_commit_hash_by_number
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
@@ -44,7 +46,16 @@ event_name = gh_full_json["event_name"]
 print('event_name:', event_name)
 
 # Get GitHub pool request comment
-gh_pr_comment = get_gh_pr_comment(gh_token, gh_full_json)
+gh_pr_number = 0
+gh_template_url = ''
+gh_pr_comment = ''
+if event_name == "pull_request":
+    gh_pr_comment = get_gh_pr_comment_from_env(gh_full_json)
+if event_name == "push":
+    gh_pr_number = get_gh_pr_number_from_env(gh_full_json)
+    # Use gh_template_url to get protocol, server, repository owner and repository name
+    gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
+    gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number)
 
 # Try to find deployment order in GitHub pool request comment else read it from file
 deployment_order_names = {}
@@ -73,6 +84,7 @@ print("SHOW order array from comment...")
 print('deployment_order_names:', deployment_order_names)
 
 print("get git current and previous commits...")
+comments_url = ''
 if event_name == "pull_request":
     commits_url = gh_full_json["event"]["pull_request"]["commits_url"]
     comments_url = gh_full_json["event"]["pull_request"]["comments_url"]
@@ -83,6 +95,7 @@ if event_name == "pull_request":
     if os.getenv('LOG') == 'DEBUG':
         print('main commits_url:', commits_url)
 if event_name == "push":
+    comments_url = create_comments_url_by_pr_id(gh_template_url, gh_pr_number):
     first_commit = gh_full_json["event"]["before"]
     last_commit = gh_full_json["event"]["after"]
 print('first_commit:', first_commit)
