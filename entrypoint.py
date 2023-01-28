@@ -95,7 +95,7 @@ if event_name == "pull_request":
     if os.getenv('LOG') == 'DEBUG':
         print('main commits_url:', commits_url)
 if event_name == "push":
-    comments_url = create_comments_url_by_pr_id(gh_template_url, gh_pr_number):
+    comments_url = create_comments_url_by_pr_id(gh_template_url, gh_pr_number)
     first_commit = gh_full_json["event"]["before"]
     last_commit = gh_full_json["event"]["after"]
 print('first_commit:', first_commit)
