@@ -33,6 +33,7 @@ def add_gh_pr_comment(gh_token, gh_url, gh_comment_body):
 
 # Get commit comment message by pool request number
 def get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number):
+    gh_pr_comment = ''
     headers = {
         'Authorization': 'Bearer ' + str(gh_token),
         'Accept': 'application / vnd.github + json',

@@ -23,6 +23,7 @@ from my_github import get_gh_pr_number_from_env
 from my_github import get_gh_pr_comment_from_env
 from my_github import get_gh_pr_comment_by_pr_id
 from my_github import get_gh_commit_hash_by_number
+from my_github import create_comments_url_by_pr_id
 from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
 from my_yaml import yaml_load
