@@ -89,15 +89,17 @@ def get_gh_pr_comment_from_env(gh_full_json):
 
 # Get pull request number from 'github' environment variable message key
 def get_gh_pr_number_from_env(gh_full_json):
+    gh_pr_number = ''
     if os.getenv('LOG') == 'DEBUG':
         print('gh_full_json["event"]["head_commit"]["message"]:', gh_full_json["event"]["head_commit"]["message"])
     gh_event_message_regexp = re.search('^Merge pull request #([0-9]+) from .*',
                                         gh_full_json["event"]["head_commit"]["message"])
     if os.getenv('LOG') == 'DEBUG':
         print('gh_event_message_regexp:', gh_event_message_regexp)
-    gh_pr_number = gh_event_message_regexp.group(1)
-    if os.getenv('LOG') == 'DEBUG':
-        print('gh_pr_number:', gh_pr_number)
+    if gh_event_message_regexp != None:
+        gh_pr_number = gh_event_message_regexp.group(1)
+        if os.getenv('LOG') == 'DEBUG':
+            print('gh_pr_number:', gh_pr_number)
 
     return gh_pr_number
 
