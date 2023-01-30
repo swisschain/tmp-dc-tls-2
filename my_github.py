@@ -47,8 +47,8 @@ def get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number):
                       + '/pulls/' + str(gh_pr_number)
     gh_response = requests.get(gh_comments_url, headers=headers)
     gh_response_json = gh_response.json()
-    if gh_pr_comment_json["body"] != None:
-        gh_pr_comment = gh_pr_comment_json["body"].split("\r\n")
+    if gh_response_json["body"] != None:
+        gh_pr_comment = gh_response_json["body"].split("\r\n")
 
     if os.getenv('LOG') == 'DEBUG':
         print('gh_url:', gh_template_url)
