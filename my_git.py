@@ -14,7 +14,7 @@ def get_git_switch_to_commit(commit):
     run_shell_command('git checkout ' + commit, 'Output=True')
 
 # Get changed files list
-def get_git_diff_files_list(prev_commit, last_commit, operations_type):
+def get_git_diff_files_list(prev_commit, last_commit, operations_type, event_name):
     git_diff_filter = {
         "Added": "A",
         "Modified": "M",
@@ -23,11 +23,17 @@ def get_git_diff_files_list(prev_commit, last_commit, operations_type):
         "All": "ALL"
     }
     if git_diff_filter[operations_type] == 'ALL':
-        #git_cmd_diff = "git diff --name-only " + prev_commit + "^ " + last_commit
-        git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
+        if event_name == "pull_request":
+            # Use '^' at the end of commit to include files from this commit
+            git_cmd_diff = "git diff --name-only " + prev_commit + "^ " + last_commit
+        if event_name == "push":
+            git_cmd_diff = "git diff --name-only " + prev_commit + " " + last_commit
     else:
-        #git_cmd_diff = "git diff --diff-filter=" + git_diff_filter[operations_type] + " --name-only " + prev_commit + "^ " + last_commit
-        git_cmd_diff = "git diff --diff-filter=" + git_diff_filter[operations_type] + " --name-only " + prev_commit + " " + last_commit
+        if event_name == "pull_request":
+            # Use '^' at the end of commit to include files from this commit
+            git_cmd_diff = "git diff --diff-filter=" + git_diff_filter[operations_type] + " --name-only " + prev_commit + "^ " + last_commit
+        if event_name == "push":
+            git_cmd_diff = "git diff --diff-filter=" + git_diff_filter[operations_type] + " --name-only " + prev_commit + " " + last_commit
     if os.getenv('LOG') == 'DEBUG':
         print("get_git_diff_files_list git_cmd_diff:", git_cmd_diff)
     cmd_pipe = subprocess.Popen(git_cmd_diff, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
