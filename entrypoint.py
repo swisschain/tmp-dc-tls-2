@@ -109,27 +109,27 @@ print("get git current commits changes...")
 gh_comment_body_preview = ''
 gh_comment_body_details = ''
 # Get All
-files_list_git_changed = get_git_diff_files_list(first_commit, last_commit, 'All')
+files_list_git_changed = get_git_diff_files_list(first_commit, last_commit, 'All', event_name)
 # Get Added
-files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added')
+files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added', event_name)
 if files_list_git_added:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
 for file in files_list_git_added:
     gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
 # Get Modified
-files_list_git_modified = get_git_diff_files_list(first_commit, last_commit, 'Modified')
+files_list_git_modified = get_git_diff_files_list(first_commit, last_commit, 'Modified', event_name)
 if files_list_git_modified:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
 for file in files_list_git_modified:
     gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Get Renamed
-files_list_git_renamed = get_git_diff_files_list(first_commit, last_commit, 'Renamed')
+files_list_git_renamed = get_git_diff_files_list(first_commit, last_commit, 'Renamed', event_name)
 if files_list_git_renamed:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
 for file in files_list_git_renamed:
     gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Get Deleted
-files_list_git_deleted = get_git_diff_files_list(first_commit, last_commit, 'Deleted')
+files_list_git_deleted = get_git_diff_files_list(first_commit, last_commit, 'Deleted', event_name)
 if files_list_git_deleted:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
 for file in files_list_git_deleted:
