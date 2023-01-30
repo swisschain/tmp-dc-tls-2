@@ -53,9 +53,13 @@ if event_name == "pull_request":
     gh_pr_comment = get_gh_pr_comment_from_env(gh_full_json)
 if event_name == "push":
     gh_pr_number = get_gh_pr_number_from_env(gh_full_json)
-    # Use gh_template_url to get protocol, server, repository owner and repository name
-    gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
-    gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number)
+    if gh_pr_number:
+        # Use gh_template_url to get protocol, server, repository owner and repository name
+        gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
+        gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number)
+    else:
+        print("Looks like it is not merge pull request, just simple push - EXIT...")
+        exit(0)
 
 # Try to find deployment order in GitHub pool request comment else read it from file
 deployment_order_names = {}
