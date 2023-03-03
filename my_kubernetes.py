@@ -7,6 +7,7 @@ from my_common import run_shell_command
 from my_common import initialize_array
 from my_common import is_path_allowed
 from my_common import is_extension_allowed
+from my_common import replace_text_in_file
 
 # Create kubernetes config
 def set_up_kube_config():
