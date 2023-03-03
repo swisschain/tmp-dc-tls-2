@@ -40,6 +40,14 @@ def add_string_to_file(file, string):
     with open(file, "a") as myfile:
         myfile.write(string)
 
+# Replace text in file
+def replace_text_in_file(file, search_text, replace_text):
+    with open(file, 'r') as file:
+    data = file.read()
+    data = data.replace(search_text, replace_text)
+    with open(file, 'w') as file:
+    file.write(data)
+
 # Check if file extension allowed
 def is_extension_allowed(file_name):
     allowed_extensions = ['.yaml', '.yml']

@@ -50,6 +50,10 @@ def get_valid_kube_files(deployment_order_names, files_list_git_changed, type):
             if is_path_allowed(changed_file_name):
                 if is_extension_allowed(changed_file_name):
                     changed_file_yaml = yaml_load(changed_file_name)
+                    if changed_file_yaml == None:
+                        print('try to fix file - replace tabs')
+                        replace_text_in_file(changed_file_name, '\t', ' ')
+                        changed_file_yaml = yaml_load(changed_file_name)
                     if changed_file_yaml:
                         if is_kube_object_type_valid(changed_file_yaml, ['Deployment']):
                             if os.getenv('LOG') == 'DEBUG':
