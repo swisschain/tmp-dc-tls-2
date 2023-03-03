@@ -53,11 +53,17 @@ gh_pr_comment = ''
 if event_name == "pull_request":
     gh_pr_comment = get_gh_pr_comment_from_env(gh_full_json)
 if event_name == "push":
-    gh_pr_number = get_gh_pr_number_from_env(gh_full_json)
-    if gh_pr_number:
-        # Use gh_template_url to get protocol, server, repository owner and repository name
+    print('Try to parse merge commit message...')
+    gh_pr_number_mc = get_gh_pr_number_from_env(gh_full_json, '^Merge pull request #([0-9]+) from .*')
+    print('Try to parse squash merge message...')
+    gh_pr_number_sm = get_gh_pr_number_from_env(gh_full_json, '^.+\(#([0-9]+)\)')
+    # Use gh_template_url to get protocol, server, repository owner and repository name
+    if gh_pr_number_mc:
         gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
-        gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number)
+        gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number_mc)
+    elif gh_pr_number_sm:
+        gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
+        gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number_sm)
     else:
         print("Looks like it is not merge pull request, just simple push - EXIT...")
         exit(0)
@@ -167,8 +173,8 @@ print('files_list_probably_deleted:', files_list_probably_deleted)
 print('Apply to kubernetes...')
 hosts_name = os.getenv('HOSTS_NAME')
 hosts_ip = os.getenv('HOSTS_IP')
-#add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
-#run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
+add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
+run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
 set_up_kube_config()
 get_kube_nodes()
 gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
