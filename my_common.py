@@ -43,10 +43,10 @@ def add_string_to_file(file, string):
 # Replace text in file
 def replace_text_in_file(file, search_text, replace_text):
     with open(file, 'r') as file:
-    data = file.read()
-    data = data.replace(search_text, replace_text)
+        data = file.read()
+        data = data.replace(search_text, replace_text)
     with open(file, 'w') as file:
-    file.write(data)
+        file.write(data)
 
 # Check if file extension allowed
 def is_extension_allowed(file_name):
