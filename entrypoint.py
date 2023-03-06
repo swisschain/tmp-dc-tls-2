@@ -58,12 +58,19 @@ if event_name == "push":
     print('Try to parse squash merge message...')
     gh_pr_number_sm = get_gh_pr_number_from_env(gh_full_json, '^.+\(#([0-9]+)\)')
     # Use gh_template_url to get protocol, server, repository owner and repository name
+    gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
     if gh_pr_number_mc:
-        gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
+        gh_pr_number = gh_pr_number_mc
         gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number_mc)
+        if os.getenv('LOG') == 'DEBUG':
+            print('main gh_pr_number:', gh_pr_number)
+            print('main gh_pr_comment:', gh_pr_comment)
     elif gh_pr_number_sm:
-        gh_template_url = gh_full_json["event"]["repository"]["issues_url"]
+        gh_pr_number = gh_pr_number_sm
         gh_pr_comment = get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number_sm)
+        if os.getenv('LOG') == 'DEBUG':
+            print('main gh_pr_number:', gh_pr_number)
+            print('main gh_pr_comment:', gh_pr_comment)
     else:
         print("Looks like it is not merge pull request, just simple push - EXIT...")
         exit(0)

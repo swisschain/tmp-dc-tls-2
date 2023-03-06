@@ -29,6 +29,8 @@ def add_gh_pr_comment(gh_token, gh_url, gh_comment_body):
     gh_response = requests.post(gh_url, data=gh_comment, headers=headers)
     gh_response_json = gh_response.json()
     if os.getenv('LOG') == 'DEBUG':
+        print('add_gh_pr_comment gh_url:', gh_url)
+        print('add_gh_pr_comment gh_comment_body:', gh_comment_body)
         print('add_gh_pr_comment gh_response_json:', gh_response_json)
 
 # Get commit comment message by pool request number
@@ -52,16 +54,16 @@ def get_gh_pr_comment_by_pr_id(gh_token, gh_template_url, gh_pr_number):
         gh_pr_comment = gh_response_json["body"].split("\r\n")
 
     if os.getenv('LOG') == 'DEBUG':
-        print('gh_url:', gh_template_url)
-        print('gh_url_array:', gh_url_array)
-        print('gh_url_protocol:', gh_url_protocol)
-        print('gh_url_server:', gh_url_server)
-        print('gh_url_owner:', gh_url_owner)
-        print('gh_url_repo:', gh_url_repo)
-        print('gh_comments_url:', gh_comments_url)
-        print('gh_response:', gh_response)
-        print('gh_response_json:', gh_response_json)
-        print('gh_pr_comment:', gh_pr_comment)
+        print('get_gh_pr_comment_by_pr_id gh_url:', gh_template_url)
+        print('get_gh_pr_comment_by_pr_id gh_url_array:', gh_url_array)
+        print('get_gh_pr_comment_by_pr_id gh_url_protocol:', gh_url_protocol)
+        print('get_gh_pr_comment_by_pr_id gh_url_server:', gh_url_server)
+        print('get_gh_pr_comment_by_pr_id gh_url_owner:', gh_url_owner)
+        print('get_gh_pr_comment_by_pr_id gh_url_repo:', gh_url_repo)
+        print('get_gh_pr_comment_by_pr_id gh_comments_url:', gh_comments_url)
+        print('get_gh_pr_comment_by_pr_id gh_response:', gh_response)
+        print('get_gh_pr_comment_by_pr_id gh_response_json:', gh_response_json)
+        print('get_gh_pr_comment_by_pr_id gh_pr_comment:', gh_pr_comment)
 
     return gh_pr_comment
 
@@ -74,6 +76,15 @@ def create_comments_url_by_pr_id(gh_template_url, gh_pr_number):
     gh_url_repo = gh_url_array[5]
     gh_comments_url = gh_url_protocol + "//" + gh_url_server + '/repos/' + gh_url_owner + '/' + gh_url_repo \
                       + '/issues/' + str(gh_pr_number) + '/comments'
+    if os.getenv('LOG') == 'DEBUG':
+        print('create_comments_url_by_pr_id gh_pr_number:', gh_pr_number)
+        print('create_comments_url_by_pr_id gh_url:', gh_template_url)
+        print('create_comments_url_by_pr_id gh_url_array:', gh_url_array)
+        print('create_comments_url_by_pr_id gh_url_protocol:', gh_url_protocol)
+        print('create_comments_url_by_pr_id gh_url_server:', gh_url_server)
+        print('create_comments_url_by_pr_id gh_url_owner:', gh_url_owner)
+        print('create_comments_url_by_pr_id gh_url_repo:', gh_url_repo)
+        print('create_comments_url_by_pr_id gh_comments_url:', gh_comments_url)
 
     return gh_comments_url
 
@@ -99,7 +110,7 @@ def get_gh_pr_number_from_env(gh_full_json, regex_expression):
     if gh_event_message_regexp != None:
         gh_pr_number = gh_event_message_regexp.group(1)
         if os.getenv('LOG') == 'DEBUG':
-            print('gh_pr_number:', gh_pr_number)
+            print('get_gh_pr_number_from_env gh_pr_number:', gh_pr_number)
 
     return gh_pr_number
 
