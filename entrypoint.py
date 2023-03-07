@@ -78,17 +78,20 @@ if event_name == "push":
 # Try to find deployment order in GitHub pool request comment else read it from file
 deployment_order_names = {}
 if gh_pr_comment:
-  print("parse comment...")
-  deployment_order_names = get_order_list_from_comment(gh_pr_comment)
+    print("parse comment...")
+    deployment_order_names = get_order_list_from_comment(gh_pr_comment)
 else:
-  print("deployment order in comment not found...")
-  print("read group file...")
-  deployment_order_names = get_order_list_from_file('deployment-order-group-priorities')
+    print("deployment order in comment not found...")
+    print("read group file...")
+    deployment_order_names = get_order_list_from_file('deployment-order-group-priorities')
 
 # Convert array with groups
-deployment_order_numbers = convert_order_list(deployment_order_names)
 if os.getenv('LOG') == 'DEBUG':
-    print('main deployment_order_numbers:', deployment_order_numbers)
+    print('main type(deployment_order_names)', type(deployment_order_names))
+if isinstance(deployment_order_names, dict):
+    deployment_order_numbers = convert_order_list(deployment_order_names)
+    if os.getenv('LOG') == 'DEBUG':
+        print('main deployment_order_numbers:', deployment_order_numbers)
 
 if os.getenv('LOG') == 'DEBUG':
     print("main TEST read group file...")
@@ -177,25 +180,30 @@ print('files_list_other_types:', files_list_other_types)
 print('files_list_deployment_order:', files_list_deployment_order)
 print('files_list_deployment_no_group:', files_list_deployment_no_group)
 print('files_list_probably_deleted:', files_list_probably_deleted)
-print('Apply to kubernetes...')
-hosts_name = os.getenv('HOSTS_NAME')
-hosts_ip = os.getenv('HOSTS_IP')
-add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
-run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
-set_up_kube_config()
-get_kube_nodes()
-gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
-gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-print('Check files_list_deleted array - skip...')
-#get_git_switch_to_commit(last_commit)
-#files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
-#print('files_list_deleted:', files_list_deleted)
-#gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
-#gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+if os.getenv('LOG') == 'DEBUG':
+    print('main type(deployment_order_numbers)', type(deployment_order_numbers))
+if isinstance(deployment_order_numbers, dict):
+    print('Apply to kubernetes...')
+    hosts_name = os.getenv('HOSTS_NAME')
+    hosts_ip = os.getenv('HOSTS_IP')
+    add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
+    run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
+    set_up_kube_config()
+    get_kube_nodes()
+    gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
+    gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+    gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
+    gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+    gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
+    gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+    print('Check files_list_deleted array - skip...')
+    #get_git_switch_to_commit(last_commit)
+    #files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
+    #print('files_list_deleted:', files_list_deleted)
+    #gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
+    #gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+else:
+    print('Skip applying...')
 
 print('Combine comment for GitHub pool request...')
 if event_name == "pull_request":
