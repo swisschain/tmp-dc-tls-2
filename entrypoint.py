@@ -80,10 +80,20 @@ deployment_order_names = {}
 if gh_pr_comment:
     print("parse comment...")
     deployment_order_names = get_order_list_from_comment(gh_pr_comment)
+    if os.getenv('LOG') == 'DEBUG':
+        print('main type(deployment_order_names)', type(deployment_order_names))
+    if isinstance(deployment_order_names, dict):
+        deployment_order_numbers = convert_order_list(deployment_order_names)
 else:
     print("deployment order in comment not found...")
     print("read group file...")
     deployment_order_names = get_order_list_from_file('deployment-order-group-priorities')
+    if os.getenv('LOG') == 'DEBUG':
+        print('main type(deployment_order_names)', type(deployment_order_names))
+    if isinstance(deployment_order_names, dict):
+        deployment_order_numbers = convert_order_list(deployment_order_names)
+    if os.getenv('LOG') == 'DEBUG':
+        print('main deployment_order_numbers:', deployment_order_numbers)
 
 # Convert array with groups
 if os.getenv('LOG') == 'DEBUG':

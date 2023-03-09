@@ -116,10 +116,20 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
     for order_number in range(len(deployment_order_numbers)):
         print('APPLY:', str(deployment_order_numbers[order_number]))
         for file_item in files_list_deployment_order[order_number]:
-            print('FILE:', to_str(file_item))
-            run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
-            run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
-            if os.getenv('DRY_RUN').lower() == 'false':
-                run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
-            gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+            if 'worker' in to_str(file_item).lower():
+                print('FILE:', to_str(file_item))
+                run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
+                run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
+                if os.getenv('DRY_RUN').lower() == 'false':
+                    run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
+                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+        for file_item in files_list_deployment_order[order_number]:
+            if 'worker' not in to_str(file_item).lower():
+                print('FILE:', to_str(file_item))
+                run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
+                run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
+                if os.getenv('DRY_RUN').lower() == 'false':
+                    run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
+                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+
     return gh_comment_body_part
