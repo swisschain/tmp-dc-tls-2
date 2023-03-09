@@ -199,7 +199,7 @@ print('files_list_deployment_no_group:', files_list_deployment_no_group)
 print('files_list_probably_deleted:', files_list_probably_deleted)
 if os.getenv('LOG') == 'DEBUG':
     print('main type(deployment_order_numbers)', type(deployment_order_numbers))
-if isinstance(deployment_order_numbers, dict):
+if isinstance(deployment_order_numbers, list):
     print('Apply to kubernetes...')
     hosts_name = os.getenv('HOSTS_NAME')
     hosts_ip = os.getenv('HOSTS_IP')
