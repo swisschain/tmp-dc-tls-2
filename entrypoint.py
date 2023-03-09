@@ -82,7 +82,11 @@ if gh_pr_comment:
     deployment_order_names = get_order_list_from_comment(gh_pr_comment)
     if os.getenv('LOG') == 'DEBUG':
         print('main type(deployment_order_names)', type(deployment_order_names))
+        print('deployment_order_names:', deployment_order_names)
     if isinstance(deployment_order_names, dict):
+        deployment_order_names_len = len(deployment_order_names)
+        print('main deployment_order_names_len:', deployment_order_names_len)
+        # Convert array with groups
         deployment_order_numbers = convert_order_list(deployment_order_names)
 else:
     print("deployment order in comment not found...")
@@ -90,29 +94,19 @@ else:
     deployment_order_names = get_order_list_from_file('deployment-order-group-priorities')
     if os.getenv('LOG') == 'DEBUG':
         print('main type(deployment_order_names)', type(deployment_order_names))
+        print('deployment_order_names:', deployment_order_names)
     if isinstance(deployment_order_names, dict):
+        deployment_order_names_len = len(deployment_order_names)
+        print('main deployment_order_names_len:', deployment_order_names_len)
+        # Convert array with groups
         deployment_order_numbers = convert_order_list(deployment_order_names)
     if os.getenv('LOG') == 'DEBUG':
         print('main deployment_order_numbers:', deployment_order_numbers)
 
-# Convert array with groups
-if os.getenv('LOG') == 'DEBUG':
-    print('main type(deployment_order_names)', type(deployment_order_names))
-if isinstance(deployment_order_names, dict):
-    deployment_order_numbers = convert_order_list(deployment_order_names)
-    if os.getenv('LOG') == 'DEBUG':
-        print('main deployment_order_numbers:', deployment_order_numbers)
-
-if os.getenv('LOG') == 'DEBUG':
-    print("main TEST read group file...")
-    deployment_order_names_tmp = get_order_list_from_file('deployment-order-group-priorities')
-    print('main deployment_order_names_tmp:', deployment_order_names_tmp)
-
-if os.getenv('LOG') == 'DEBUG':
-    deployment_order_names_len = len(deployment_order_names)
-    print('main deployment_order_names_len:', deployment_order_names_len)
-print("SHOW order array from comment...")
-print('deployment_order_names:', deployment_order_names)
+#if os.getenv('LOG') == 'DEBUG':
+#    print("main TEST read group file...")
+#    deployment_order_names_tmp = get_order_list_from_file('deployment-order-group-priorities')
+#    print('main deployment_order_names_tmp:', deployment_order_names_tmp)
 
 print("get git current and previous commits...")
 comments_url = ''
