@@ -1,5 +1,5 @@
 # Kubernetes Apply Smart
-Apply all changed in commit to kunernetes in a smart way
+Apply all changes in commit to kunernetes in a smart way
 
 After creating pool request DRY RUN test will started and after merge reall apply will performed
 ## Settings
@@ -65,6 +65,8 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBERNETES_CONFIG }}
         #LOG: DEBUG
         LOG: INFO
+        HOSTS_IP: 127.0.0.1
+        HOSTS_NAME: localhost-test
         DRY_RUN: True
 ```
 
@@ -90,6 +92,8 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBERNETES_CONFIG }}
         #LOG: DEBUG
         LOG: INFO
+        HOSTS_IP: 127.0.0.1
+        HOSTS_NAME: localhost-test
         DRY_RUN: False
 ```
 
