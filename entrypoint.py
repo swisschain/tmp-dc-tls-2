@@ -139,47 +139,9 @@ if event_name == "push":
 print('first_commit:', first_commit)
 print('last_commit:', last_commit)
 
-print("get git current commits changes...")
-gh_comment_body_preview = ''
-gh_comment_body_details = ''
-# Get All
+print("get git all changed files...")
 files_list_git_changed = get_git_diff_files_list(first_commit, last_commit, 'All', event_name)
-# Get Added
-files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added', event_name)
-if files_list_git_added:
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
-for file in files_list_git_added:
-    gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
-# Get Modified
-files_list_git_modified = get_git_diff_files_list(first_commit, last_commit, 'Modified', event_name)
-if files_list_git_modified:
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
-for file in files_list_git_modified:
-    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
-# Get Renamed
-files_list_git_renamed = get_git_diff_files_list(first_commit, last_commit, 'Renamed', event_name)
-if files_list_git_renamed:
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
-for file in files_list_git_renamed:
-    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
-# Get Deleted
-files_list_git_deleted = get_git_diff_files_list(first_commit, last_commit, 'Deleted', event_name)
-if files_list_git_deleted:
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
-for file in files_list_git_deleted:
-    gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
-# Compare
-if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git_modified) + len(files_list_git_renamed) + len(files_list_git_deleted):
-    print("Warning: not accounted git diff files!")
-    not_accounted = len(files_list_git_changed) - len(files_list_git_added) + len(files_list_git_modified) + len(files_list_git_renamed) + len(files_list_git_deleted)
-    gh_comment_body_preview = gh_comment_body_preview + str(not_accounted) + ' UNKNOW<br>'
-    print("len(files_list_git_changed):", len(files_list_git_changed))
-    print("len(files_list_git_added):", len(files_list_git_added))
-    print("len(files_list_git_modified):", len(files_list_git_modified))
-    print("len(files_list_git_renamed):", len(files_list_git_renamed))
-    print("len(files_list_git_deleted):", len(files_list_git_deleted))
-gh_comment_body_details = gh_comment_body_details + '<br><br>Sequence of updating:<br><br>'
-print("parse changed files...")
+print("start parsing changed files...")
 ########################################################################################################################
 # Initialize two dimensional array 'files_list_deployment_order' to append file names to index number                  #
 # founded for deployment-order-group item                                                                              #
@@ -191,12 +153,60 @@ print("parse changed files...")
 files_list_other_types = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'OTHER')
 files_list_deployment_order = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHGROUP')
 files_list_deployment_no_group = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHOUTGROUP')
+files_list_not_valid = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'NOTVALID')
 # get only not founded files, after switch to previous commit will validate them
 files_list_probably_deleted = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'DELETED')
 print('files_list_other_types:', files_list_other_types)
 print('files_list_deployment_order:', files_list_deployment_order)
 print('files_list_deployment_no_group:', files_list_deployment_no_group)
+print('files_list_not_valid:', files_list_not_valid)
 print('files_list_probably_deleted:', files_list_probably_deleted)
+#
+print("get git changed files by type of change...")
+files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added', event_name)
+files_list_git_modified = get_git_diff_files_list(first_commit, last_commit, 'Modified', event_name)
+files_list_git_renamed = gt_git_diff_files_list(first_commit, last_commit, 'Renamed', event_name)
+files_list_git_deleted = get_git_diff_files_list(first_commit, last_commit, 'Deleted', event_name)
+#
+print("prepare git pool request message...")
+gh_comment_body_preview = ''
+gh_comment_body_details = ''
+# Added files
+if files_list_git_added:
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
+for file in files_list_git_added:
+    gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
+# Modified files
+if files_list_git_modified:
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
+for file in files_list_git_modified:
+    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
+# Renamed files
+if files_list_git_renamed:
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
+for file in files_list_git_renamed:
+    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
+# Deleted files
+if files_list_git_deleted:
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
+for file in files_list_git_deleted:
+    gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
+# Compare all with changed by type
+if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git_modified) + len(files_list_git_renamed) + len(files_list_git_deleted):
+    print("Warning: not accounted git diff files!")
+    not_accounted = len(files_list_git_changed) - len(files_list_git_added) + len(files_list_git_modified) + len(files_list_git_renamed) + len(files_list_git_deleted)
+    gh_comment_body_preview = gh_comment_body_preview + str(not_accounted) + ' UNKNOWN TYPE OF CHANGE<br>'
+    print("len(files_list_git_changed):", len(files_list_git_changed))
+    print("len(files_list_git_added):", len(files_list_git_added))
+    print("len(files_list_git_modified):", len(files_list_git_modified))
+    print("len(files_list_git_renamed):", len(files_list_git_renamed))
+    print("len(files_list_git_deleted):", len(files_list_git_deleted))
+# if founded not valid files
+if files_list_not_valid:
+    gh_comment_body_preview = gh_comment_body_preview + '<br>'
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid)) + ' NOT VALID YAMLS<br>'
+gh_comment_body_details = gh_comment_body_details + '<br><br>Sequence of updating:<br><br>'
+#
 if os.getenv('LOG') == 'DEBUG':
     print('main type(deployment_order_numbers)', type(deployment_order_numbers))
 if isinstance(deployment_order_numbers, list):

@@ -52,9 +52,12 @@ def get_valid_kube_files(deployment_order_names, files_list_git_changed, type):
                 if is_extension_allowed(changed_file_name):
                     changed_file_yaml = yaml_load(changed_file_name)
                     if changed_file_yaml == None:
-                        print('try to fix file - replace tabs')
+                        print('trying to fix file - replacing tabs...')
                         replace_text_in_file(changed_file_name, '\t', ' ')
                         changed_file_yaml = yaml_load(changed_file_name)
+                        if type == 'NOTVALID':
+                            print('get_valid_kube_files not valid yaml file - NOTVALID (' + to_str(changed_file_name) + ')')
+                            result_array[0].append(changed_file_name)
                     if changed_file_yaml:
                         if is_kube_object_type_valid(changed_file_yaml, ['Deployment']):
                             if os.getenv('LOG') == 'DEBUG':
