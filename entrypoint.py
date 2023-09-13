@@ -29,6 +29,7 @@ from my_github import get_order_list_from_comment
 from my_github import get_order_list_from_file
 from my_yaml import yaml_load
 from my_yaml import get_yaml_path_key
+from my_json import get_valid_json_files
 
 # Set git repository permissions
 print("prepare git repository...")
@@ -154,13 +155,14 @@ print("start parsing changed files...")
 files_list_other_types = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'OTHER')
 files_list_deployment_order = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHGROUP')
 files_list_deployment_no_group = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'WITHOUTGROUP')
-files_list_not_valid = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'NOTVALID')
+files_list_not_valid_yamls = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'NOTVALID')
+files_list_not_valid_jsons = get_valid_json_files(deployment_order_names, files_list_git_changed, 'NOTVALID')
 # get only not founded files, after switch to previous commit will validate them
 files_list_probably_deleted = get_valid_kube_files(deployment_order_names, files_list_git_changed, 'DELETED')
 print('files_list_other_types:', files_list_other_types)
 print('files_list_deployment_order:', files_list_deployment_order)
 print('files_list_deployment_no_group:', files_list_deployment_no_group)
-print('files_list_not_valid:', files_list_not_valid)
+print('files_list_not_valid:', files_list_not_valid_yamls)
 print('files_list_probably_deleted:', files_list_probably_deleted)
 #
 print("get git changed files by type of change...")
@@ -176,32 +178,40 @@ gh_comment_body_details = ''
 if files_list_git_added:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
 for file in files_list_git_added:
-    if file in files_list_not_valid[0]:
+    if file in files_list_not_valid_yamls[0]:
         gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    elif file in files_list_not_valid_jsons[0]:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID JSON)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
 # Modified files
 if files_list_git_modified:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
 for file in files_list_git_modified:
-    if file in files_list_not_valid[0]:
+    if file in files_list_not_valid_yamls[0]:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    elif file in files_list_not_valid_jsons[0]:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID JSON)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Renamed files
 if files_list_git_renamed:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
 for file in files_list_git_renamed:
-    if file in files_list_not_valid[0]:
+    if file in files_list_not_valid_yamls[0]:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    elif file in files_list_not_valid_jsons[0]:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID JSON)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Deleted files
 if files_list_git_deleted:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
 for file in files_list_git_deleted:
-    if file in files_list_not_valid[0]:
+    if file in files_list_not_valid_yamls[0]:
         gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    elif file in files_list_not_valid_jsons[0]:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID JSON)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
 # Compare all with changed by type
@@ -215,9 +225,17 @@ if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git
     print("len(files_list_git_renamed):", len(files_list_git_renamed))
     print("len(files_list_git_deleted):", len(files_list_git_deleted))
 # if founded not valid files
-if files_list_not_valid[0]:
+if files_list_not_valid_yamls[0] or files_list_not_valid_jsons:
     gh_comment_body_preview = gh_comment_body_preview + '<br>'
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid[0])) + ' NOT VALID YAMLS - WILL STOP UPDATE!<br>'
+    if files_list_not_valid_yamls[0] and files_list_not_valid_jsons:
+        gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid_yamls[0]) + len(files_list_not_valid_jsons[0])) + ' NOT VALID YAML AND JSON FILES FOUNDED - WILL STOP UPDATE!<br>'
+    else:
+        if files_list_not_valid_yamls[0]:
+            gh_comment_body_preview = gh_comment_body_preview + str(
+                len(files_list_not_valid_yamls[0])) + ' NOT VALID YAML FILES FOUNDED - WILL STOP UPDATE!<br>'
+        if files_list_not_valid_jsons:
+            gh_comment_body_preview = gh_comment_body_preview + str(
+                len(files_list_not_valid_jsons[0])) + ' NOT VALID JSON FILES FOUNDED - WILL STOP UPDATE!<br>'
     gh_comment_body_details = gh_comment_body_details + '<br><br>Update is stopped!<br><br>'
 else:
     gh_comment_body_details = gh_comment_body_details + '<br><br>Sequence of updating:<br><br>'
@@ -257,5 +275,5 @@ if event_name == "push":
 # Push comment message to pool request
 add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 # Fail pool request action job if we have not valid files
-if files_list_not_valid[0]:
+if files_list_not_valid_yamls[0] or files_list_not_valid_jsons:
     sys.exit("Fail pool request action job due to have not valid files")
