@@ -165,7 +165,7 @@ print('files_list_probably_deleted:', files_list_probably_deleted)
 print("get git changed files by type of change...")
 files_list_git_added = get_git_diff_files_list(first_commit, last_commit, 'Added', event_name)
 files_list_git_modified = get_git_diff_files_list(first_commit, last_commit, 'Modified', event_name)
-files_list_git_renamed = gt_git_diff_files_list(first_commit, last_commit, 'Renamed', event_name)
+files_list_git_renamed = get_git_diff_files_list(first_commit, last_commit, 'Renamed', event_name)
 files_list_git_deleted = get_git_diff_files_list(first_commit, last_commit, 'Deleted', event_name)
 #
 print("prepare git pool request message...")
