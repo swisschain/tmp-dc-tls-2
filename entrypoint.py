@@ -175,7 +175,7 @@ gh_comment_body_details = ''
 if files_list_git_added:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
 for file in files_list_git_added:
-    if file in files_list_not_valid:
+    if file in files_list_not_valid[0]:
         gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID YAML)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
@@ -183,7 +183,7 @@ for file in files_list_git_added:
 if files_list_git_modified:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
 for file in files_list_git_modified:
-    if file in files_list_not_valid:
+    if file in files_list_not_valid[0]:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
@@ -191,7 +191,7 @@ for file in files_list_git_modified:
 if files_list_git_renamed:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
 for file in files_list_git_renamed:
-    if file in files_list_not_valid:
+    if file in files_list_not_valid[0]:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
@@ -199,7 +199,7 @@ for file in files_list_git_renamed:
 if files_list_git_deleted:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
 for file in files_list_git_deleted:
-    if file in files_list_not_valid:
+    if file in files_list_not_valid[0]:
         gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + ' (NOT VALID YAML)<br>'
     else:
         gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
@@ -214,9 +214,9 @@ if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git
     print("len(files_list_git_renamed):", len(files_list_git_renamed))
     print("len(files_list_git_deleted):", len(files_list_git_deleted))
 # if founded not valid files
-if files_list_not_valid:
+if files_list_not_valid[0]:
     gh_comment_body_preview = gh_comment_body_preview + '<br>'
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid)) + ' NOT VALID YAMLS<br>'
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid[0])) + ' NOT VALID YAMLS<br>'
 gh_comment_body_details = gh_comment_body_details + '<br><br>Sequence of updating:<br><br>'
 #
 if os.getenv('LOG') == 'DEBUG':
