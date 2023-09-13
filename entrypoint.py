@@ -217,8 +217,8 @@ if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git
 # if founded not valid files
 if files_list_not_valid[0]:
     gh_comment_body_preview = gh_comment_body_preview + '<br>'
-    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid[0])) + ' NOT VALID YAMLS<br>'
-    gh_comment_body_details = gh_comment_body_details + '<br><br>Updating is stopped!:<br><br>'
+    gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid[0])) + ' NOT VALID YAMLS - WILL STOP UPDATE!<br>'
+    gh_comment_body_details = gh_comment_body_details + '<br><br>Update is stopped!<br><br>'
 else:
     gh_comment_body_details = gh_comment_body_details + '<br><br>Sequence of updating:<br><br>'
     if os.getenv('LOG') == 'DEBUG':
