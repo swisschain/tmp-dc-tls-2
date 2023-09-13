@@ -175,22 +175,34 @@ gh_comment_body_details = ''
 if files_list_git_added:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_added)) + ' added<br>'
 for file in files_list_git_added:
-    gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
+    if file in files_list_not_valid:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    else:
+        gh_comment_body_details = gh_comment_body_details + '+ ' + to_str(file) + '<br>'
 # Modified files
 if files_list_git_modified:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_modified)) + ' modified<br>'
 for file in files_list_git_modified:
-    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
+    if file in files_list_not_valid:
+        gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    else:
+        gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Renamed files
 if files_list_git_renamed:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_renamed)) + ' renamed<br>'
 for file in files_list_git_renamed:
-    gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
+    if file in files_list_not_valid:
+        gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    else:
+        gh_comment_body_details = gh_comment_body_details + '~ ' + to_str(file) + '<br>'
 # Deleted files
 if files_list_git_deleted:
     gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_git_deleted)) + ' deleted<br>'
 for file in files_list_git_deleted:
-    gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
+    if file in files_list_not_valid:
+        gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + ' (NOT VALID YAML)<br>'
+    else:
+        gh_comment_body_details = gh_comment_body_details + '- ' + to_str(file) + '<br>'
 # Compare all with changed by type
 if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git_modified) + len(files_list_git_renamed) + len(files_list_git_deleted):
     print("Warning: not accounted git diff files!")
