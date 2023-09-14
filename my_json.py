@@ -8,7 +8,7 @@ from my_common import is_extension_allowed
 def json_load(changed_file_name):
     with open(changed_file_name, 'r') as changed_file:
       try:
-          changed_file_json = json.loads(changed_file)
+          changed_file_json = json.load(changed_file)
           if os.getenv('LOG') == 'DEBUG':
               print('changed_file_json:', changed_file_json)
               print('type(changed_file_json)', type(changed_file_json))
