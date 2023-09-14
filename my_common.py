@@ -49,8 +49,10 @@ def replace_text_in_file(file, search_text, replace_text):
         rw.write(data)
 
 # Check if file extension allowed
-def is_extension_allowed(file_name):
-    allowed_extensions = ['.yaml', '.yml']
+def is_extension_allowed(file_name, allowed_extensions):
+    #allowed_extensions = ['.yaml', '.yml']
+    if os.getenv('LOG') == 'DEBUG':
+        print('is_extension_allowed check file: ', file_name, ' for: ', allowed_extensions)
     for extension_item in allowed_extensions:
         extension = extension_item.lower()
         file_name_string = to_str(file_name).lower()
