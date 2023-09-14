@@ -225,15 +225,15 @@ if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git
     print("len(files_list_git_renamed):", len(files_list_git_renamed))
     print("len(files_list_git_deleted):", len(files_list_git_deleted))
 # if founded not valid files
-if files_list_not_valid_yamls[0] or files_list_not_valid_jsons:
+if files_list_not_valid_yamls[0] or files_list_not_valid_jsons[0]:
     gh_comment_body_preview = gh_comment_body_preview + '<br>'
-    if files_list_not_valid_yamls[0] and files_list_not_valid_jsons:
+    if files_list_not_valid_yamls[0] and files_list_not_valid_jsons[0]:
         gh_comment_body_preview = gh_comment_body_preview + str(len(files_list_not_valid_yamls[0]) + len(files_list_not_valid_jsons[0])) + ' NOT VALID YAML AND JSON FILES FOUNDED - WILL STOP UPDATE!<br>'
     else:
         if files_list_not_valid_yamls[0]:
             gh_comment_body_preview = gh_comment_body_preview + str(
                 len(files_list_not_valid_yamls[0])) + ' NOT VALID YAML FILES FOUNDED - WILL STOP UPDATE!<br>'
-        if files_list_not_valid_jsons:
+        if files_list_not_valid_jsons[0]:
             gh_comment_body_preview = gh_comment_body_preview + str(
                 len(files_list_not_valid_jsons[0])) + ' NOT VALID JSON FILES FOUNDED - WILL STOP UPDATE!<br>'
     gh_comment_body_details = gh_comment_body_details + '<br><br>Update is stopped!<br><br>'
@@ -275,5 +275,5 @@ if event_name == "push":
 # Push comment message to pool request
 add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 # Fail pool request action job if we have not valid files
-if files_list_not_valid_yamls[0] or files_list_not_valid_jsons:
+if files_list_not_valid_yamls[0] or files_list_not_valid_jsons[0]:
     sys.exit("Fail pool request action job due to have not valid files")
