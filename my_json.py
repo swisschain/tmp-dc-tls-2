@@ -25,7 +25,7 @@ def get_valid_json_files(deployment_order_names, files_list_git_changed, type):
         if os.getenv('LOG') == 'DEBUG':
             print('get_valid_json_files processing: ' + to_str(changed_file_name) + ' type: ' + type)
         if os.path.exists(changed_file_name):
-            if is_extension_allowed(changed_file_name, ['.json', '.jsonp']):
+            if is_extension_allowed(changed_file_name, ['.json']):
                 changed_file_json = json_load(changed_file_name)
                 if changed_file_json == None:
                     if type == 'NOTVALID':
