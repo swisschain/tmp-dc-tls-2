@@ -127,10 +127,10 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
                 print('FILE:', to_str(file_item))
                 gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
                     deployment_order_numbers[order_number]) + ')'
-                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True'):
+                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=False'):
                     errors_dry_run_client.append(changed_file_name)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
-                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True'):
+                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=False'):
                     errors_dry_run_server.append(changed_file_name)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
@@ -143,10 +143,10 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
                 print('FILE:', to_str(file_item))
                 gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
                     deployment_order_numbers[order_number]) + ')'
-                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True'):
+                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=False'):
                     errors_dry_run_client.append(changed_file_name)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
-                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True'):
+                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=False'):
                     errors_dry_run_server.append(changed_file_name)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
