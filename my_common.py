@@ -3,18 +3,20 @@ import subprocess
 
 # Run Shell command
 def run_shell_command(command, output_flag):
+    if os.getenv('LOG') == 'DEBUG':
+        print('run_shell_command SHELL run command:', command)
     if output_flag == "Output=False":
         command_returned_value = os.system(command)
         if os.getenv('LOG') == 'DEBUG':
             print('run_shell_command command_returned_value:', command_returned_value)
-        return command_returned_value
     else:
         cmd_pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        if os.getenv('LOG') == 'DEBUG':
-            print('run_shell_command SHELL run command:', command)
+        command_returned_value = cmd_pipe.returncode
         for command_response_line in cmd_pipe.stdout.readlines():
             print('run_shell_command SHELL:', to_str(command_response_line))
-        return cmd_pipe.returncode
+        if os.getenv('LOG') == 'DEBUG':
+            print('run_shell_command command_returned_value:', command_returned_value)
+    return command_returned_value
 
 # Convert from byte string to character Unicode string
 def to_str(byte_string):
