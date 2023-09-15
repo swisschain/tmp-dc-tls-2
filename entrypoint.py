@@ -225,6 +225,9 @@ if len(files_list_git_changed) != len(files_list_git_added) + len(files_list_git
     print("len(files_list_git_renamed):", len(files_list_git_renamed))
     print("len(files_list_git_deleted):", len(files_list_git_deleted))
 # if founded not valid files
+errors_dry_run_client = []
+errors_dry_run_server = []
+errors_apply = []
 if files_list_not_valid_yamls[0] or files_list_not_valid_jsons[0]:
     gh_comment_body_preview = gh_comment_body_preview + '<br>'
     if files_list_not_valid_yamls[0] and files_list_not_valid_jsons[0]:
@@ -250,12 +253,18 @@ else:
         run_shell_command('cat /etc/hosts | grep ' + hosts_name, 'Output=True')
         set_up_kube_config()
         get_kube_nodes()
-        gh_comment_body_part = kube_apply_files_list(['group:other'], files_list_other_types)
+        (gh_comment_body_part, errors_dry_run_client_other, errors_dry_run_server_other, errors_apply_other) = kube_apply_files_list(['group:other'], files_list_other_types)
         gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-        gh_comment_body_part = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
+        (gh_comment_body_part, errors_dry_run_client_with_group, errors_dry_run_server_with_group, errors_apply_with_group) = kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
         gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
-        gh_comment_body_part = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
+        (gh_comment_body_part, errors_dry_run_client_without_group, errors_dry_run_server_without_group, errors_apply_without_group) = kube_apply_files_list(['group:no group'], files_list_deployment_no_group)
         gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+        errors_dry_run_client = errors_dry_run_client_other + errors_dry_run_client_with_group + errors_dry_run_client_without_group
+        errors_dry_run_server = errors_dry_run_server_other + errors_dry_run_server_with_group + errors_dry_run_server_without_group
+        errors_apply = errors_apply_other + errors_apply_with_group + errors_apply_without_group
+        print('main errors_dry_run_client:', errors_dry_run_client)
+        print('main errors_dry_run_server:', errors_dry_run_server)
+        print('main errors_apply:', errors_apply)
         print('Check files_list_deleted array - skip...')
         #get_git_switch_to_commit(last_commit)
         #files_list_deleted = get_valid_kube_files(deployment_order_names, files_list_probably_deleted[0], 'KUBE_VALID  ')
@@ -277,3 +286,5 @@ add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 # Fail pool request action job if we have not valid files
 if files_list_not_valid_yamls[0] or files_list_not_valid_jsons[0]:
     sys.exit("Fail pool request action job due to have not valid files")
+if errors_dry_run_client or errors_dry_run_server or errors_apply:
+    sys.exit("Fail pool request action job due to have not valid kubernetes files")

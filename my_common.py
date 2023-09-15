@@ -14,6 +14,7 @@ def run_shell_command(command, output_flag):
             print('run_shell_command SHELL run command:', command)
         for command_response_line in cmd_pipe.stdout.readlines():
             print('run_shell_command SHELL:', to_str(command_response_line))
+        return cmd_pipe.returncode
 
 # Convert from byte string to character Unicode string
 def to_str(byte_string):

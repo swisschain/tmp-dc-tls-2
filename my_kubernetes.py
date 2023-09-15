@@ -117,23 +117,42 @@ def get_valid_kube_files(deployment_order_names, files_list_git_changed, type):
 # Apply kubernetes files
 def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order):
     gh_comment_body_part = ''
+    errors_dry_run_client = []
+    errors_dry_run_server = []
+    errors_apply = []
     for order_number in range(len(deployment_order_numbers)):
         print('APPLY:', str(deployment_order_numbers[order_number]))
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' in to_str(file_item).lower():
                 print('FILE:', to_str(file_item))
-                run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
-                run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
+                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
+                    deployment_order_numbers[order_number]) + ')'
+                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True'):
+                    errors_dry_run_client.append(changed_file_name)
+                    gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
+                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True'):
+                    errors_dry_run_server.append(changed_file_name)
+                    gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
-                    run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
-                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+                    if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
+                        errors_apply.append(changed_file_name)
+                        gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
+                gh_comment_body_part = gh_comment_body_part + '<br>'
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' not in to_str(file_item).lower():
                 print('FILE:', to_str(file_item))
-                run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True')
-                run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True')
+                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
+                    deployment_order_numbers[order_number]) + ')'
+                if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=True'):
+                    errors_dry_run_client.append(changed_file_name)
+                    gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
+                if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=True'):
+                    errors_dry_run_server.append(changed_file_name)
+                    gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
-                    run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True')
-                gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(deployment_order_numbers[order_number]) + ')<br>'
+                    if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
+                        errors_apply.append(changed_file_name)
+                        gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
+                gh_comment_body_part = gh_comment_body_part + '<br>'
 
-    return gh_comment_body_part
+    return (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply)
