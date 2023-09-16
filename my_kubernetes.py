@@ -121,38 +121,50 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
     errors_dry_run_server = []
     errors_apply = []
     for order_number in range(len(deployment_order_numbers)):
-        print('APPLY:', str(deployment_order_numbers[order_number]))
+        print('kube_apply_files_list APPLY:', str(deployment_order_numbers[order_number]))
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' in to_str(file_item).lower():
-                print('FILE:', to_str(file_item))
+                fail_check_flag = 0
+                print('kube_apply_files_list FILE:', to_str(file_item))
                 gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
                     deployment_order_numbers[order_number]) + ')'
                 if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=False'):
+                    fail_check_flag = 1
                     errors_dry_run_client.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
                 if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=False'):
+                    fail_check_flag = 1
                     errors_dry_run_server.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
-                    if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
-                        errors_apply.append(file_item)
-                        gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
+                    if fail_check_flag:
+                        print('kube_apply_files_list skip applying FILE:', to_str(file_item), 'due to fail dry-run checks')
+                    else:
+                        if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
+                            errors_apply.append(file_item)
+                            gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
                 gh_comment_body_part = gh_comment_body_part + '<br>'
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' not in to_str(file_item).lower():
-                print('FILE:', to_str(file_item))
+                fail_check_flag = 0
+                print('kube_apply_files_list FILE:', to_str(file_item))
                 gh_comment_body_part = gh_comment_body_part + to_str(file_item) + ' (' + str(
                     deployment_order_numbers[order_number]) + ')'
                 if run_shell_command("kubectl apply --dry-run='client' -f " + to_str(file_item), 'Output=False'):
+                    fail_check_flag = 1
                     errors_dry_run_client.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN CLIENT ERROR)'
                 if run_shell_command("kubectl apply --dry-run='server' -f " + to_str(file_item), 'Output=False'):
+                    fail_check_flag = 1
                     errors_dry_run_server.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
                 if os.getenv('DRY_RUN').lower() == 'false':
-                    if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
-                        errors_apply.append(file_item)
-                        gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
+                    if fail_check_flag:
+                        print('kube_apply_files_list skip applying FILE:', to_str(file_item), 'due to fail dry-run checks')
+                    else:
+                        if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
+                            errors_apply.append(file_item)
+                            gh_comment_body_part = gh_comment_body_part + '(DEPLOY ERROR)'
                 gh_comment_body_part = gh_comment_body_part + '<br>'
 
     return (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply)

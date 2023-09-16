@@ -286,5 +286,7 @@ add_gh_pr_comment(gh_token, comments_url, gh_comment_body)
 # Fail pool request action job if we have not valid files
 if files_list_not_valid_yamls[0] or files_list_not_valid_jsons[0]:
     sys.exit("Fail pool request action job due to have not valid files")
-if errors_dry_run_client or errors_dry_run_server or errors_apply:
+if errors_dry_run_client or errors_dry_run_server:
     sys.exit("Fail pool request action job due to have not valid kubernetes files")
+if errors_apply:
+    sys.exit("Fail pool request action job due to have errors during apply kubernetes files")
