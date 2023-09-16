@@ -246,7 +246,7 @@ else:
         print('main type(deployment_order_numbers)', type(deployment_order_numbers))
 
     if isinstance(deployment_order_numbers, list):
-        print(main  Apply to kubernetes...')
+        print('main Apply to kubernetes...')
         hosts_name = os.getenv('HOSTS_NAME')
         hosts_ip = os.getenv('HOSTS_IP')
         add_string_to_file('/etc/hosts', hosts_ip + ' ' + hosts_name)
