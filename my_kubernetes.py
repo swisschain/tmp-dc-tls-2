@@ -136,9 +136,12 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
                     fail_check_flag = 1
                     errors_dry_run_server.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
+                if fail_check_flag:
+                    gh_comment_body_part = gh_comment_body_part + '(WILL NOT BE UPDATED)'
                 if os.getenv('DRY_RUN').lower() == 'false':
                     if fail_check_flag:
                         print('kube_apply_files_list skip applying FILE:', to_str(file_item), 'due to fail dry-run checks')
+                        gh_comment_body_part = gh_comment_body_part + '(SKIP UPDATING)'
                     else:
                         if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
                             errors_apply.append(file_item)
@@ -158,9 +161,12 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
                     fail_check_flag = 1
                     errors_dry_run_server.append(file_item)
                     gh_comment_body_part = gh_comment_body_part + '(DRY RUN SERVER ERROR)'
+                if fail_check_flag:
+                    gh_comment_body_part = gh_comment_body_part + '(WILL NOT BE UPDATED)'
                 if os.getenv('DRY_RUN').lower() == 'false':
                     if fail_check_flag:
                         print('kube_apply_files_list skip applying FILE:', to_str(file_item), 'due to fail dry-run checks')
+                        gh_comment_body_part = gh_comment_body_part + '(SKIP UPDATING)'
                     else:
                         if run_shell_command("kubectl apply -f " + to_str(file_item), 'Output=True'):
                             errors_apply.append(file_item)

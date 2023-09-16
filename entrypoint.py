@@ -271,6 +271,23 @@ else:
         #print('files_list_deleted:', files_list_deleted)
         #gh_comment_body_part = kube_apply_files_list(['group:deleted'], files_list_deleted)
         #gh_comment_body_details = gh_comment_body_details + gh_comment_body_part
+        if errors_dry_run_client or errors_dry_run_server:
+            gh_comment_body_preview = gh_comment_body_preview + '<br>'
+            if errors_dry_run_client and errors_dry_run_server:
+                gh_comment_body_preview = gh_comment_body_preview + str(len(errors_dry_run_client) + len(
+                    errors_dry_run_server)) + ' CLIENT AND SERVER DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
+            else:
+                if errors_dry_run_client:
+                    gh_comment_body_preview = gh_comment_body_preview + str(
+                        len(files_list_not_valid_yamls[0])) + ' CLIENT DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
+                if errors_dry_run_server:
+                    gh_comment_body_preview = gh_comment_body_preview + str(
+                        len(files_list_not_valid_jsons[0])) + ' SERVER DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
+        gh_comment_body_details = gh_comment_body_details + '<br><br>FILES WITH FAILED DRY RUN CHECKS WILL BE NOT UPDATED!<br><br>'
+        if errors_apply:
+            gh_comment_body_preview = gh_comment_body_preview + '<br>'
+            gh_comment_body_preview = gh_comment_body_preview + str(
+                len(files_list_not_valid_yamls[0])) + ' ERRORS DURING UPDATE - PLEASE CHECK LOGS!<br>'
     else:
         print('main Skip applying due to empty order...')
 
