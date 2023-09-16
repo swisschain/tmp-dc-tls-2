@@ -279,15 +279,15 @@ else:
             else:
                 if errors_dry_run_client:
                     gh_comment_body_preview = gh_comment_body_preview + str(
-                        len(files_list_not_valid_yamls[0])) + ' CLIENT DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
+                        len(errors_dry_run_client)) + ' CLIENT DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
                 if errors_dry_run_server:
                     gh_comment_body_preview = gh_comment_body_preview + str(
-                        len(files_list_not_valid_jsons[0])) + ' SERVER DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
+                        len(errors_dry_run_server)) + ' SERVER DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
         gh_comment_body_details = gh_comment_body_details + '<br><br>FILES WITH FAILED DRY RUN CHECKS WILL BE NOT UPDATED!<br><br>'
         if errors_apply:
             gh_comment_body_preview = gh_comment_body_preview + '<br>'
             gh_comment_body_preview = gh_comment_body_preview + str(
-                len(files_list_not_valid_yamls[0])) + ' ERRORS DURING UPDATE - PLEASE CHECK LOGS!<br>'
+                len(errors_apply)) + ' ERRORS DURING UPDATE - PLEASE CHECK LOGS!<br>'
     else:
         print('main Skip applying due to empty order...')
 
