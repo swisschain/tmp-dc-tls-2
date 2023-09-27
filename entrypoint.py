@@ -283,7 +283,7 @@ else:
                 if errors_dry_run_server:
                     gh_comment_body_preview = gh_comment_body_preview + str(
                         len(errors_dry_run_server)) + ' SERVER DRY RUN CHECKS FAILED - WILL STOP UPDATE THIS FILES!<br>'
-        gh_comment_body_details = gh_comment_body_details + '<br><br>FILES WITH FAILED DRY RUN CHECKS WILL BE NOT UPDATED!<br><br>'
+            gh_comment_body_details = gh_comment_body_details + '<br><br>FILES WITH FAILED DRY RUN CHECKS WILL BE NOT UPDATED!<br><br>'
         if errors_apply:
             gh_comment_body_preview = gh_comment_body_preview + '<br>'
             gh_comment_body_preview = gh_comment_body_preview + str(
