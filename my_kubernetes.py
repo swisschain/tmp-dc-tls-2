@@ -164,14 +164,14 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' in to_str(file_item).lower():
                 (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item, deployment_order_numbers[order_number])
-                result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part
+                result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part + '<br>'
                 result_errors_dry_run_client = result_errors_dry_run_client + errors_dry_run_client
                 result_errors_dry_run_server = result_errors_dry_run_server + errors_dry_run_server
                 result_errors_apply = result_errors_apply + errors_apply
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' not in to_str(file_item).lower():
                 (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item, deployment_order_numbers[order_number])
-                result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part
+                result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part + '<br>'
                 result_errors_dry_run_client = result_errors_dry_run_client + errors_dry_run_client
                 result_errors_dry_run_server = result_errors_dry_run_server + errors_dry_run_server
                 result_errors_apply = result_errors_apply + errors_apply
