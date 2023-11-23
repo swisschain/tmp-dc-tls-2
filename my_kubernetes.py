@@ -115,7 +115,7 @@ def get_valid_kube_files(deployment_order_names, files_list_git_changed, type):
     return result_array
 
 # Apply kubernetes one file
-def kube_apply_file(int_file_item):
+def kube_apply_file(int_file_item, int_deployment_order_numbers):
     fail_check_flag = 0
     int_gh_comment_body_part = ''
     int_errors_dry_run_client = []
@@ -123,7 +123,7 @@ def kube_apply_file(int_file_item):
     int_errors_apply = []
     print('kube_apply_files_list FILE:', to_str(int_file_item))
     int_gh_comment_body_part = int_gh_comment_body_part + to_str(int_file_item) + ' (' + str(
-        deployment_order_numbers[order_number]) + ')'
+        int_deployment_order_numbers[order_number]) + ')'
     if run_shell_command("kubectl delete --dry-run='server' -f " + to_str(int_file_item), 'Output=False'):
         kubectl_command = 'create'
         if os.getenv('LOG') == 'DEBUG':
@@ -163,14 +163,14 @@ def kube_apply_files_list(deployment_order_numbers, files_list_deployment_order)
         print('kube_apply_files_list APPLY:', str(deployment_order_numbers[order_number]))
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' in to_str(file_item).lower():
-                (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item)
+                (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item, deployment_order_numbers)
                 result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part
                 result_errors_dry_run_client = result_errors_dry_run_client + errors_dry_run_client
                 result_errors_dry_run_server = result_errors_dry_run_server + errors_dry_run_server
                 result_errors_apply = result_errors_apply + errors_apply
         for file_item in files_list_deployment_order[order_number]:
             if 'worker' not in to_str(file_item).lower():
-                (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item)
+                (gh_comment_body_part, errors_dry_run_client, errors_dry_run_server, errors_apply) = kube_apply_file(file_item, deployment_order_numbers)
                 result_gh_comment_body_part = result_gh_comment_body_part + gh_comment_body_part
                 result_errors_dry_run_client = result_errors_dry_run_client + errors_dry_run_client
                 result_errors_dry_run_server = result_errors_dry_run_server + errors_dry_run_server
