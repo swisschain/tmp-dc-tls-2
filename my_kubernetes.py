@@ -127,11 +127,11 @@ def kube_apply_file(int_file_item, deployment_group_name):
     if run_shell_command("kubectl delete --dry-run='server' -f " + to_str(int_file_item), 'Output=False'):
         kubectl_command = 'create'
         if os.getenv('LOG') == 'DEBUG':
-            print(f'kube_apply_file kubernetes object from file {file_name} not exist - will {kubectl_command}')
+            print(f'kube_apply_file kubernetes object from file {to_str(int_file_item)} not exist - will {kubectl_command}')
     else:
         kubectl_command = 'replace'
         if os.getenv('LOG') == 'DEBUG':
-            print(f'kube_apply_file kubernetes object from file {file_name} already exist - will {kubectl_command}')
+            print(f'kube_apply_file kubernetes object from file {to_str(int_file_item)} already exist - will {kubectl_command}')
     if run_shell_command(f'kubectl {kubectl_command} --dry-run=client -f {to_str(int_file_item)}', 'Output=False'):
         fail_check_flag = 1
         int_errors_dry_run_client.append(int_file_item)
